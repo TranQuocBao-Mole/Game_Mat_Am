@@ -1,0 +1,11 @@
+Model Information:
+* title:	Service room
+* source:	https://sketchfab.com/3d-models/service-room-1a9e57725ca1458fbe64a5bb516349ac
+* author:	Pasha (https://sketchfab.com/Pasha.)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Service room" (https://sketchfab.com/3d-models/service-room-1a9e57725ca1458fbe64a5bb516349ac) by Pasha (https://sketchfab.com/Pasha.) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

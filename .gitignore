@@ -1,0 +1,24 @@
+# Godot-specific ignores
+.godot/
+# *.uid  # Can be ignored or committed; Godot 4 uses them for file tracking
+
+# Imported assets / imported subfolders
+# Generally, you should keep .import files but ignore the .godot/ folder
+# which contains the actual imported binary data.
+
+# Build/Export files
+build/
+export/
+
+# Project-specific ignores
+*.tmp
+*.bak
+*.log
+*.zip
+*.rar
+*.7z
+
+# OS ignores
+.DS_Store
+Thumbs.db
+desktop.ini

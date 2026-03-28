@@ -1,0 +1,68 @@
+[gd_scene load_steps=9 format=3 uid="uid://dry4c4ut51ya8"]
+
+[ext_resource type="PackedScene" uid="uid://6qg6q2lup7kv" path="res://assets/models/service_room/scene.gltf" id="1_47l1p"]
+[ext_resource type="Texture2D" uid="uid://b1eevf6jcu6e3" path="res://assets/models/service_room/textures/material_1_baseColor.png" id="2_r2hjj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_atf2o"]
+albedo_texture = ExtResource("2_r2hjj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8l24n"]
+albedo_texture = ExtResource("2_r2hjj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_y38pw"]
+albedo_texture = ExtResource("2_r2hjj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tf1tu"]
+albedo_texture = ExtResource("2_r2hjj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d6yob"]
+albedo_texture = ExtResource("2_r2hjj")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4ndgt"]
+albedo_texture = ExtResource("2_r2hjj")
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_47l1p")]
+
+[node name="Material2" parent="Sketchfab_model/Collada visual scene group" index="0"]
+material_override = SubResource("StandardMaterial3D_atf2o")
+material_overlay = SubResource("StandardMaterial3D_8l24n")
+
+[node name="Material3" parent="Sketchfab_model/Collada visual scene group" index="1"]
+material_override = SubResource("StandardMaterial3D_y38pw")
+material_overlay = SubResource("StandardMaterial3D_tf1tu")
+
+[node name="Material32" parent="Sketchfab_model/Collada visual scene group" index="2"]
+surface_material_override/0 = SubResource("StandardMaterial3D_d6yob")
+
+[node name="Material22" parent="Sketchfab_model/Collada visual scene group" index="3"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material33" parent="Sketchfab_model/Collada visual scene group" index="4"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material34" parent="Sketchfab_model/Collada visual scene group" index="5"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material35" parent="Sketchfab_model/Collada visual scene group" index="6"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material36" parent="Sketchfab_model/Collada visual scene group" index="7"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material37" parent="Sketchfab_model/Collada visual scene group" index="8"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material38" parent="Sketchfab_model/Collada visual scene group" index="9"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material39" parent="Sketchfab_model/Collada visual scene group" index="10"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material310" parent="Sketchfab_model/Collada visual scene group" index="11"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material311" parent="Sketchfab_model/Collada visual scene group" index="12"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
+
+[node name="Material23" parent="Sketchfab_model/Collada visual scene group" index="13"]
+surface_material_override/0 = SubResource("StandardMaterial3D_4ndgt")
