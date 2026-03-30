@@ -1,6 +1,7 @@
 extends StaticBody3D
 
 var unlocked := false
+var prompt_text := "Mở cửa"
 
 func interact():
 	if not unlocked:

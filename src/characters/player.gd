@@ -20,7 +20,7 @@ const CROUCH_TRANSITION_SPEED = 3.0     # Smoothing speed
 
 # Interaction settings
 const INTERACT_RANGE = 150.5               # How far the ray reaches
-@onready var interaction_label: Label = $Head/InteractionLabel   # Optional UI prompt (create the node if needed)
+# (Global InteractionManager handles interaction prompt)
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
 @onready var collision_shape = $CollisionShape3D   # Assuming the collision shape is a direct child
@@ -41,13 +41,13 @@ func _ready():
 	# Setup interaction ray
 	raycast.enabled = true
 	
-func _unhandled_input(event):
-	if not can_move:
-		return   # Ignore mouse look during cutscene
+func _input(event):
 	if event is InputEventMouseMotion:
-		head.rotate_y(-event.relative.x * SENSITIVITY)
-		camera.rotate_x(-event.relative.y * SENSITIVITY)
-		camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+		# Chỉ quay camera nếu đang chiếm quyền điều khiển chuột (CAPTURED)
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+			head.rotate_y(-event.relative.x * SENSITIVITY)
+			camera.rotate_x(-event.relative.y * SENSITIVITY)
+			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 
 func _physics_process(delta: float) -> void:
 	# 1. Gravity
@@ -135,15 +135,23 @@ func _handle_head_bob(delta: float, direction: Vector3) -> void:
 func _handle_interaction():
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
-		# Optional: show UI prompt
-		if interaction_label:
-			interaction_label.text = "Ấn E để tương tác"   # Adjust to match your input action
-			interaction_label.show()
 		
-		# Check for interaction input
-		if Input.is_action_just_pressed("interact") and collider.has_method("interact"):
-			collider.interact()
+		# Only show prompt if the object has an "interact" method
+		if collider.has_method("interact"):
+			var text = "Tương tác"
+			if "prompt_text" in collider:
+				text = collider.prompt_text
+			
+			InteractionManager.set_prompt(text)
+			
+			if Input.is_action_just_pressed("interact"):
+				collider.interact()
+		else:
+			InteractionManager.hide_prompt()
 	else:
-		# Hide prompt when not looking at anything
-		if interaction_label:
-			interaction_label.hide()
+		InteractionManager.hide_prompt()
+
+func set_movement_enabled(enabled: bool) -> void:
+	can_move = enabled
+	if not enabled:
+		velocity = Vector3.ZERO # Dừng ngay lập tức nếu bị khóa

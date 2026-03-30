@@ -12,6 +12,7 @@ extends StaticBody3D
 @export var audio_player: AudioStreamPlayer3D   # For playing both sounds
 
 var event_triggered := false
+var prompt_text := "Đọc giấy"
 var timer_30s: Timer
 var timer_25s: Timer   # Restored for the delayed sound
 
@@ -89,6 +90,10 @@ func close_picture():
 		return
 	is_open = false
 	picture_panel.hide()
+	
+	# Đợi một phần nhỏ giây trước khi mở lại di chuyển để tránh bị mở lại ngay lập tức trong cùng 1 frame
+	await get_tree().process_frame
+	
 	if player and player.has_method("set_movement_enabled"):
 		player.set_movement_enabled(true)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

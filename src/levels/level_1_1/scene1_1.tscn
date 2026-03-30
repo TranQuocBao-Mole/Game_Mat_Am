@@ -293,8 +293,8 @@ omni_range = 722.666
 omni_attenuation = 0.0
 
 [node name="Player" parent="." instance=ExtResource("12_c68ag")]
-transform = Transform3D(-160, 0, -1.3987645e-05, 0, 189.001, 0, 1.3987645e-05, 0, -160, -48.65251, 173.5476, -119.8537)
-visible = false
+transform = Transform3D(-160, 0, -1.3987645e-05, 0, 160, 0, 1.3987645e-05, 0, -160, -48.65251, 173.5476, -119.8537)
+up_direction = Vector3(0.09950249, 0.9900498, 0.09950249)
 
 [node name="CutsceneCamera" type="Camera3D" parent="."]
 transform = Transform3D(-0.018385153, -0.6033332, -0.79727715, -0.013909091, 0.797489, -0.6031729, 0.9997343, -2.4214383e-08, -0.023053775, -151.80896, 145.78253, -259.71738)

@@ -1,0 +1,79 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5q3o6z8j4x2k"]
+
+[ext_resource type="Script" path="res://src/ui/dialogue_manager.gd" id="1_45k2m"]
+[ext_resource type="Texture2D" path="res://assets/textures/simple_paper.svg" id="2_r2hjj"]
+
+[node name="DialogueManager" type="CanvasLayer"]
+process_mode = 3
+layer = 100
+script = ExtResource("1_45k2m")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -140.0
+offset_right = 400.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("2_r2hjj")
+patch_margin_left = 15
+patch_margin_top = 15
+patch_margin_right = 15
+patch_margin_bottom = 15
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/NinePatchRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 30.0
+offset_top = 22.0
+offset_right = -30.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/default_color = Color(0.15, 0.1, 0.05, 1)
+theme_override_font_sizes/normal_font_size = 28
+bbcode_enabled = true
+text = "[center]Nội dung hội thoại ở đây...[/center]"
+scroll_active = false
+visible_characters_behavior = 1
+
+[node name="NextIndicator" type="Label" parent="Control/NinePatchRect"]
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -110.0
+offset_top = -40.0
+offset_right = -30.0
+offset_bottom = -15.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.18, 0.12, 0.08, 0.6)
+theme_override_font_sizes/font_size = 18
+text = "[Space]"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

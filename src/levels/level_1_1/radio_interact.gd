@@ -1,12 +1,13 @@
 class_name Radio
 extends StaticBody3D
-signal first_interaction_occurred() 
-@export var normal_song: AudioStream       # The first, calm song
-@export var scary_song: AudioStream        # The song that plays during the event
-@export var audio_player: AudioStreamPlayer3D   # Assign a child AudioStreamPlayer3D
+signal first_interaction_occurred()
+@export var normal_song: AudioStream # The first, calm song
+@export var scary_song: AudioStream # The song that plays during the event
+@export var audio_player: AudioStreamPlayer3D # Assign a child AudioStreamPlayer3D
 
 var first_interaction_done := false
 var event_active := false
+var prompt_text := "Bật Radio"
 
 func _ready():
 	# Ensure we have an audio player
@@ -25,6 +26,9 @@ func interact():
 		first_interaction_occurred.emit()
 		audio_player.stream = normal_song
 		audio_player.play()
+		DialogueManager.show_text("Cái radio này...")
+		DialogueManager.show_text("...nhạc nghe như con cặc đụ đĩ mẹ.")
+		DialogueManager.show_text("Thằng Bảo chó rách.")
 	else:
 		# Subsequent interactions could be ignored or toggle on/off
 		# For simplicity, we do nothing after the first time.
