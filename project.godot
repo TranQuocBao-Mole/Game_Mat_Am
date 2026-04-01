@@ -26,6 +26,14 @@ InventoryUI="*res://src/ui/inventory_ui.tscn"
 
 project/assembly_name="Mắt Âm"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/proton_scatter/plugin.cfg")
+
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 up={

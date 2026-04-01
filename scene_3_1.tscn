@@ -1,0 +1,139 @@
+[gd_scene load_steps=14 format=3 uid="uid://buumfxiyinwm7"]
+
+[ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
+[ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
+[ext_resource type="PackedScene" uid="uid://upnpp6f1h76w" path="res://assets/models/ruined_rock_fence/scene.gltf" id="3_jatmx"]
+[ext_resource type="PackedScene" uid="uid://bj1yhgsebhyrl" path="res://assets/models/japanese_torii_gate/scene.gltf" id="4_i803j"]
+[ext_resource type="PackedScene" uid="uid://dx7d30vb7itll" path="res://assets/models/chinese_lantern/scene.gltf" id="5_lpj7r"]
+[ext_resource type="Script" uid="uid://d05bdjml6c60b" path="res://src/scripts/light_flicker.gd" id="6_rtqq5"]
+[ext_resource type="PackedScene" uid="uid://by0k074b4xjr4" path="res://assets/models/low__house__building__apocalypse__dirty/scene.gltf" id="7_sv1it"]
+[ext_resource type="PackedScene" uid="uid://cyuunfbayu1bq" path="res://assets/models/shanty__house__building__enterable/scene.gltf" id="8_2chjh"]
+[ext_resource type="PackedScene" uid="uid://2ggpbopi7kpj" path="res://assets/models/the_free_cars_barn/scene.gltf" id="9_13ota"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
+size = Vector3(81.93909, 1, 52.552155)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_p6ujn"]
+size = Vector3(140, 50, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kjjv5"]
+size = Vector3(0.8, 3.2, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_h8f27"]
+size = Vector3(4.5, 0.5, 0.8)
+
+[node name="scene3_1" type="Node3D"]
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_pyw2e")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -10.058155, 377.8445, -2.015893)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7576523, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 11.583436, -65.17929, 0.5920563)
+shape = SubResource("BoxShape3D_hpes8")
+
+[node name="Player" parent="Sketchfab_Scene" instance=ExtResource("2_i4dfr")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -20.938046, -11.938969, 66.589066)
+
+[node name="Decorration" type="Node3D" parent="Sketchfab_Scene"]
+
+[node name="RockWall_North" type="StaticBody3D" parent="Sketchfab_Scene/Decorration"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -65)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.79651934, 0, -0.604613, 0, 1, 0, 0.604613, 0, 0.79651934, 30.344078, -3.8146973e-06, 84.70088)
+shape = SubResource("BoxShape3D_p6ujn")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(-0.7700569, 0, -0.6379752, 0, 1, 0, 0.6379752, 0, -0.7700569, -3.6550179, -5.722046e-06, 124.11748)
+shape = SubResource("BoxShape3D_p6ujn")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.24528646, -0.16932397, -0.9545493, 0.049821343, 0.98552924, -0.16201721, 0.96817, -0.007816311, 0.25017297, -61.24923, 3.8146973e-06, -0.4874344)
+shape = SubResource("BoxShape3D_p6ujn")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.37552464, 0.07602158, -0.9236898, -0.034099635, 0.9970889, 0.06819941, 0.92618525, 0.0058869156, 0.37702367, -56.677055, 3.8146973e-06, -0.9367523)
+shape = SubResource("BoxShape3D_p6ujn")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.5646505, 0, 0.8253309, 0, 1, 0, -0.8253309, 0, 0.5646505, -79.95996, 3.8146973e-06, 123.974754)
+shape = SubResource("BoxShape3D_p6ujn")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.91222095, 0, 0.40970036, 0, 1, 0, -0.40970036, 0, 0.91222095, 32.48643, 3.8146973e-06, 36.190464)
+shape = SubResource("BoxShape3D_p6ujn")
+
+[node name="RockWall_South" type="StaticBody3D" parent="Sketchfab_Scene/Decorration"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 65)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_South"]
+transform = Transform3D(0.46448666, 0, -0.8855802, 0, 1, 0, 0.8855802, 0, 0.46448666, -38.42745, 0, 0)
+shape = SubResource("BoxShape3D_p6ujn")
+
+[node name="Sketchfab_Scene3" parent="Sketchfab_Scene/Decorration" instance=ExtResource("3_jatmx")]
+transform = Transform3D(0.1464219, 0, -0.26184088, 0, 0.3, 0, 0.26184088, 0, 0.1464219, -50.60266, -18.986088, 75.573524)
+
+[node name="Sketchfab_Scene4" parent="Sketchfab_Scene/Decorration" instance=ExtResource("3_jatmx")]
+transform = Transform3D(0.22236095, 0, 0.2013843, 0, 0.3, 0, -0.2013843, 0, 0.22236095, 39.1258, -18.986088, 46.750412)
+
+[node name="Sketchfab_Scene5" parent="Sketchfab_Scene/Decorration" instance=ExtResource("3_jatmx")]
+transform = Transform3D(-0.24617736, 0, 0.17145477, 0, 0.3, 0, -0.17145477, 0, -0.24617736, 18.273342, -18.986088, -5.35035)
+
+[node name="gate" parent="Sketchfab_Scene" instance=ExtResource("4_i803j")]
+transform = Transform3D(5.854127, 0, 1.3149912, 0, 6, 0, -1.3149912, 0, 5.854127, -35.437397, -18.88517, 3.3577008)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene/gate"]
+
+[node name="PillarLeft" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16, 1.4, 0)
+shape = SubResource("BoxShape3D_kjjv5")
+
+[node name="PillarRight" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16, 1.4, 0)
+shape = SubResource("BoxShape3D_kjjv5")
+
+[node name="BeamTop" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.92, 0)
+shape = SubResource("BoxShape3D_h8f27")
+
+[node name="BeamMiddle" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27, 0)
+shape = SubResource("BoxShape3D_h8f27")
+
+[node name="GateBarrier" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+shape = SubResource("BoxShape3D_h8f27")
+
+[node name="light1" parent="Sketchfab_Scene" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -28.5043, -8.910712, 1.5319318)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Sketchfab_Scene/light1"]
+transform = Transform3D(5.0000005, 0, 0, 0, 5.0000005, 0, 0, 0, 5.0000005, 0, -167.30865, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 5.0
+omni_range = 300.35645
+script = ExtResource("6_rtqq5")
+max_energy = 1000.0
+
+[node name="light2" parent="Sketchfab_Scene" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -42.328587, -9.138102, 4.8703427)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Sketchfab_Scene/light2"]
+transform = Transform3D(5.0000005, 0, 0, 0, 5.0000005, 0, 0, 0, 5.0000005, 89.8999, -44.40796, -39.380188)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 5.0
+omni_range = 300.0
+script = ExtResource("6_rtqq5")
+max_energy = 1000.0
+
+[node name="house1" parent="." instance=ExtResource("7_sv1it")]
+transform = Transform3D(-18.93205, 0, 23.271816, 0, 30, 0, -23.271816, 0, -18.93205, -1000.5575, 40.1651, 645.5891)
+
+[node name="Sketchfab_Scene2" parent="." instance=ExtResource("8_2chjh")]
+transform = Transform3D(-4.1445746, 0, -19.565851, 0, 20, 0, 19.565851, 0, -4.1445746, 411.912, 53.729317, 597.7222)
+
+[node name="Sketchfab_Scene3" parent="." instance=ExtResource("9_13ota")]
+transform = Transform3D(21.080986, 0, -21.344597, 0, 29.999998, 0, 21.344597, 0, 21.080986, -595.4503, 50.461914, 1051.5037)

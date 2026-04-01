@@ -1,0 +1,11 @@
+Model Information:
+* title:	Rocky Terrain Low Poly
+* source:	https://sketchfab.com/3d-models/rocky-terrain-low-poly-e2f0405c36294b288a2a1950e7f8d213
+* author:	EntropyNine (https://sketchfab.com/entropy9ine)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Rocky Terrain Low Poly" (https://sketchfab.com/3d-models/rocky-terrain-low-poly-e2f0405c36294b288a2a1950e7f8d213) by EntropyNine (https://sketchfab.com/entropy9ine) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

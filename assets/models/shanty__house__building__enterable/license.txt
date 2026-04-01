@@ -1,0 +1,11 @@
+Model Information:
+* title:	Shanty | House | Building | Enterable
+* source:	https://sketchfab.com/3d-models/shanty-house-building-enterable-64f09376d1a44ffd8716d7cc5f28db9c
+* author:	Erroratten (https://sketchfab.com/erroratten)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Shanty | House | Building | Enterable" (https://sketchfab.com/3d-models/shanty-house-building-enterable-64f09376d1a44ffd8716d7cc5f28db9c) by Erroratten (https://sketchfab.com/erroratten) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

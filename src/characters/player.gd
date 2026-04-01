@@ -1,19 +1,19 @@
 extends CharacterBody3D
 
 # Movement constants
-const WALK_SPEED = 150.0
+@export var WALK_SPEED = 150.0
 const SPRINT_SPEED = 250.0
 const SENSITIVITY = 0.002
 
 # Realistic Bob Settings
-const BOB_FREQ = 0.05
+@export var BOB_FREQ = 0.05
 const BOB_AMP = 0.06
 const BOB_SWAY = 0.03
 const BOB_ROLL = 0.01
 var t_bob = 0.0
 
 # Crouch Settings
-const CROUCH_SPEED = 80.0               # Speed when crouching
+@export var CROUCH_SPEED = 80.0               # Speed when crouching
 const CROUCH_HEIGHT_OFFSET = -0.5       # How much to lower head (negative)
 const STANDING_HEIGHT_OFFSET = 0.0
 const CROUCH_TRANSITION_SPEED = 3.0     # Smoothing speed

@@ -1,0 +1,8 @@
+Model Information:
+* title:	Japanese Torii Gate
+* source:	https://sketchfab.com/3d-models/japanese-torii-gate-db2eaf5a5ee846cca9b32c8cfe5bafa0
+* author:	FOXYSCA (https://sketchfab.com/FOXYSCA)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

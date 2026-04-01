@@ -1,0 +1,298 @@
+[gd_scene load_steps=16 format=3 uid="uid://cvnxiavtdl0ow"]
+
+[ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_0ftg6"]
+[ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_g1l5j"]
+[ext_resource type="PackedScene" uid="uid://kevnhnk0nq6i" path="res://assets/models/oak_trees/scene.gltf" id="3_oak"]
+[ext_resource type="PackedScene" uid="uid://b54daf6ry1us2" path="res://assets/models/highway_road/scene.gltf" id="3_x2s07"]
+[ext_resource type="PackedScene" uid="uid://upnpp6f1h76w" path="res://assets/models/ruined_rock_fence/scene.gltf" id="5_18oxp"]
+[ext_resource type="PackedScene" uid="uid://bj1yhgsebhyrl" path="res://assets/models/japanese_torii_gate/scene.gltf" id="6_18oxp"]
+[ext_resource type="PackedScene" uid="uid://dx7d30vb7itll" path="res://assets/models/chinese_lantern/scene.gltf" id="7_g6t5d"]
+[ext_resource type="Script" uid="uid://d05bdjml6c60b" path="res://src/scripts/light_flicker.gd" id="8_flicker"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eerie"]
+sky_top_color = Color(0.015, 0.02, 0.04, 1)
+sky_horizon_color = Color(0.05, 0.06, 0.1, 1)
+ground_bottom_color = Color(0.01, 0.01, 0.02, 1)
+ground_horizon_color = Color(0.05, 0.06, 0.1, 1)
+
+[sub_resource type="Sky" id="Sky_eerie"]
+sky_material = SubResource("ProceduralSkyMaterial_eerie")
+
+[sub_resource type="Environment" id="Environment_eerie"]
+sky = SubResource("Sky_eerie")
+ambient_light_source = 2
+ambient_light_color = Color(0.15, 0.2, 0.3, 1)
+ambient_light_energy = 2.0
+tonemap_mode = 2
+glow_enabled = true
+glow_strength = 1.2
+glow_bloom = 0.1
+fog_enabled = true
+fog_light_color = Color(0.1, 0.15, 0.2, 1)
+fog_sky_affect = 0.5
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g6t5d"]
+size = Vector3(81.93909, 1, 52.552155)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wall_ns"]
+size = Vector3(140, 50, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gate_pillar"]
+size = Vector3(0.8, 3.2, 0.8)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gate_beam"]
+size = Vector3(4.5, 0.5, 0.8)
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.99924, 0)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_eerie")
+
+[node name="MoonLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8660253, -0.4330129, 0.2500001, 0, 0.49999994, 0.86602545, -0.50000024, -0.74999994, 0.43301257, 0, 295.77, 0)
+light_color = Color(0.5, 0.7, 1, 1)
+light_energy = 3.5
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 2.0
+directional_shadow_max_distance = 500.0
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_0ftg6")]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -10.058155, 100.06247, -2.015893)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7576523, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D"]
+transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 11.583436, -65.17929, 0.5920563)
+shape = SubResource("BoxShape3D_g6t5d")
+
+[node name="Player" parent="Sketchfab_Scene" instance=ExtResource("2_g1l5j")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -20.938046, -11.938969, 66.589066)
+
+[node name="Decorration" type="Node3D" parent="Sketchfab_Scene"]
+
+[node name="RockWall_North" type="StaticBody3D" parent="Sketchfab_Scene/Decorration"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -65)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.79651934, 0, -0.604613, 0, 1, 0, 0.604613, 0, 0.79651934, 30.344078, -3.8146973e-06, 84.70088)
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(-0.7700569, 0, -0.6379752, 0, 1, 0, 0.6379752, 0, -0.7700569, -3.6550179, -5.722046e-06, 124.11748)
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.24528646, -0.16932397, -0.9545493, 0.049821343, 0.98552924, -0.16201721, 0.96817, -0.007816311, 0.25017297, -61.24923, 3.8146973e-06, -0.4874344)
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.37552464, 0.07602158, -0.9236898, -0.034099635, 0.9970889, 0.06819941, 0.92618525, 0.0058869156, 0.37702367, -56.677055, 3.8146973e-06, -0.9367523)
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="CollisionShape3D5" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.5646505, 0, 0.8253309, 0, 1, 0, -0.8253309, 0, 0.5646505, -79.95996, 3.8146973e-06, 123.974754)
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
+transform = Transform3D(0.91222095, 0, 0.40970036, 0, 1, 0, -0.40970036, 0, 0.91222095, 32.48643, 3.8146973e-06, 36.190464)
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="RockWall_South" type="StaticBody3D" parent="Sketchfab_Scene/Decorration"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 65)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_South"]
+transform = Transform3D(0.46448666, 0, -0.8855802, 0, 1, 0, 0.8855802, 0, 0.46448666, -38.42745, 0, 0)
+shape = SubResource("BoxShape3D_wall_ns")
+
+[node name="Trees" type="Node3D" parent="Sketchfab_Scene/Decorration"]
+transform = Transform3D(-0.22149737, 0, 0.975161, 0, 1, 0, -0.975161, 0, -0.22149737, -6.854525, -6.0386934, 29.11869)
+
+[node name="OakTree1" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 10, -11.9, 5)
+
+[node name="OakTree2" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 15, -11.9, -5)
+
+[node name="OakTree3" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 5, -11.9, 12)
+
+[node name="OakTree4" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -5, -11.9, 0)
+
+[node name="OakTree5" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 20, -11.9, 10)
+
+[node name="OakTree6" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 8, -11.9, -15)
+
+[node name="OakTree7" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -15, -11.9, 15)
+
+[node name="OakTree8" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 12, -11.9, 20)
+
+[node name="OakTree9" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, -11.9, -10)
+
+[node name="OakTree10" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -10, -11.9, -5)
+
+[node name="OakTree11" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 18, -11.9, -12)
+
+[node name="OakTree12" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 25, -11.9, -2)
+
+[node name="OakTree13" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 14, -11.9, -18)
+
+[node name="OakTree14" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -4, -11.9, 25)
+
+[node name="OakTree15" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -20, -11.9, -10)
+
+[node name="OakTree16" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 30, -11.9, 5)
+
+[node name="OakTree17" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -25, -11.9, 5)
+
+[node name="OakTree18" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 5, -11.9, -25)
+
+[node name="OakTree19" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -12, -11.9, -20)
+
+[node name="OakTree20" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 22, -11.9, 18)
+
+[node name="OakTree21" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -18, -11.9, -15)
+
+[node name="OakTree22" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 35, -11.9, -10)
+
+[node name="OakTree23" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -30, -11.9, 20)
+
+[node name="OakTree24" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 40, -11.9, 15)
+
+[node name="OakTree25" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -5, -11.9, -30)
+
+[node name="OakTree26" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 10, -11.9, 30)
+
+[node name="OakTree27" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -22, -11.9, -25)
+
+[node name="OakTree28" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 79.99999, 0, 0, 0, 80, 22.189377, -11.9, -36.215828)
+
+[node name="OakTree29" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -35, -11.9, 0)
+
+[node name="OakTree30" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 45, -11.9, -5)
+
+[node name="OakTree31" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 0, -11.9, 40)
+
+[node name="OakTree32" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -15, -11.9, -40)
+
+[node name="OakTree33" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 15, -11.9, -45)
+
+[node name="OakTree34" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 50, -11.9, 10)
+
+[node name="OakTree35" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -45, -11.9, -20)
+
+[node name="OakTree36" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 30, -11.9, 35)
+
+[node name="OakTree37" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -30, -11.9, -35)
+
+[node name="OakTree38" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 20, -11.9, -50)
+
+[node name="OakTree39" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, -10, -11.9, 50)
+
+[node name="OakTree40" parent="Sketchfab_Scene/Decorration/Trees" instance=ExtResource("3_oak")]
+transform = Transform3D(80, 0, 0, 0, 80, 0, 0, 0, 80, 50, -11.9, 50)
+
+[node name="Sketchfab_Scene3" parent="Sketchfab_Scene/Decorration" instance=ExtResource("5_18oxp")]
+transform = Transform3D(0.1464219, 0, -0.26184088, 0, 0.3, 0, 0.26184088, 0, 0.1464219, -50.60266, -18.986088, 75.573524)
+
+[node name="Sketchfab_Scene4" parent="Sketchfab_Scene/Decorration" instance=ExtResource("5_18oxp")]
+transform = Transform3D(0.22236095, 0, 0.2013843, 0, 0.3, 0, -0.2013843, 0, 0.22236095, 39.1258, -18.986088, 46.750412)
+
+[node name="Sketchfab_Scene5" parent="Sketchfab_Scene/Decorration" instance=ExtResource("5_18oxp")]
+transform = Transform3D(-0.24617736, 0, 0.17145477, 0, 0.3, 0, -0.17145477, 0, -0.24617736, 18.273342, -18.986088, -5.35035)
+
+[node name="road" type="Node3D" parent="Sketchfab_Scene/Decorration"]
+
+[node name="Sketchfab_Scene2" parent="Sketchfab_Scene/Decorration/road" instance=ExtResource("3_x2s07")]
+transform = Transform3D(0.5676962, 0, 1.9177386, 0, 2, 0, -1.9177386, 0, 0.5676962, 12.114216, -16.432, 51.30923)
+
+[node name="Sketchfab_Scene" parent="Sketchfab_Scene/Decorration/road" instance=ExtResource("3_x2s07")]
+transform = Transform3D(0.5676961, 0, 1.9177382, 0, 2, 0, -1.9177382, 0, 0.5676961, -22.10833, -16.432, 72.7262)
+
+[node name="gate" parent="Sketchfab_Scene" instance=ExtResource("6_18oxp")]
+transform = Transform3D(5.854127, 0, 1.3149912, 0, 6, 0, -1.3149912, 0, 5.854127, -35.437397, -18.88517, 3.3577008)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene/gate"]
+
+[node name="PillarLeft" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16, 1.4, 0)
+shape = SubResource("BoxShape3D_gate_pillar")
+
+[node name="PillarRight" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16, 1.4, 0)
+shape = SubResource("BoxShape3D_gate_pillar")
+
+[node name="BeamTop" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.92, 0)
+shape = SubResource("BoxShape3D_gate_beam")
+
+[node name="BeamMiddle" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27, 0)
+shape = SubResource("BoxShape3D_gate_beam")
+
+[node name="GateBarrier" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+shape = SubResource("BoxShape3D_gate_beam")
+
+[node name="light1" parent="Sketchfab_Scene" instance=ExtResource("7_g6t5d")]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -28.5043, -8.910712, 1.5319318)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Sketchfab_Scene/light1"]
+transform = Transform3D(5.0000005, 0, 0, 0, 5.0000005, 0, 0, 0, 5.0000005, 0, -167.30865, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 5.0
+omni_range = 300.35645
+script = ExtResource("8_flicker")
+max_energy = 1000.0
+
+[node name="light2" parent="Sketchfab_Scene" instance=ExtResource("7_g6t5d")]
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -42.328587, -9.138102, 4.8703427)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Sketchfab_Scene/light2"]
+transform = Transform3D(5.0000005, 0, 0, 0, 5.0000005, 0, 0, 0, 5.0000005, 89.8999, -44.40796, -39.380188)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 5.0
+omni_range = 300.0
+script = ExtResource("8_flicker")
+max_energy = 1000.0
