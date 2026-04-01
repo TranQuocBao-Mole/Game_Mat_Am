@@ -1,0 +1,11 @@
+Model Information:
+* title:	Old-house-blend
+* source:	https://sketchfab.com/3d-models/old-house-blend-5760dae4651241d695d767d88db35c2f
+* author:	BatmanarkhamGOTY (https://sketchfab.com/hammondr)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Old-house-blend" (https://sketchfab.com/3d-models/old-house-blend-5760dae4651241d695d767d88db35c2f) by BatmanarkhamGOTY (https://sketchfab.com/hammondr) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

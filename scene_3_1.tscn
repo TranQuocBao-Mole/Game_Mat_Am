@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=20 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -6,9 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://bj1yhgsebhyrl" path="res://assets/models/japanese_torii_gate/scene.gltf" id="4_i803j"]
 [ext_resource type="PackedScene" uid="uid://dx7d30vb7itll" path="res://assets/models/chinese_lantern/scene.gltf" id="5_lpj7r"]
 [ext_resource type="Script" uid="uid://d05bdjml6c60b" path="res://src/scripts/light_flicker.gd" id="6_rtqq5"]
-[ext_resource type="PackedScene" uid="uid://by0k074b4xjr4" path="res://assets/models/low__house__building__apocalypse__dirty/scene.gltf" id="7_sv1it"]
 [ext_resource type="PackedScene" uid="uid://cyuunfbayu1bq" path="res://assets/models/shanty__house__building__enterable/scene.gltf" id="8_2chjh"]
 [ext_resource type="PackedScene" uid="uid://2ggpbopi7kpj" path="res://assets/models/the_free_cars_barn/scene.gltf" id="9_13ota"]
+[ext_resource type="PackedScene" uid="uid://unwh5wk3h2x3" path="res://assets/models/old_house/scene.gltf" id="10_jatmx"]
+[ext_resource type="PackedScene" uid="uid://dmpcdw77t8h3m" path="res://assets/models/old-house-blend/scene.gltf" id="11_jatmx"]
+[ext_resource type="Script" uid="uid://di3vwk4itj7ev" path="res://src/scripts/collision_generator.gd" id="13_coll"]
+[ext_resource type="PackedScene" uid="uid://kevnhnk0nq6i" path="res://assets/models/oak_trees/scene.gltf" id="14_oak"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -21,6 +24,31 @@ size = Vector3(0.8, 3.2, 0.8)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h8f27"]
 size = Vector3(4.5, 0.5, 0.8)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i803j"]
+sky_top_color = Color(0.015, 0.02, 0.04, 1)
+sky_horizon_color = Color(0.05, 0.06, 0.1, 1)
+ground_bottom_color = Color(0.01, 0.01, 0.02, 1)
+ground_horizon_color = Color(0.05, 0.06, 0.1, 1)
+
+[sub_resource type="Sky" id="Sky_eerie"]
+sky_material = SubResource("ProceduralSkyMaterial_i803j")
+
+[sub_resource type="Environment" id="Environment_lpj7r"]
+sky = SubResource("Sky_eerie")
+ambient_light_source = 2
+ambient_light_color = Color(0.15, 0.2, 0.3, 1)
+ambient_light_energy = 2.0
+tonemap_mode = 2
+glow_enabled = true
+glow_strength = 1.2
+glow_bloom = 0.1
+fog_enabled = true
+fog_light_color = Color(0.1, 0.15, 0.2, 1)
+fog_sky_affect = 0.5
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.01
+volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
 
 [node name="scene3_1" type="Node3D"]
 
@@ -35,7 +63,7 @@ transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 11.583436, -65.17929, 0
 shape = SubResource("BoxShape3D_hpes8")
 
 [node name="Player" parent="Sketchfab_Scene" instance=ExtResource("2_i4dfr")]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -20.938046, -11.938969, 66.589066)
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -8.314421, -11.938962, 16.193775)
 
 [node name="Decorration" type="Node3D" parent="Sketchfab_Scene"]
 
@@ -129,11 +157,89 @@ omni_range = 300.0
 script = ExtResource("6_rtqq5")
 max_energy = 1000.0
 
-[node name="house1" parent="." instance=ExtResource("7_sv1it")]
-transform = Transform3D(-18.93205, 0, 23.271816, 0, 30, 0, -23.271816, 0, -18.93205, -1000.5575, 40.1651, 645.5891)
+[node name="house2" parent="." instance=ExtResource("8_2chjh")]
+transform = Transform3D(-10.863195, 0, -16.792587, 0, 19.999998, 0, 16.792587, 0, -10.863195, 90.41211, 46.440132, 910.17035)
+script = ExtResource("13_coll")
 
-[node name="Sketchfab_Scene2" parent="." instance=ExtResource("8_2chjh")]
-transform = Transform3D(-4.1445746, 0, -19.565851, 0, 20, 0, 19.565851, 0, -4.1445746, 411.912, 53.729317, 597.7222)
+[node name="house3" parent="." instance=ExtResource("9_13ota")]
+transform = Transform3D(26.458597, 0, -36.399765, 0, 45, 0, 36.399765, 0, 26.458597, -839.75305, 32.635864, 675.8747)
+script = ExtResource("13_coll")
 
-[node name="Sketchfab_Scene3" parent="." instance=ExtResource("9_13ota")]
-transform = Transform3D(21.080986, 0, -21.344597, 0, 29.999998, 0, 21.344597, 0, 21.080986, -595.4503, 50.461914, 1051.5037)
+[node name="house4" parent="." instance=ExtResource("10_jatmx")]
+transform = Transform3D(0.46459532, 0, -0.18480037, 0, 0.5, 0, 0.18480037, 0, 0.46459532, -311.81744, 52.833313, 76.28923)
+script = ExtResource("13_coll")
+
+[node name="house1" parent="." instance=ExtResource("11_jatmx")]
+transform = Transform3D(-43.534615, 0, 11.390235, 0, 44.999996, 0, -11.390235, 0, -43.534615, -338.456, 24.562, 1047.217)
+script = ExtResource("13_coll")
+
+[node name="Trees" type="Node3D" parent="."]
+
+[node name="House1_Tree1" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(992.8, 0, 341.8, 0, 1050, 0, -341.8, 0, 992.8, -550, 24.5, 850)
+
+[node name="House1_Tree2" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -732.9681, 24.500061, 1114.9812)
+
+[node name="House1_Tree3" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(742.3, 0, -742.3, 0, 1050, 0, 742.3, 0, 742.3, -550, 24.5, 1250)
+
+[node name="House1_Tree4" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-1034.3, 0, 181.1, 0, 1050, 0, -181.1, 0, -1034.3, -150, 24.5, 1250)
+
+[node name="House2_Tree1" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 445.26184, 46.4, 710)
+
+[node name="House2_Tree2" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(525, 0, 909.3, 0, 1050, 0, -909.3, 0, 525, 160.78119, 46.39994, 568.4492)
+
+[node name="House2_Tree3" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-525, 0, -909.3, 0, 1050, 0, 909.3, 0, -525, 290, 46.4, 1110)
+
+[node name="House2_Tree4" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(7.35, 0, -1049.8, 0, 1050, 0, 1049.8, 0, 7.35, -110, 46.4, 1110)
+
+[node name="House3_Tree1" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -1040, 32.6, 475)
+
+[node name="House3_Tree2" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(909.3, 0, 525, 0, 1050, 0, -525, 0, 909.3, 23.866882, 32.6, 317.71085)
+
+[node name="House3_Tree3" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-178.5, 0, 1034.3, 0, 1050, 0, -1034.3, 0, -178.5, -1040, 32.6, 875)
+
+[node name="House3_Tree4" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(909.3, 0, -525, 0, 1050, 0, 525, 0, 909.3, -640, 32.6, 875)
+
+[node name="House4_Tree1" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -510, 52.8, -124)
+
+[node name="House4_Tree2" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(909.3, 0, 525, 0, 1050, 0, -525, 0, 909.3, -111, 52.8, -124)
+
+[node name="House4_Tree3" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-525, 0, 909.3, 0, 1050, 0, -909.3, 0, -525, 203.05487, 52.8, 391.2333)
+
+[node name="House4_Tree4" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(0, 0, -1050, 0, 1050, 0, 1050, 0, 0, 194.54126, 52.8, 276)
+
+[node name="Between_House2_House4_Tree1" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 323.96054, 48.00006, 610.5017)
+
+[node name="Between_House2_House4_Tree2" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 466.35144, 49.6, 493.25)
+
+[node name="Between_House2_House4_Tree3" parent="Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 390.44495, 51.2, 394.4519)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_lpj7r")
+
+[node name="MoonLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.8660253, -0.4330129, 0.2500001, 0, 0.49999994, 0.86602545, -0.50000024, -0.74999994, 0.43301257, -531.23254, 295.77, 687.61035)
+light_color = Color(0.5, 0.7, 1, 1)
+light_energy = 3.5
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 1.175
+directional_shadow_max_distance = 500.0
