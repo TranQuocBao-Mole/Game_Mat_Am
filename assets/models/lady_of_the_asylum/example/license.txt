@@ -1,0 +1,11 @@
+Model Information:
+* title:	Lady of the Asylum
+* source:	https://sketchfab.com/3d-models/lady-of-the-asylum-03c5802f43bb4fa7b7aef87ae290b9e6
+* author:	Nvikelo.Nyathi (https://sketchfab.com/Nvikelo.Nyathi)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Lady of the Asylum" (https://sketchfab.com/3d-models/lady-of-the-asylum-03c5802f43bb4fa7b7aef87ae290b9e6) by Nvikelo.Nyathi (https://sketchfab.com/Nvikelo.Nyathi) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
