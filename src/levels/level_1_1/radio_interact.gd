@@ -27,8 +27,8 @@ func interact():
 		audio_player.stream = normal_song
 		audio_player.play()
 		DialogueManager.show_text("Cái radio này...")
-		DialogueManager.show_text("...nhạc nghe như con cặc đụ đĩ mẹ.")
-		DialogueManager.show_text("Thằng Bảo chó rách.")
+		DialogueManager.show_text("...nhạc")
+		DialogueManager.show_text("hihihi.")
 	else:
 		# Subsequent interactions could be ignored or toggle on/off
 		# For simplicity, we do nothing after the first time.
