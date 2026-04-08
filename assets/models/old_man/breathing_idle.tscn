@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://daqi8o6u437ma"]
+
+[ext_resource type="PackedScene" uid="uid://diqtfjt583lc5" path="res://assets/models/old_man/Breathing Idle.fbx" id="1_pi37h"]
+
+[node name="Breathing Idle" instance=ExtResource("1_pi37h")]

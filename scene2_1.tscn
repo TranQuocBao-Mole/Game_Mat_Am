@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cvnxiavtdl0ow"]
+[gd_scene load_steps=21 format=3 uid="uid://cvnxiavtdl0ow"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_0ftg6"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_g1l5j"]
@@ -9,8 +9,9 @@
 [ext_resource type="PackedScene" uid="uid://dx7d30vb7itll" path="res://assets/models/chinese_lantern/scene.gltf" id="7_g6t5d"]
 [ext_resource type="Script" uid="uid://d05bdjml6c60b" path="res://src/scripts/visual/light_flicker.gd" id="8_flicker"]
 [ext_resource type="Script" uid="uid://d0vwu8u6pib8p" path="res://src/scripts/events/ghost_event_trigger.gd" id="9_xtihu"]
-[ext_resource type="PackedScene" path="res://assets/models/lady_of_the_asylum/lady_walking.tscn" id="10_q3fba"]
+[ext_resource type="PackedScene" uid="uid://dxcy34hwkjvvv" path="res://assets/models/lady_of_the_asylum/lady_walking.tscn" id="10_q3fba"]
 [ext_resource type="PackedScene" uid="uid://bugs6u1dum7yl" path="res://assets/models/lady_of_the_asylum/lady_crawling.tscn" id="11_q3fba"]
+[ext_resource type="PackedScene" uid="uid://daqi8o6u437ma" path="res://assets/models/old_man/breathing_idle.tscn" id="12_xq6yg"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eerie"]
 sky_top_color = Color(0.015, 0.02, 0.04, 1)
@@ -303,7 +304,7 @@ omni_range = 300.0
 script = ExtResource("8_flicker")
 max_energy = 1000.0
 
-[node name="A_Point" type="Area3D" parent="." node_paths=PackedStringArray("look_at_target", "ghost", "crawling_ghost", "start_point", "end_point")]
+[node name="A_Point" type="Area3D" parent="." node_paths=PackedStringArray("look_at_target", "ghost", "crawling_ghost", "start_point", "end_point", "escape_point", "villager", "villager_point")]
 transform = Transform3D(-0.83946806, 0, -0.54340893, 0, 1, 0, 0.54340893, 0, -0.83946806, -818.56067, -283.93777, 216.42479)
 script = ExtResource("9_xtihu")
 look_at_target = NodePath("../D_Point/D")
@@ -311,6 +312,9 @@ ghost = NodePath("../LadyWalking")
 crawling_ghost = NodePath("../LadyCrawling")
 start_point = NodePath("../B_Point/B")
 end_point = NodePath("../C_Point/C")
+escape_point = NodePath("../E_Point/E")
+villager = NodePath("../Breathing Idle")
+villager_point = NodePath("../F_Point")
 use_fixed_duration = false
 sequence_duration = 5.0
 ghost_speed = 40.0
@@ -324,16 +328,14 @@ transform = Transform3D(0.32365304, 0, 0.9461759, 0, 1, 0, -0.9461759, 0, 0.3236
 shape = SubResource("BoxShape3D_xq6yg")
 
 [node name="C_Point" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -879.0323, -230.50885, 177.63159)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -768.4111, -230.50885, -92.775925)
 
 [node name="C" type="Marker3D" parent="C_Point"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.009766, -4.58374, 85.28381)
 
 [node name="B_Point" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -577.7804, -215.90707, 96.46574)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -715.8114, -220.907, 97.97406)
 
 [node name="B" type="Marker3D" parent="B_Point"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.76001, 0, 44.221367)
 
 [node name="D_Point" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -769.12665, -179.55573, -138.8613)
@@ -346,3 +348,16 @@ transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -757.97095, -184.59431, 0)
 
 [node name="LadyCrawling" parent="." instance=ExtResource("11_q3fba")]
 transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -717.5609, -194.85275, -3.8146973e-06)
+
+[node name="E_Point" type="Node3D" parent="."]
+transform = Transform3D(0.98595524, -0.14489046, 0.08306014, -0.16700967, -0.85537267, 0.49035233, 0, -0.4973373, -0.8675573, -508.49036, -32.561707, 1305.3551)
+
+[node name="E" type="Marker3D" parent="E_Point"]
+
+[node name="Breathing Idle" parent="." instance=ExtResource("12_xq6yg")]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, -449.3814, -60.146072, 1330.5786)
+
+[node name="F_Point" type="Node3D" parent="."]
+transform = Transform3D(0.9963058, -0.06022908, -0.061213225, -0.02180855, 0.51199, -0.8587146, 0.08306014, 0.8568773, 0.5087851, -489.35443, -230.98845, 1343.5272)
+
+[node name="F" type="Marker3D" parent="F_Point"]

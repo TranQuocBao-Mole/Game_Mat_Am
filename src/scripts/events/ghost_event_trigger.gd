@@ -6,6 +6,10 @@ extends Area3D
 @export var crawling_ghost: Node3D       ## Con ma bò trườn (cho cú Jumpscare)
 @export var start_point: Node3D          ## Vật B: Điểm xuất phát của con ma
 @export var end_point: Node3D          ## Vật C: Điểm kết thúc của con ma
+@export var escape_point: Node3D       ## Vật E: Điểm người chơi chạy đến sau khi bị hù
+@export var villager: Node3D           ## Dân làng
+@export var villager_point: Node3D     ## Vật F: Nơi dân làng xuất hiện
+@export var villager_animation_name: String = "" ## Tên animation của dân làng
 
 @export_group("Configuration")
 @export var use_fixed_duration: bool = true ## Bật để đi trong số giây cố định
@@ -18,21 +22,42 @@ extends Area3D
 @export var jumpscare_speed: float = 30.0 ## Tốc độ ma lao vào mặt (m/s)
 @export var jumpscare_ratio: float = 0.5 ## Tỉ lệ quãng đường bắt đầu tăng tốc (0.1 - 0.9)
 @export var jumpscare_multiplier: float = 3.0 ## Hệ số tăng tốc giai đoạn sau
+@export var camera_shake_intensity: float = 0.2 ## Độ rung giật (Shake)
+@export var camera_sway_intensity: float = 0.12 ## Độ nghiêng trái phải (Sway)
+@export var camera_sway_speed: float = 12.0    ## Tốc độ nhịp lắc
 @export var hide_ghost_on_end: bool = true
-@export var auto_unlock_after: float = 1.0 ## Thời gian chờ sau thoại để mở khóa
+@export var auto_unlock_after: float = 0.5 ## Thời gian chờ sau khi tới E để mở khóa
 
 var _player: CharacterBody3D = null
 var _is_active: bool = false
 var _event_triggered: bool = false # Biến để kiểm tra xem đã chạy sự kiện chưa
 var _target_look_pos: Vector3
 var _current_anim_player: AnimationPlayer = null
+var _is_escaping: bool = false # Biến trạng thái tháo chạy
+var _shake_timer: float = 0.0 # Biến đếm nhịp lắc cam
 
 func _ready() -> void:
 	monitoring = true
 	monitorable = false
 	body_entered.connect(_on_body_entered)
-	if ghost: ghost.hide()
+	
+	# Hien ma va cho đứng sẵn o Diem B (Start Point)
+	if ghost and start_point and end_point:
+		ghost.global_position = start_point.global_position
+		ghost.look_at(end_point.global_position, Vector3.UP)
+		if reverse_facing: ghost.rotate_y(PI)
+		if ghost_rotation_offset != 0: ghost.rotate_y(deg_to_rad(ghost_rotation_offset))
+		ghost.show()
+		
+		# Neu muon ma dung im o tư the Idle luc dau
+		var anim = _find_animation_player(ghost)
+		if anim:
+			var list = anim.get_animation_list()
+			if list.size() > 0: anim.play(list[0]) # Thuong la Idle/Walk
+			anim.stop() # Dung im tai cho
+	
 	if crawling_ghost: crawling_ghost.hide()
+	if villager: villager.hide()
 
 func _on_body_entered(body: Node3D) -> void:
 	if _is_active or _event_triggered: return # Nếu đang chạy hoặc đã chạy rồi thì bỏ qua
@@ -97,9 +122,69 @@ func _get_target_animation(ap: AnimationPlayer) -> String:
 	if list.size() > 0: return list[0]
 	return ""
 
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
+	# 1. Tu dong xoay cam nhin ma (Khi dang dien ra su kien)
 	if _is_active and look_at_target and _player:
 		_handle_player_look(delta)
+		# 2. XU LY THAO CHAY (Set velocity va Rung camera)
+	if _is_escaping and _player and escape_point:
+		var pos_now = _player.global_position
+		var pos_target = escape_point.global_position
+		
+		# Tinh huong di chuyen (Chi lay X va Z)
+		var direction_full = (pos_target - pos_now)
+		var direction = Vector3(direction_full.x, 0, direction_full.z).normalized()
+		var dist = Vector2(pos_now.x, pos_now.z).distance_to(Vector2(pos_target.x, pos_target.z))
+		
+		# SU DUNG TOC DO MAC DINH CUA PLAYER
+		var base_speed = _player.get("WALK_SPEED") if "WALK_SPEED" in _player else 8.0
+		
+		# KIEM TRA XEM DA TOI DICH CHUA (Dung khoang cach dong de tranh overshoot)
+		# Neu khoang cach con lai nho hon quang duong di trong 1 frame -> TOI DICH
+		if dist < (base_speed * delta * 1.5) or dist < 0.5:
+			_is_escaping = false
+			_player.velocity.x = 0
+			_player.velocity.z = 0
+			# Reset camera ve binh thuong
+			var cam = _player.get_node_or_null("Head/Camera3D")
+			if cam:
+				cam.h_offset = 0
+				cam.v_offset = 0
+				cam.rotation.z = 0
+			return
+
+		# Ap dung van toc (Giam toc mot chut khi sat dich de "tiep dat" cho em)
+		var current_speed = base_speed
+		if dist < 2.0: current_speed = base_speed * 0.5
+		
+		_player.velocity.x = direction.x * current_speed
+		_player.velocity.z = direction.z * current_speed
+		
+		# XOAY NGUOI MUOT MA
+		if direction.length() > 0.01:
+			var target_basis = Basis.looking_at(direction, Vector3.UP)
+			_player.global_basis = _player.global_basis.slerp(target_basis, delta * 10.0)
+		
+		# 3. RUNG LAC & NGHIENG CAMERA (Shake & Sway)
+		var cam = _player.get_node_or_null("Head/Camera3D")
+		if cam:
+			_shake_timer += delta * camera_sway_speed # Nhịp lắc cam (từ Editor)
+			
+			# Nghieng cam trai phai (Roll) - Tao cam giac buoc chân khi chay
+			cam.rotation.z = lerp(cam.rotation.z, sin(_shake_timer) * camera_sway_intensity, delta * 15.0)
+			
+			# Rung giat (Shake)
+			cam.h_offset = lerp(cam.h_offset, randf_range(-camera_shake_intensity, camera_shake_intensity), 0.5)
+			cam.v_offset = lerp(cam.v_offset, randf_range(-camera_shake_intensity, camera_shake_intensity) + (sin(_shake_timer * 2.0) * (camera_sway_intensity * 0.3)), 0.5)
+		
+		# 4. DAN LANG XOAY THEO THEO DOI PLAYER
+		if villager and villager.visible:
+			var target_pos = _player.global_position
+			villager.look_at(Vector3(target_pos.x, villager.global_position.y, target_pos.z), Vector3.UP)
+			villager.rotate_y(PI) # Xoay 180 do bi nguoc model
+		
+		# LUU Y: Khong goi move_and_slide() o day nua 
+		# vi trong player.gd da goi move_and_slide() roi.
 
 func _handle_player_look(delta: float) -> void:
 	var head = _player.get_node_or_null("Head")
@@ -167,12 +252,52 @@ func _on_sequence_finished() -> void:
 		
 		crawling_ghost.hide()
 		
-		# CAU THOAI CUOI CUNG SAU KHI BI VO
-		if get_tree().root.has_node("DialogueManager"):
-			var dm = get_tree().root.get_node("DialogueManager")
-			dm.show_text("Ộ, đừng bú cu anh mà")
-			if dm.has_signal("dialogue_finished"):
-				await dm.dialogue_finished
+		# 3. DAN LANG XUAT HIEN NGAY LAP TUC TAI DIEM F
+		if villager and villager_point:
+			villager.global_position = villager_point.global_position
+			# Quay dân làng về phía người chơi
+			var look_target = _player.global_position
+			villager.look_at(Vector3(look_target.x, villager.global_position.y, look_target.z), Vector3.UP)
+			villager.rotate_y(PI) # Xoay 180 nếu bị ngược
+			villager.show()
+			
+			# CHAY ANIMATION CHO DAN LANG
+			var v_anim = _find_animation_player(villager)
+			if v_anim:
+				var anim_to_play = villager_animation_name
+				if anim_to_play == "":
+					var list = v_anim.get_animation_list()
+					if list.size() > 0: anim_to_play = list[0]
+				
+				if anim_to_play != "" and v_anim.has_animation(anim_to_play):
+					v_anim.play(anim_to_play)
+					v_anim.get_animation(anim_to_play).loop_mode = Animation.LOOP_LINEAR
+			
+			print("DEBUG: [GhostEvent] Villager spawned and animated at Point F.")
+
+		# 4. THAO CHAY NGAY LAP TUC: Kich hoat trang thai tháo chay vat ly
+		if escape_point and _player:
+			print("DEBUG: [GhostEvent] Player begins physics-based escape to Point E IMMEDIATELY...")
+			
+			# Ngung viec khoa cam nhìn ma
+			_is_active = false 
+			
+			# Bat trang thai tháo chay
+			_is_escaping = true
+			
+			# Đợi cho đén khi tháo chạy xong
+			while _is_escaping:
+				await get_tree().physics_frame
+			
+			print("DEBUG: [GhostEvent] Escape finished.")
+			
+			# THOẠI CỦA DÂN LÀNG KHI PLAYER DEN E
+			if get_tree().root.has_node("DialogueManager"):
+				var dm = get_tree().root.get_node("DialogueManager")
+				dm.show_text("Ớ kìa Thái tử! Làm cái gì mà chạy như ma đuổi thế?")
+				dm.show_text("Váy áo gì mà đỏ lòm thế kia, mới đi 'ăn hàng' ở đâu về à?")
+				if dm.has_signal("dialogue_finished"):
+					await dm.dialogue_finished
 	
 	# KET THUC TOAN BO
 	if auto_unlock_after > 0:

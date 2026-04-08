@@ -12,6 +12,10 @@ const BOB_SWAY = 0.03
 const BOB_ROLL = 0.01
 var t_bob = 0.0
 
+@export_group("Audio")
+@export var footstep_sound: AudioStream = preload("res://assets/audio/playerwalking.wav") ## Am thanh buoc chan (Da nap san)
+@export var footstep_pitch_range: float = 0.1 ## Do bien thien am thanh
+
 # Crouch Settings
 @export var CROUCH_SPEED = 80.0               # Speed when crouching
 const CROUCH_HEIGHT_OFFSET = -0.5       # How much to lower head (negative)
@@ -25,6 +29,7 @@ const INTERACT_RANGE = 150.5               # How far the ray reaches
 @onready var camera = $Head/Camera3D
 @onready var collision_shape = $CollisionShape3D   # Assuming the collision shape is a direct child
 @onready var raycast = $Head/InteractionRay
+var footstep_player: AudioStreamPlayer
 
 var original_collision_height: float
 var original_collision_position: Vector3
@@ -32,6 +37,19 @@ var target_crouch_offset = 0.0
 var can_move := true
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	
+	# SETUP TU DONG TIENG BUOC CHAN (Cho nguoi luoi)
+	if not has_node("FootstepPlayer"):
+		footstep_player = AudioStreamPlayer.new()
+		footstep_player.name = "FootstepPlayer"
+		add_child(footstep_player)
+	else:
+		footstep_player = get_node("FootstepPlayer")
+		
+	# Nap am thanh tu o Export (Rat de keo tha/chinh sua trong Editor)
+	if footstep_sound:
+		footstep_player.stream = footstep_sound
+		print("DEBUG: Da nạp am thanh buoc chân vao FootstepPlayer.")
 	
 	# Store original collision shape properties (assuming a CapsuleShape3D)
 	if collision_shape and collision_shape.shape is CapsuleShape3D:
@@ -58,6 +76,7 @@ func _physics_process(delta: float) -> void:
 		# Still apply gravity? Usually yes, but you might also want to freeze the player completely.
 		# Option 1: Skip movement entirely (player stays in place)
 		move_and_slide()   # Keep gravity active
+		_handle_footsteps() # CHAY TIENG BUOC CHAN KHI EVENT EP DI CHUYEN
 		return
 	# 3. Crouch input & speed
 	var is_crouching = Input.is_action_pressed("crouch")
@@ -105,6 +124,7 @@ func _physics_process(delta: float) -> void:
 
 	# 8. Interaction
 	_handle_interaction()
+	_handle_footsteps() # CAP NHAT TIENG BUOC CHAN
 	
 	raycast.global_transform = camera.global_transform
 	raycast.target_position = Vector3(0, 0, -INTERACT_RANGE)  # still local
@@ -155,3 +175,13 @@ func set_movement_enabled(enabled: bool) -> void:
 	can_move = enabled
 	if not enabled:
 		velocity = Vector3.ZERO # Dừng ngay lập tức nếu bị khóa
+
+func _handle_footsteps():
+	if is_on_floor() and velocity.length() > 0.1:
+		if footstep_player and not footstep_player.playing:
+			footstep_player.play()
+			# Thay đổi pitch nhẹ để nghe cho thật hơn (Dung thong so tu Editor)
+			footstep_player.pitch_scale = randf_range(1.0 - footstep_pitch_range, 1.0 + footstep_pitch_range)
+	else:
+		if footstep_player and footstep_player.playing:
+			footstep_player.stop()
