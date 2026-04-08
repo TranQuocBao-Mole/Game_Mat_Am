@@ -1,21 +1,21 @@
-[gd_scene load_steps=7 format=3]
+[gd_scene load_steps=6 format=3 uid="uid://dxcy34hwkjvvv"]
 
-[ext_resource type="PackedScene" path="res://assets/models/lady_of_the_asylum/source/Walking.fbx" id="1_fbx"]
-[ext_resource type="Material" path="res://assets/models/lady_of_the_asylum/materials/mat_body.tres" id="2_body"]
-[ext_resource type="Material" path="res://assets/models/lady_of_the_asylum/materials/mat_dress.tres" id="3_dress"]
-[ext_resource type="Material" path="res://assets/models/lady_of_the_asylum/materials/mat_hair.tres" id="4_hair"]
-[ext_resource type="Material" path="res://assets/models/lady_of_the_asylum/materials/mat_eyes.tres" id="5_eyes"]
+[ext_resource type="PackedScene" uid="uid://b0pcmav5sx7gg" path="res://assets/models/lady_of_the_asylum/source/Walking.fbx" id="1_fbx"]
+[ext_resource type="Script" uid="uid://cjblvaqw115d8" path="res://src/scripts/visual/material_color_customizer.gd" id="2_byxpb"]
+[ext_resource type="Texture2D" uid="uid://830ixhta76g5" path="res://assets/models/lady_of_the_asylum/textures/ScaryGirlDress_Dress_BaseColor.png" id="2_xy18y"]
+[ext_resource type="Texture2D" uid="uid://dupl4tnk5ldpl" path="res://assets/models/lady_of_the_asylum/textures/ScaryGirlDress_Dress_Normal.png" id="3_vgd7d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pg36o"]
+resource_name = "Dress"
+cull_mode = 2
+albedo_color = Color(1, 0, 0, 1)
+albedo_texture = ExtResource("2_xy18y")
+normal_enabled = true
+normal_texture = ExtResource("3_vgd7d")
 
 [node name="LadyWalking" instance=ExtResource("1_fbx")]
 
-[node name="Plane_028" parent="." index="0"]
-surface_material_override/0 = ExtResource("4_hair")
-
-[node name="ScaryGirlMesh" parent="." index="1"]
-surface_material_override/0 = ExtResource("2_body")
-
-[node name="Eyes" parent="." index="2"]
-surface_material_override/0 = ExtResource("5_eyes")
-
-[node name="Dress" parent="." index="3"]
-surface_material_override/0 = ExtResource("3_dress")
+[node name="Dress" parent="Skeleton3D" index="3"]
+surface_material_override/0 = SubResource("StandardMaterial3D_pg36o")
+script = ExtResource("2_byxpb")
+dress_color = Color(1, 0, 0, 1)
