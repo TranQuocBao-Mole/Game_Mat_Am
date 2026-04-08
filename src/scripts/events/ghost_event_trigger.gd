@@ -224,24 +224,26 @@ func _physics_process(delta: float) -> void:
 		if cam:
 			_shake_timer += delta * camera_sway_speed # Nhịp lắc cam (từ Editor)
 			
-			# Nghieng cam trai phai (Roll) - Tao cam giac buoc chân khi chay
-			cam.rotation.z = lerp(cam.rotation.z, sin(_shake_timer) * camera_sway_intensity, delta * 15.0)
-			
 			# HIEU UNG VẤP NGÃ: Cam chúi xuong & Lún xuông
 			var target_tilt_x = 0.0
+			var target_roll_z = sin(_shake_timer) * camera_sway_intensity # Nghiêng mặc định khi chạy
 			var stumble_v_dip = 0.0 # Độ lún camera (dung v_offset cho muot)
 			var extra_shake = 0.0
 			
 			if _is_stumbling:
-				target_tilt_x = -deg_to_rad(65.0) # Nhìn thăng xuống đất
-				stumble_v_dip = 1.0 # Sát mặt đất luôn
-				extra_shake = camera_shake_intensity * 3.0 # Rung dữ dội
+				target_tilt_x = -deg_to_rad(85.0) # Nhìn vuông góc xuống đất luôn
+				target_roll_z = deg_to_rad(35.0) # Vẹo đầu sang một bên cho thảm
+				stumble_v_dip = 2.0 # Sát sạt mặt đất
+				extra_shake = camera_shake_intensity * 4.0 # Rung cực mạnh
 			
+			# Thuc hien xoay cam (Duy nhat mot lan de tranh giật)
 			cam.rotation.x = lerp(cam.rotation.x, target_tilt_x, delta * 12.0)
+			cam.rotation.z = lerp(cam.rotation.z, target_roll_z, delta * 15.0)
 			
 			# Rung giat (Shake) + Cú lún vấp ngã
 			var current_shake = camera_shake_intensity + extra_shake
 			cam.h_offset = lerp(cam.h_offset, randf_range(-current_shake, current_shake), 0.5)
+			
 			# Cong them stumble_v_dip vao v_offset de tao cam giac lun nguoi
 			var bob_offset = sin(_shake_timer * 2.0) * (camera_sway_intensity * 0.3)
 			cam.v_offset = lerp(cam.v_offset, randf_range(-current_shake, current_shake) + bob_offset + stumble_v_dip, 0.5)
