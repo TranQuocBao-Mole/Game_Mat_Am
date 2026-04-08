@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cvnxiavtdl0ow"]
+[gd_scene load_steps=20 format=3 uid="uid://cvnxiavtdl0ow"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_0ftg6"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_g1l5j"]
@@ -7,7 +7,10 @@
 [ext_resource type="PackedScene" uid="uid://upnpp6f1h76w" path="res://assets/models/ruined_rock_fence/scene.gltf" id="5_18oxp"]
 [ext_resource type="PackedScene" uid="uid://bj1yhgsebhyrl" path="res://assets/models/japanese_torii_gate/scene.gltf" id="6_18oxp"]
 [ext_resource type="PackedScene" uid="uid://dx7d30vb7itll" path="res://assets/models/chinese_lantern/scene.gltf" id="7_g6t5d"]
-[ext_resource type="Script" uid="uid://d05bdjml6c60b" path="res://src/scripts/light_flicker.gd" id="8_flicker"]
+[ext_resource type="Script" uid="uid://d05bdjml6c60b" path="res://src/scripts/visual/light_flicker.gd" id="8_flicker"]
+[ext_resource type="Script" uid="uid://d0vwu8u6pib8p" path="res://src/scripts/events/ghost_event_trigger.gd" id="9_xtihu"]
+[ext_resource type="PackedScene" path="res://assets/models/lady_of_the_asylum/lady_walking.tscn" id="10_q3fba"]
+[ext_resource type="PackedScene" uid="uid://bugs6u1dum7yl" path="res://assets/models/lady_of_the_asylum/lady_crawling.tscn" id="11_q3fba"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eerie"]
 sky_top_color = Color(0.015, 0.02, 0.04, 1)
@@ -46,6 +49,9 @@ size = Vector3(0.8, 3.2, 0.8)
 [sub_resource type="BoxShape3D" id="BoxShape3D_gate_beam"]
 size = Vector3(4.5, 0.5, 0.8)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_xq6yg"]
+size = Vector3(43.667244, 227.28369, 502.4629)
+
 [node name="Node3D" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.99924, 0)
 
@@ -71,7 +77,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7576523, 0)
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 11.583436, -65.17929, 0.5920563)
 shape = SubResource("BoxShape3D_g6t5d")
 
-[node name="Player" parent="Sketchfab_Scene" instance=ExtResource("2_g1l5j")]
+[node name="Player" parent="Sketchfab_Scene" groups=["player"] instance=ExtResource("2_g1l5j")]
 transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -20.938046, -11.938969, 66.589066)
 
 [node name="Decorration" type="Node3D" parent="Sketchfab_Scene"]
@@ -296,3 +302,47 @@ light_energy = 5.0
 omni_range = 300.0
 script = ExtResource("8_flicker")
 max_energy = 1000.0
+
+[node name="A_Point" type="Area3D" parent="." node_paths=PackedStringArray("look_at_target", "ghost", "crawling_ghost", "start_point", "end_point")]
+transform = Transform3D(-0.83946806, 0, -0.54340893, 0, 1, 0, 0.54340893, 0, -0.83946806, -818.56067, -283.93777, 216.42479)
+script = ExtResource("9_xtihu")
+look_at_target = NodePath("../D_Point/D")
+ghost = NodePath("../LadyWalking")
+crawling_ghost = NodePath("../LadyCrawling")
+start_point = NodePath("../B_Point/B")
+end_point = NodePath("../C_Point/C")
+use_fixed_duration = false
+sequence_duration = 5.0
+ghost_speed = 40.0
+ghost_rotation_offset = 180.0
+jumpscare_speed = 50.0
+jumpscare_ratio = 0.4
+jumpscare_multiplier = 10.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="A_Point"]
+transform = Transform3D(0.32365304, 0, 0.9461759, 0, 1, 0, -0.9461759, 0, 0.32365304, -97.01257, 113.141846, -201.40884)
+shape = SubResource("BoxShape3D_xq6yg")
+
+[node name="C_Point" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -879.0323, -230.50885, 177.63159)
+
+[node name="C" type="Marker3D" parent="C_Point"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.009766, -4.58374, 85.28381)
+
+[node name="B_Point" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -577.7804, -215.90707, 96.46574)
+
+[node name="B" type="Marker3D" parent="B_Point"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.76001, 0, 44.221367)
+
+[node name="D_Point" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -769.12665, -179.55573, -138.8613)
+
+[node name="D" type="Marker3D" parent="D_Point"]
+transform = Transform3D(1, 0, 0, 0, 0.9956291, 0.09339588, 0, -0.09339588, 0.9956291, -23.186523, -52.836403, 32.850662)
+
+[node name="LadyWalking" parent="." instance=ExtResource("10_q3fba")]
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -757.97095, -184.59431, 0)
+
+[node name="LadyCrawling" parent="." instance=ExtResource("11_q3fba")]
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -717.5609, -194.85275, -3.8146973e-06)

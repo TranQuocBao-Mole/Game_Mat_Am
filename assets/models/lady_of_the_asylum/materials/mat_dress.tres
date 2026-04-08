@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" load_steps=5 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/models/lady_of_the_asylum/textures/ScaryGirlDress_Dress_BaseColor.png" id="1_dress"]
+[ext_resource type="Texture2D" path="res://assets/models/lady_of_the_asylum/textures/ScaryGirlDress_Dress_Normal.png" id="2_normal"]
+[ext_resource type="Texture2D" path="res://assets/models/lady_of_the_asylum/textures/ScaryGirlDress_Dress_Metallic.png" id="3_metal"]
+[ext_resource type="Texture2D" path="res://assets/models/lady_of_the_asylum/textures/ScaryGirlDress_Dress_Roughness.png" id="4_rough"]
+
+[resource]
+resource_name = "Dress"
+cull_mode = 2
+albedo_color = Color(1, 1, 1, 1)
+albedo_texture = ExtResource("1_dress")
+metallic = 0.0
+roughness = 1.0
+normal_enabled = true
+normal_texture = ExtResource("2_normal")
+uv1_scale = Vector3(1, 1, 1)
