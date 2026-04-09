@@ -13,7 +13,7 @@ const BOB_ROLL = 0.01
 var t_bob = 0.0
 
 @export_group("Audio")
-@export var footstep_sound: AudioStream = preload("res://assets/audio/playerwalking.wav") ## Am thanh buoc chan (Da nap san)
+@export var footstep_sound: AudioStream = preload("res://assets/audio/player/playerwalking.wav") ## Am thanh buoc chan (Da nap san)
 @export var footstep_pitch_range: float = 0.1 ## Do bien thien am thanh
 
 # Crouch Settings

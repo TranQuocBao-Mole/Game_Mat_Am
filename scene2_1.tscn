@@ -329,12 +329,12 @@ transform = Transform3D(0.32365304, 0, 0.9461759, 0, 1, 0, -0.9461759, 0, 0.3236
 shape = SubResource("BoxShape3D_xq6yg")
 
 [node name="C_Point" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -768.4111, -230.50885, -92.775925)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -789.6414, -230.50885, -176.57993)
 
 [node name="C" type="Marker3D" parent="C_Point"]
 
 [node name="B_Point" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -715.8114, -220.907, 97.97406)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -707.98975, -220.907, 72.27413)
 
 [node name="B" type="Marker3D" parent="B_Point"]
 

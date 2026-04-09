@@ -27,18 +27,23 @@ extends Area3D
 @export var camera_sway_speed: float = 12.0 ## Tốc độ nhịp lắc
 @export var hide_ghost_on_end: bool = true
 @export var auto_unlock_after: float = 0.5 ## Thời gian chờ sau khi tới E để mở khóa
+@export_file("*.tscn") var next_scene: String ## Scene tiep theo sau khi xong event
 
 @export_group("Spooky Effects")
 @export var laugh_sounds: Array[AudioStream] = [
-	preload("res://assets/audio/laugh1.mp3"),
-	preload("res://assets/audio/laugh2.mp3"),
-	preload("res://assets/audio/laugh3.mp3"),
-	preload("res://assets/audio/laugh4.mp3")
+	preload("res://assets/audio/ghost_event/laugh1.mp3"),
+	preload("res://assets/audio/ghost_event/laugh2.mp3"),
+	preload("res://assets/audio/ghost_event/laugh3.mp3"),
+	preload("res://assets/audio/ghost_event/laugh4.mp3")
 ]
 @export var laugh_min_interval: float = 0.5
 @export var laugh_max_interval: float = 1.5
 @export var frantic_intensity: float = 0.3 ## Độ loạng choạng khi chạy (0.0 - 1.0)
-@export var stumble_distance_ratio: float = 0.5 ## Tỉ lệ quãng đường sẽ bị vấp ngã (0.1 - 0.9)
+@export var breath_sound: AudioStream = preload("res://assets/audio/player/heavybreath.mp3") ## Am thanh tho doc
+@export var scare_sound: AudioStream = preload("res://assets/audio/ghost_event/scare.mp3") ## Am thanh hù doạ khi ma lao toi
+@export var start_sound: AudioStream = preload("res://assets/audio/ghost_event/suprise_hit.mp3") ## Am thanh khi vua cham vao A
+@export var crawl_sound: AudioStream = preload("res://assets/audio/ghost_event/GhostCrawl.wav") ## Am thanh khi ma bo truon
+@export var walk_sound: AudioStream = preload("res://assets/audio/ghost_event/monsterwalking.wav") ## Am thanh khi ma di bo B -> C
 
 var _player: CharacterBody3D = null
 var _is_active: bool = false
@@ -48,13 +53,14 @@ var _current_anim_player: AnimationPlayer = null
 var _is_escaping: bool = false # Biến trạng thái tháo chạy
 var _shake_timer: float = 0.0 # Biến đếm nhịp lắc cam
 var _laugh_players: Array[AudioStreamPlayer] = []
+var _breath_player: AudioStreamPlayer = null
+var _scare_player: AudioStreamPlayer = null
+var _start_player: AudioStreamPlayer = null
+var _walk_player: AudioStreamPlayer = null
+var _crawl_player: AudioStreamPlayer = null
 var _laugh_timer: float = 0.0
 var _next_laugh_time: float = 1.0
 var _laughing_enabled: bool = false
-var _has_stumbled: bool = false
-var _is_stumbling: bool = false
-var _stumble_timer: float = 0.0
-var _escape_total_dist: float = 0.0
 
 func _ready() -> void:
 	monitoring = true
@@ -66,6 +72,35 @@ func _ready() -> void:
 		var p = AudioStreamPlayer.new()
 		add_child(p)
 		_laugh_players.append(p)
+	
+	# Khoi tao loa phat tieng tho doc
+	if breath_sound:
+		_breath_player = AudioStreamPlayer.new()
+		_breath_player.stream = breath_sound
+		add_child(_breath_player)
+		if _breath_player.stream is AudioStreamMP3:
+			_breath_player.stream.loop = true
+	
+	# Khoi tao loa hù doa/giat minh
+	_scare_player = AudioStreamPlayer.new()
+	_scare_player.bus = "SFX"
+	add_child(_scare_player)
+	
+	_start_player = AudioStreamPlayer.new()
+	_start_player.bus = "SFX"
+	add_child(_start_player)
+	
+	_walk_player = AudioStreamPlayer.new()
+	_walk_player.stream = walk_sound
+	_walk_player.bus = "SFX"
+	add_child(_walk_player)
+	
+	# Khoi tao loa cho ma bo
+	_crawl_player = AudioStreamPlayer.new()
+	_crawl_player.stream = crawl_sound
+	_crawl_player.bus = "SFX"
+	_crawl_player.volume_db = -40.0 # Khởi đầu im lặng
+	add_child(_crawl_player)
 
 	if ghost: ghost.hide()
 	
@@ -109,10 +144,24 @@ func _trigger_sequence() -> void:
 	# 1. Khóa người chơi
 	if _player.has_method("set_movement_enabled"):
 		_player.set_movement_enabled(false)
-		print("DEBUG: [GhostEvent] Da khoa di chuyen de chay su kien.")
 	
 	_target_look_pos = look_at_target.global_position
 	
+	# 2. PHÁT ÂM THANH GIẬT MÌNH TRƯỚC
+	if _start_player and start_sound:
+		_start_player.stream = start_sound
+		_start_player.play()
+		# Đợi một chút để âm thanh vang lên xong mới hỏi
+		await get_tree().create_timer(0.5).timeout
+	
+	# 3. DIALOGUE 1: "Ai vậy?" (Trươc khi ma di chuyen)
+	if get_tree().root.has_node("DialogueManager"):
+		var dm = get_tree().root.get_node("DialogueManager")
+		dm.show_text("[Bạn]: Ai vậy?")
+		if dm.has_signal("dialogue_finished"):
+			await dm.dialogue_finished
+	
+	# 3. CHUẨN BỊ MA
 	ghost.global_position = start_point.global_position
 	ghost.look_at(end_point.global_position, Vector3.UP)
 	if reverse_facing: ghost.rotate_y(PI)
@@ -130,9 +179,18 @@ func _trigger_sequence() -> void:
 	var dist = start_point.global_position.distance_to(end_point.global_position)
 	var duration = sequence_duration if use_fixed_duration else (dist / ghost_speed)
 	
-	var tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
+	# 4. DI CHUYỂN MA TỚI C VÀ LÀM BƯỚC CHÂN NHỎ DẦN
+	var tween = create_tween().set_parallel(true)
 	tween.tween_property(ghost, "global_position", end_point.global_position, duration)
-	tween.finished.connect(_on_sequence_finished)
+	
+	# Phat tieng bc và lam nó nho dân (Fade out)
+	if _walk_player and walk_sound:
+		_walk_player.volume_db = 0.0
+		_walk_player.play()
+		tween.tween_property(_walk_player, "volume_db", -30.0, duration)
+	
+	tween.chain().finished.connect(_on_sequence_finished)
+	tween.chain().tween_callback(func(): if _walk_player: _walk_player.stop())
 
 func _find_animation_player(root: Node) -> AnimationPlayer:
 	var anim = root.get_node_or_null("AnimationPlayer")
@@ -168,13 +226,6 @@ func _physics_process(delta: float) -> void:
 		var base_speed = _player.get("WALK_SPEED") if "WALK_SPEED" in _player else 8.0
 		base_speed *= 0.75 # Chạy yếu hơn bình thường
 		
-		# KIEM TRA VẤP NGÃ (Xay ra o khoang thiet lap tren Editor)
-		if not _has_stumbled and dist < (_escape_total_dist * stumble_distance_ratio) and dist > 2.0:
-			_is_stumbling = true
-			_has_stumbled = true
-			_stumble_timer = 1.2 # Ngã lâu hơn để tăng độ thốn
-			print("DEBUG: [GhostEvent] Player STUMBLED HARD!")
-
 		# KIEM TRA XEM DA TOI DICH CHUA
 		if dist < (base_speed * delta * 1.5) or dist < 0.5:
 			_is_escaping = false
@@ -186,6 +237,7 @@ func _physics_process(delta: float) -> void:
 				cam.v_offset = 0
 				cam.rotation.z = 0
 				cam.rotation.x = 0
+				cam.position.y = 0
 			
 			# DUNG TOAN BO TIENG CUOI KHI TOI DICH
 			_laughing_enabled = false # Ngung he thong cuoi
@@ -197,13 +249,6 @@ func _physics_process(delta: float) -> void:
 		# Ap dung van toc (Giam toc mot chut khi sat dich)
 		var current_speed = base_speed
 		if dist < 2.0: current_speed = base_speed * 0.5
-		
-		# Neu dang vap ngã thi giam toc tham te
-		if _is_stumbling:
-			current_speed *= 0.1
-			_stumble_timer -= delta
-			if _stumble_timer <= 0:
-				_is_stumbling = false
 		
 		# TINH TOAN HUONG CHAY TÁN LOẠN (Zigzag)
 		var side_dir = direction.cross(Vector3.UP).normalized()
@@ -224,29 +269,14 @@ func _physics_process(delta: float) -> void:
 		if cam:
 			_shake_timer += delta * camera_sway_speed # Nhịp lắc cam (từ Editor)
 			
-			# HIEU UNG VẤP NGÃ: Cam chúi xuong & Lún xuông
-			var target_tilt_x = 0.0
-			var target_roll_z = sin(_shake_timer) * camera_sway_intensity # Nghiêng mặc định khi chạy
-			var stumble_v_dip = 0.0 # Độ lún camera (dung v_offset cho muot)
-			var extra_shake = 0.0
-			
-			if _is_stumbling:
-				target_tilt_x = -deg_to_rad(85.0) # Nhìn vuông góc xuống đất luôn
-				target_roll_z = deg_to_rad(35.0) # Vẹo đầu sang một bên cho thảm
-				stumble_v_dip = 2.0 # Sát sạt mặt đất
-				extra_shake = camera_shake_intensity * 4.0 # Rung cực mạnh
-			
-			# Thuc hien xoay cam (Duy nhat mot lan de tranh giật)
-			cam.rotation.x = lerp(cam.rotation.x, target_tilt_x, delta * 12.0)
+			# Nghieng cam trai phai (Roll) - Tao cam giac buoc chân khi chay
+			var target_roll_z = sin(_shake_timer) * camera_sway_intensity
 			cam.rotation.z = lerp(cam.rotation.z, target_roll_z, delta * 15.0)
 			
-			# Rung giat (Shake) + Cú lún vấp ngã
-			var current_shake = camera_shake_intensity + extra_shake
-			cam.h_offset = lerp(cam.h_offset, randf_range(-current_shake, current_shake), 0.5)
-			
-			# Cong them stumble_v_dip vao v_offset de tao cam giac lun nguoi
+			# Rung giat (Shake)
+			cam.h_offset = lerp(cam.h_offset, randf_range(-camera_shake_intensity, camera_shake_intensity), 0.5)
 			var bob_offset = sin(_shake_timer * 2.0) * (camera_sway_intensity * 0.3)
-			cam.v_offset = lerp(cam.v_offset, randf_range(-current_shake, current_shake) + bob_offset + stumble_v_dip, 0.5)
+			cam.v_offset = lerp(cam.v_offset, randf_range(-camera_shake_intensity, camera_shake_intensity) + bob_offset, 0.5)
 		
 		# 4. DAN LANG XOAY THEO THEO DOI PLAYER
 		if villager and villager.visible:
@@ -277,13 +307,15 @@ func _on_sequence_finished() -> void:
 	if _current_anim_player: _current_anim_player.stop()
 	if hide_ghost_on_end: ghost.hide()
 	
-	# 1. HIEN THOAI SAU KHI MA DI XONG
+	# 1. HIỆN THOẠI NGHI VẤN (Ma đã tới C, người chơi tự hỏi)
 	if get_tree().root.has_node("DialogueManager"):
 		var dm = get_tree().root.get_node("DialogueManager")
-		dm.show_text("Đụ má, con cặc gì đang diễn ra vậy, Ộ")
-		dm.show_text("Tao là thái tử nhà họ Phùng, coi chừng tao")
+		dm.show_text("[Bạn]: Ai vậy nhỉ?")
+		dm.show_text("[Bạn]: Sao trông giống...")
 		if dm.has_signal("dialogue_finished"):
 			await dm.dialogue_finished
+	
+	print("DEBUG: [GhostEvent] Suspense ended. Transitioning to Jumpscare...")
 	
 	# 2. JUMPSCARE: MA BO TRUON LAO VAO MAT
 	if crawling_ghost and _player:
@@ -317,22 +349,41 @@ func _on_sequence_finished() -> void:
 		var duration_1 = dist_1 / jumpscare_speed
 		var duration_2 = dist_2 / (jumpscare_speed * jumpscare_multiplier)
 		
-		# Chay 2 giai doan
+		# Phat am thanh bo (To dan khi lai gan bang Tween cho chac chan nghe thay)
+		if _crawl_player:
+			_crawl_player.pitch_scale = 1.0 # Reset ve toc do thuong
+			_crawl_player.volume_db = -25.0 
+			_crawl_player.play()
+			var v_tween = create_tween()
+			v_tween.tween_property(_crawl_player, "volume_db", 2.0, duration_1 + duration_2)
+		
+		# Chay 2 giai doan di chuyen ma
 		var jumpscare_tween = create_tween().set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN)
 		
 		# Giai doan 1: Toc do thuong
 		jumpscare_tween.tween_property(crawling_ghost, "global_position", midpoint, duration_1)
 		
-		# Giai doan 2: Tang toc va BAT TIENG CUOI
+		# Giai doan 2: Tang toc và BAT TIENG HU / CUOI / TANG TOC AM THANH
 		jumpscare_tween.tween_callback(func():
 			if craw_anim: craw_anim.speed_scale = jumpscare_multiplier
 			_laughing_enabled = true
-			print("DEBUG: [GhostEvent] Ghost accelerated and Laughter started!")
+			
+			# TANG TOC TIENG BO (Pitch)
+			if _crawl_player: _crawl_player.pitch_scale = 1.6 # Gắt hơn, nhanh hơn
+			
+			# Phat tieng hù doa neu co
+			if _scare_player and scare_sound:
+				_scare_player.stream = scare_sound
+				_scare_player.volume_db = 2.0 # Tang am luong them ~15%
+				_scare_player.play()
+				
+			print("DEBUG: [GhostEvent] Ghost and Sound accelerated!")
 		)
 		jumpscare_tween.tween_property(crawling_ghost, "global_position", target_ground_pos, duration_2)
 		
 		await jumpscare_tween.finished
 		
+		if _crawl_player: _crawl_player.stop()
 		crawling_ghost.hide()
 		
 		# 3. DAN LANG XUAT HIEN NGAY LAP TUC TAI DIEM F
@@ -367,23 +418,72 @@ func _on_sequence_finished() -> void:
 			
 			# Bat trang thai tháo chay
 			_is_escaping = true
-			_has_stumbled = false
-			_is_stumbling = false
-			_escape_total_dist = _player.global_position.distance_to(escape_point.global_position)
 			
 			# Đợi cho đén khi tháo chạy xong
 			while _is_escaping:
 				await get_tree().physics_frame
 			
-			print("DEBUG: [GhostEvent] Escape finished.")
+			# CHI BAT DAU THO KHI DA TOI DIEM E
+			if _breath_player:
+				_breath_player.volume_db = -15.0 # Cho bé tí lại
+				_breath_player.play()
+			
+			print("DEBUG: [GhostEvent] Player reached Point E. Breathing for 5 more seconds...")
+			
+			# DOI 5 GIAY SAU KHI TOI DIEM E (Tho doc tiep)
+			await get_tree().create_timer(5.0).timeout
+			
+			# Ngung tho va bat dau hoi thoai
+			if _breath_player: _breath_player.stop()
 			
 			# THOẠI CỦA DÂN LÀNG KHI PLAYER DEN E
 			if get_tree().root.has_node("DialogueManager"):
 				var dm = get_tree().root.get_node("DialogueManager")
-				dm.show_text("Ớ kìa Thái tử! Làm cái gì mà chạy như ma đuổi thế?")
-				dm.show_text("Váy áo gì mà đỏ lòm thế kia, mới đi 'ăn hàng' ở đâu về à?")
+				print("DEBUG: [GhostEvent] Triggering villager dialogue...")
+				
+				dm.show_text("[Ông lão]: Ơ kìa! Có chuyện gì vậy cu tí?")
+				dm.show_text("[Ông lão]: Có chuyện gì mà cậu thở hồng hộc thế này?")
+				dm.show_text("[Bạn]: Ma... Có ma! Tôi vừa thấy nó ở đằng kia!")
+				dm.show_text("[Ông lão]: Ma cỏ gì đâu, chắc cậu hoa mắt vì sương rừng rồi.")
+				dm.show_text("[Ông lão]: Vùng này sương dày hay làm người ta tưởng tượng lắm.")
+				dm.show_text("[Ông lão]: Trông cậu có vẻ mệt mỏi quá.")
+				dm.show_text("[Ông lão]: Thôi, vào làng nghỉ ngơi một lát cho định thần.")
+				
+				# Kiểm tra tín hiệu để tránh bị kẹt
 				if dm.has_signal("dialogue_finished"):
 					await dm.dialogue_finished
+				else:
+					await get_tree().create_timer(6.0).timeout
+			
+			# 4. HIỆU ỨNG CHUYỂN CẢNH (FADE TO BLACK)
+			print("DEBUG: [GhostEvent] Dialogue finished. Starting transition...")
+			
+			var canvas = CanvasLayer.new()
+			canvas.layer = 100
+			add_child(canvas)
+			
+			var fade_rect = ColorRect.new()
+			fade_rect.color = Color.BLACK
+			fade_rect.modulate.a = 0.0
+			fade_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE # Không chặn chuột
+			
+			# Ép kích thước phủ toàn màn hình
+			fade_rect.anchor_right = 1.0
+			fade_rect.anchor_bottom = 1.0
+			canvas.add_child(fade_rect)
+			
+			# Tween làm tối màn hình
+			var fade_tween = create_tween()
+			fade_tween.tween_property(fade_rect, "modulate:a", 1.0, 2.0)
+			await fade_tween.finished
+			
+			print("DEBUG: [GhostEvent] Screen is now BLACK.")
+			
+			# CHUYỂN SCENE NẾU CÓ
+			if next_scene != "":
+				print("DEBUG: [GhostEvent] Changing scene to: ", next_scene)
+				get_tree().change_scene_to_file(next_scene)
+				return
 	
 	# KET THUC TOAN BO
 	if auto_unlock_after > 0:
