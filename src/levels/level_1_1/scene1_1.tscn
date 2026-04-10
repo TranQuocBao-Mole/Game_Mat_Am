@@ -17,11 +17,11 @@
 [ext_resource type="Script" uid="uid://cab8dayyjcwvj" path="res://src/levels/level_1_1/door_interact.gd" id="12_r0coh"]
 [ext_resource type="VideoStream" uid="uid://c536mgrvpei35" path="res://assets/videos/7609746668175.ogv" id="13_05gkm"]
 [ext_resource type="Script" uid="uid://baxginwdxnto5" path="res://src/levels/level_1_1/lightning.gd" id="14_ml043"]
-[ext_resource type="AudioStream" uid="uid://cai4olvwatilk" path="res://assets/audio/sfx_thunder.mp3" id="15_gyofh"]
+[ext_resource type="AudioStream" uid="uid://cai4olvwatilk" path="res://assets/audio/environment/sfx_thunder.mp3" id="15_gyofh"]
 [ext_resource type="Script" uid="uid://1w1shtawd4p8" path="res://src/levels/level_1_1/paper_interact.gd" id="16_ibhs0"]
 [ext_resource type="Script" uid="uid://cs5wdwvuaydrp" path="res://src/levels/level_1_1/intro.gd" id="16_ika5i"]
-[ext_resource type="AudioStream" uid="uid://n2073trha1ri" path="res://assets/audio/sfx_door_knock.mp3" id="18_enko0"]
-[ext_resource type="AudioStream" uid="uid://ckscqru0d1mu3" path="res://assets/audio/sfx_rain.mp3" id="19_3x3xb"]
+[ext_resource type="AudioStream" uid="uid://n2073trha1ri" path="res://assets/audio/environment/sfx_door_knock.mp3" id="18_enko0"]
+[ext_resource type="AudioStream" uid="uid://ckscqru0d1mu3" path="res://assets/audio/environment/sfx_rain.mp3" id="19_3x3xb"]
 
 [sub_resource type="Environment" id="Environment_p7068"]
 ambient_light_source = 3
