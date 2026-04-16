@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://lantern_interact_001"]
+
+[ext_resource type="PackedScene" uid="uid://dx7d30vb7itll" path="res://assets/models/chinese_lantern/scene.gltf" id="1_lantern"]
+[ext_resource type="Script" uid="uid://lantern_script_01" path="res://src/scripts/entities/lantern_interaction.gd" id="2_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lantern"]
+size = Vector3(0.5, 1.0, 0.5)
+
+[node name="InteractiveLantern" type="StaticBody3D"]
+collision_layer = 2
+script = ExtResource("2_script")
+prompt_text = "Xem đèn lồng"
+is_active = true
+
+[node name="lantern_mesh" parent="." instance=ExtResource("1_lantern")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_lantern")

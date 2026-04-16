@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=3 uid="uid://clock1plane"]
+
+[ext_resource type="Script" path="res://assets/models/clock/clock_puzzle.gd" id="clock_script"]
+[ext_resource type="Texture2D" path="res://assets/models/clock/clock1.png" id="clock_tex"]
+
+[sub_resource type="PlaneMesh" id="ClockFace"]
+size = Vector2(2, 2)
+subdivide_width = 1
+subdivide_depth = 1
+
+[sub_resource type="StandardMaterial3D" id="ClockMat"]
+albedo_color = Color(1, 1, 1, 1)
+albedo_texture = ExtResource("clock_tex")
+transparency = 1
+roughness = 0.5
+metallic = 0.2
+
+[sub_resource type="BoxShape3D" id="ClockCollision"]
+size = Vector3(2, 2, 0.3)
+
+[node name="Clock1" type="StaticBody3D"]
+collision_layer = 2
+script = ExtResource("clock_script")
+clock_id = 1
+default_hour = 3
+default_minute = 15
+target_hour = 14
+target_minute = 59
+
+[node name="ClockFace" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("ClockFace")
+material_override = SubResource("ClockMat")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("ClockCollision")

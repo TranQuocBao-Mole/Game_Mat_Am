@@ -11,33 +11,50 @@ const BOB_AMP = 0.06
 const BOB_SWAY = 0.03
 const BOB_ROLL = 0.01
 var t_bob = 0.0
+# Zoom settings
+const ZOOM_FOV = 5.0
+const DEFAULT_FOV = 75.0
+const ZOOM_SPEED = 15.0
 
 @export_group("Audio")
 @export var footstep_sound: AudioStream = preload("res://assets/audio/player/playerwalking.wav") ## Am thanh buoc chan (Da nap san)
 @export var footstep_pitch_range: float = 0.1 ## Do bien thien am thanh
 
 # Crouch Settings
-@export var CROUCH_SPEED = 80.0               # Speed when crouching
-const CROUCH_HEIGHT_OFFSET = -0.5       # How much to lower head (negative)
+@export var CROUCH_SPEED = 80.0 # Speed when crouching
+const CROUCH_HEIGHT_OFFSET = -0.5 # How much to lower head (negative)
 const STANDING_HEIGHT_OFFSET = 0.0
-const CROUCH_TRANSITION_SPEED = 3.0     # Smoothing speed
+const CROUCH_TRANSITION_SPEED = 3.0 # Smoothing speed
 
 # Interaction settings
-const INTERACT_RANGE = 150.5               # How far the ray reaches
+const INTERACT_RANGE = 150.5 # How far the ray reaches
 # (Global InteractionManager handles interaction prompt)
 @onready var head = $Head
 @onready var camera = $Head/Camera3D
-@onready var collision_shape = $CollisionShape3D   # Assuming the collision shape is a direct child
+@onready var collision_shape = $CollisionShape3D # Assuming the collision shape is a direct child
 @onready var raycast = $Head/InteractionRay
 var footstep_player: AudioStreamPlayer
+var step_raycast: RayCast3D
+
+# Step climbing settings
+const STEP_HEIGHT = 0.4
+const STEP_CHECK_DISTANCE = 0.3
 
 var original_collision_height: float
 var original_collision_position: Vector3
 var target_crouch_offset = 0.0
 var can_move := true
 func _ready():
+	add_to_group("player")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
+	camera.near = 0.002
+
+	# Setup step climbing raycast
+	step_raycast = RayCast3D.new()
+	add_child(step_raycast)
+	step_raycast.enabled = true
+	step_raycast.collision_mask = collision_layer
+
 	# SETUP TU DONG TIENG BUOC CHAN (Cho nguoi luoi)
 	if not has_node("FootstepPlayer"):
 		footstep_player = AudioStreamPlayer.new()
@@ -61,8 +78,8 @@ func _ready():
 	
 func _input(event):
 	if event is InputEventMouseMotion:
-		# Chỉ quay camera nếu đang chiếm quyền điều khiển chuột (CAPTURED)
-		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		# Chỉ quay camera nếu đang chiếm quyền điều khiển chuột (CAPTURED) VÀ không bị khóa di chuyển
+		if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED and can_move:
 			head.rotate_y(-event.relative.x * SENSITIVITY)
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
@@ -75,12 +92,13 @@ func _physics_process(delta: float) -> void:
 	if not can_move:
 		# Still apply gravity? Usually yes, but you might also want to freeze the player completely.
 		# Option 1: Skip movement entirely (player stays in place)
-		move_and_slide()   # Keep gravity active
+		move_and_slide() # Keep gravity active
 		_handle_footsteps() # CHAY TIENG BUOC CHAN KHI EVENT EP DI CHUYEN
+		InteractionManager.hide_prompt() # Ẩn prompt khi đang trong event
 		return
 	# 3. Crouch input & speed
 	var is_crouching = Input.is_action_pressed("crouch")
-	var is_running = Input.is_action_pressed("run") and not is_crouching  # can't sprint while crouching
+	var is_running = Input.is_action_pressed("run") and not is_crouching # can't sprint while crouching
 	var current_speed = CROUCH_SPEED if is_crouching else (SPRINT_SPEED if is_running else WALK_SPEED)
 
 	# 4. Movement Input
@@ -120,14 +138,18 @@ func _physics_process(delta: float) -> void:
 	# 7. Realistic Head Bob
 	_handle_head_bob(delta, direction)
 
+	# 7.5. Auto step climbing
+	_handle_step_climbing(delta, direction)
+
 	move_and_slide()
 
 	# 8. Interaction
 	_handle_interaction()
+	_handle_zoom(delta)
 	_handle_footsteps() # CAP NHAT TIENG BUOC CHAN
 	
 	raycast.global_transform = camera.global_transform
-	raycast.target_position = Vector3(0, 0, -INTERACT_RANGE)  # still local
+	raycast.target_position = Vector3(0, 0, -INTERACT_RANGE) # still local
 
 func _handle_head_bob(delta: float, direction: Vector3) -> void:
 	# Only bob if on floor and moving
@@ -152,12 +174,38 @@ func _handle_head_bob(delta: float, direction: Vector3) -> void:
 		camera.transform.origin = camera.transform.origin.lerp(Vector3.ZERO, delta * 5.0)
 		camera.rotation.z = lerp(camera.rotation.z, 0.0, delta * 5.0)
 
+func _handle_step_climbing(delta: float, direction: Vector3) -> void:
+	if not is_on_floor() or direction == Vector3.ZERO:
+		return
+
+	# Check multiple points in front of player
+	var forward = direction.normalized()
+	var check_points = [
+		forward * STEP_CHECK_DISTANCE,
+		forward * STEP_CHECK_DISTANCE * 0.5,
+	]
+
+	for offset in check_points:
+		step_raycast.global_position = global_position + Vector3(offset.x, 0, offset.z)
+		step_raycast.target_position = Vector3(0, -STEP_HEIGHT - 0.1, 0)
+		step_raycast.force_raycast_update()
+
+		if step_raycast.is_colliding():
+			var hit_pos = step_raycast.get_collision_point()
+			var height_diff = global_position.y - hit_pos.y
+
+			# If there's a step within STEP_HEIGHT, push player up
+			if height_diff > 0.05 and height_diff < STEP_HEIGHT:
+				var target_y = hit_pos.y + 0.1 # Small offset above surface
+				global_position.y = lerp(global_position.y, target_y, delta * 10.0)
+				break
+
 func _handle_interaction():
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
 		
 		# Only show prompt if the object has an "interact" method
-		if collider.has_method("interact"):
+		if collider and collider.has_method("interact"):
 			var text = "Tương tác"
 			if "prompt_text" in collider:
 				text = collider.prompt_text
@@ -175,6 +223,7 @@ func set_movement_enabled(enabled: bool) -> void:
 	can_move = enabled
 	if not enabled:
 		velocity = Vector3.ZERO # Dừng ngay lập tức nếu bị khóa
+		InteractionManager.hide_prompt()
 
 func _handle_footsteps():
 	if is_on_floor() and velocity.length() > 0.1:
@@ -185,3 +234,7 @@ func _handle_footsteps():
 	else:
 		if footstep_player and footstep_player.playing:
 			footstep_player.stop()
+
+func _handle_zoom(delta: float):
+	var target_fov = ZOOM_FOV if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) else DEFAULT_FOV
+	camera.fov = lerp(camera.fov, target_fov, delta * ZOOM_SPEED)

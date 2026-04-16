@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dm0i4hka7owle"]
+
+[ext_resource type="PackedScene" uid="uid://cpljov3ls8yfo" path="res://assets/models/old_table_scene3/scene.gltf" id="1_table"]
+[ext_resource type="PackedScene" uid="uid://dm0i4hka7owle_paper" path="res://src/entities/interactive_paper.tscn" id="2_paper"]
+
+[node name="ald_table_scene3" type="Node3D"]
+
+[node name="OldTable" parent="." instance=ExtResource("1_table")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="InteractivePaper" parent="." instance=ExtResource("2_paper")]
+transform = Transform3D(0.402488, 0, 0.915426, 0, 1, 0, -0.915426, 0, 0.402488, 0.165977, 0.75, -0.054366)

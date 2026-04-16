@@ -1,0 +1,81 @@
+[gd_scene load_steps=2 format=3 uid="uid://clockui"]
+
+[ext_resource type="Script" path="res://src/ui/clock_ui.gd" id="clock_ui_script"]
+
+[node name="ClockUI" type="CanvasLayer"]
+layer = 10
+script = ExtResource("clock_ui_script")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -100.0
+offset_right = 150.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "Chỉnh giờ"
+horizontal_alignment = 1
+
+[node name="HourContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="HourMinus" type="Button" parent="Panel/VBoxContainer/HourContainer"]
+layout_mode = 2
+text = "-"
+
+[node name="HourLabel" type="Label" parent="Panel/VBoxContainer/HourContainer"]
+layout_mode = 2
+text = "00"
+custom_minimum_size = Vector2(50, 0)
+horizontal_alignment = 1
+
+[node name="HourPlus" type="Button" parent="Panel/VBoxContainer/HourContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="MinuteContainer" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="MinuteMinus" type="Button" parent="Panel/VBoxContainer/MinuteContainer"]
+layout_mode = 2
+text = "-"
+
+[node name="MinuteLabel" type="Label" parent="Panel/VBoxContainer/MinuteContainer"]
+layout_mode = 2
+text = "00"
+custom_minimum_size = Vector2(50, 0)
+horizontal_alignment = 1
+
+[node name="MinutePlus" type="Button" parent="Panel/VBoxContainer/MinuteContainer"]
+layout_mode = 2
+text = "+"
+
+[node name="Buttons" type="HBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Cancel" type="Button" parent="Panel/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Hủy"
+
+[node name="Confirm" type="Button" parent="Panel/VBoxContainer/Buttons"]
+layout_mode = 2
+text = "Xác nhận"

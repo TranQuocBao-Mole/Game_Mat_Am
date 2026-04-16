@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=35 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -12,12 +12,26 @@
 [ext_resource type="PackedScene" uid="uid://dmpcdw77t8h3m" path="res://assets/models/old-house-blend/scene.gltf" id="11_jatmx"]
 [ext_resource type="Script" uid="uid://di3vwk4itj7ev" path="res://src/scripts/tools/collision_generator.gd" id="13_coll"]
 [ext_resource type="PackedScene" uid="uid://kevnhnk0nq6i" path="res://assets/models/oak_trees/scene.gltf" id="14_oak"]
+[ext_resource type="PackedScene" uid="uid://cltkyhf6d833a" path="res://assets/models/clock/clock1.tscn" id="15_13ota"]
+[ext_resource type="Script" uid="uid://rfqxieb1sxfu" path="res://src/scripts/events/scene3/old_man_disappear_event.gd" id="15_s3evt"]
+[ext_resource type="PackedScene" path="res://assets/models/old_paper_on_wall/old_calendar.tscn" id="16_cal"]
+[ext_resource type="PackedScene" uid="uid://cltlyhf6d833b" path="res://assets/models/clock/clock2.tscn" id="16_hpes8"]
+[ext_resource type="PackedScene" uid="uid://cltmyhf6d833c" path="res://assets/models/clock/clock3.tscn" id="17_p6ujn"]
+[ext_resource type="PackedScene" uid="uid://bqm8fnlr71mao" path="res://assets/models/old_table_scene3/sketchfab_scene.tscn" id="18_hpes8"]
+[ext_resource type="PackedScene" uid="uid://vqauge86ivm" path="res://assets/models/chessboard/scene.gltf" id="19_p6ujn"]
+[ext_resource type="Script" uid="uid://2ovodh63t236" path="res://src/scripts/entities/chessboard_interaction.gd" id="20_chess_interact"]
+[ext_resource type="PackedScene" uid="uid://igd6fjrjgo8t" path="res://src/entities/interactive_paper.tscn" id="25_paper"]
+[ext_resource type="PackedScene" uid="uid://btr66c88ika8e" path="res://assets/models/ghost_crawl_chess_event/female_dynamic_pose.tscn" id="26_ad1yp"]
+[ext_resource type="Script" uid="uid://cvs2uwjyu1jnj" path="res://src/scripts/entities/lantern_interaction.gd" id="26_lantern_interact"]
+[ext_resource type="PackedScene" uid="uid://lhgwa7vvyaa8" path="res://assets/models/ghost_crawl_chess_event/ghost_crawl_chess_event.tscn" id="26_t2e2d"]
+[ext_resource type="PackedScene" path="res://src/entities/paper_event_chess_pickup.tscn" id="27_paper5"]
+[ext_resource type="Script" uid="uid://br28dcntrmo6h" path="res://src/levels/level_1_1/paper_chess_event.gd" id="28_event_script"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_p6ujn"]
-size = Vector3(140, 50, 2)
+size = Vector3(23.090515, 0.24456787, 26.262573)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kjjv5"]
 size = Vector3(0.8, 3.2, 0.8)
@@ -25,11 +39,14 @@ size = Vector3(0.8, 3.2, 0.8)
 [sub_resource type="BoxShape3D" id="BoxShape3D_h8f27"]
 size = Vector3(4.5, 0.5, 0.8)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_lantern"]
+size = Vector3(23.950073, 28.88057, 20.333984)
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i803j"]
-sky_top_color = Color(0.015, 0.02, 0.04, 1)
-sky_horizon_color = Color(0.05, 0.06, 0.1, 1)
-ground_bottom_color = Color(0.01, 0.01, 0.02, 1)
-ground_horizon_color = Color(0.05, 0.06, 0.1, 1)
+sky_top_color = Color(0.05, 0.08, 0.15, 1)
+sky_horizon_color = Color(0.15, 0.2, 0.3, 1)
+ground_bottom_color = Color(0.03, 0.04, 0.08, 1)
+ground_horizon_color = Color(0.15, 0.2, 0.3, 1)
 
 [sub_resource type="Sky" id="Sky_eerie"]
 sky_material = SubResource("ProceduralSkyMaterial_i803j")
@@ -38,22 +55,23 @@ sky_material = SubResource("ProceduralSkyMaterial_i803j")
 sky = SubResource("Sky_eerie")
 ambient_light_source = 2
 ambient_light_color = Color(0.15, 0.2, 0.3, 1)
-ambient_light_energy = 2.0
+ambient_light_energy = 4.0
 tonemap_mode = 2
 glow_enabled = true
 glow_strength = 1.2
 glow_bloom = 0.1
 fog_enabled = true
 fog_light_color = Color(0.1, 0.15, 0.2, 1)
-fog_sky_affect = 0.5
+fog_sky_affect = 0.3
 volumetric_fog_enabled = true
-volumetric_fog_density = 0.01
+volumetric_fog_density = 0.002
 volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
 
 [node name="scene3_1" type="Node3D"]
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("1_pyw2e")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -10.058155, 377.8445, -2.015893)
+visible = false
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7576523, 0)
@@ -61,9 +79,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7576523, 0)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/StaticBody3D"]
 transform = Transform3D(100, 0, 0, 0, 100, 0, 0, 0, 100, 11.583436, -65.17929, 0.5920563)
 shape = SubResource("BoxShape3D_hpes8")
-
-[node name="Player" parent="Sketchfab_Scene" instance=ExtResource("2_i4dfr")]
-transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -8.314421, -11.938962, 16.193775)
 
 [node name="Decorration" type="Node3D" parent="Sketchfab_Scene"]
 
@@ -73,26 +88,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -65)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
 transform = Transform3D(0.79651934, 0, -0.604613, 0, 1, 0, 0.604613, 0, 0.79651934, 30.344078, -3.8146973e-06, 84.70088)
 shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
 transform = Transform3D(-0.7700569, 0, -0.6379752, 0, 1, 0, 0.6379752, 0, -0.7700569, -3.6550179, -5.722046e-06, 124.11748)
 shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
 transform = Transform3D(0.24528646, -0.16932397, -0.9545493, 0.049821343, 0.98552924, -0.16201721, 0.96817, -0.007816311, 0.25017297, -61.24923, 3.8146973e-06, -0.4874344)
 shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
 transform = Transform3D(0.37552464, 0.07602158, -0.9236898, -0.034099635, 0.9970889, 0.06819941, 0.92618525, 0.0058869156, 0.37702367, -56.677055, 3.8146973e-06, -0.9367523)
 shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
 [node name="CollisionShape3D5" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
 transform = Transform3D(0.5646505, 0, 0.8253309, 0, 1, 0, -0.8253309, 0, 0.5646505, -79.95996, 3.8146973e-06, 123.974754)
 shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
 [node name="CollisionShape3D6" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
 transform = Transform3D(0.91222095, 0, 0.40970036, 0, 1, 0, -0.40970036, 0, 0.91222095, 32.48643, 3.8146973e-06, 36.190464)
 shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
 [node name="RockWall_South" type="StaticBody3D" parent="Sketchfab_Scene/Decorration"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 65)
@@ -100,6 +121,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 65)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_South"]
 transform = Transform3D(0.46448666, 0, -0.8855802, 0, 1, 0, 0.8855802, 0, 0.46448666, -38.42745, 0, 0)
 shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
 [node name="Sketchfab_Scene3" parent="Sketchfab_Scene/Decorration" instance=ExtResource("3_jatmx")]
 transform = Transform3D(0.1464219, 0, -0.26184088, 0, 0.3, 0, 0.26184088, 0, 0.1464219, -50.60266, -18.986088, 75.573524)
@@ -157,6 +179,9 @@ omni_range = 300.0
 script = ExtResource("6_rtqq5")
 max_energy = 1000.0
 
+[node name="Player" parent="." instance=ExtResource("2_i4dfr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -176.347, 139.065, 321.86)
+
 [node name="house2" parent="." instance=ExtResource("8_2chjh")]
 transform = Transform3D(-10.863195, 0, -16.792587, 0, 19.999998, 0, 16.792587, 0, -10.863195, 90.41211, 46.440132, 910.17035)
 script = ExtResource("13_coll")
@@ -165,15 +190,195 @@ script = ExtResource("13_coll")
 transform = Transform3D(26.458597, 0, -36.399765, 0, 45, 0, 36.399765, 0, 26.458597, -839.75305, 32.635864, 675.8747)
 script = ExtResource("13_coll")
 
+[node name="house3_lights" type="Node3D" parent="."]
+
+[node name="house3_light1" parent="house3_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -582.3238, 104.41055, 837.8542)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light1"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house3_light2" parent="house3_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -879.1019, 102.15079, 1049.7612)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light2"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="event1" type="Node3D" parent="."]
+
+[node name="house3_light3" parent="event1" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -860.3136, 93.70885, 466.69397)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="event1/house3_light3"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="LanternInteract" type="StaticBody3D" parent="event1/house3_light3"]
+collision_layer = 2
+script = ExtResource("26_lantern_interact")
+is_active = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event1/house3_light3/LanternInteract"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -5.1328125, -8.285645, 27.882324)
+shape = SubResource("BoxShape3D_lantern")
+debug_color = Color(0.94082165, 0, 0.30030593, 0.41960785)
+
+[node name="PaperEventChess" parent="event1" node_paths=PackedStringArray("start_node", "end_node", "point_c", "point_e", "ghost_node", "scare_ghost_node", "lantern_parent") instance=ExtResource("27_paper5")]
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -1123.1393, 46.738865, 625.1417)
+script = ExtResource("28_event_script")
+start_node = NodePath("../A")
+end_node = NodePath("../B")
+point_c = NodePath("../C")
+point_e = NodePath("../A/E")
+ghost_node = NodePath("../GhostCrawlChessEvent")
+scare_ghost_node = NodePath("../A/Female Dynamic Pose")
+look_speed = 1.0
+crawl_speed = 15.0
+end_dialogue = "Quái lạ vừa nãy là gì cái đèn lúc nãy cũng biến mất rồi? chắc là tưởng tượng thôi nhưng sao tờ giấy này lại ở đây nhỉ? trên đó viết số 5 mà thôi cất đi đã"
+scare_speed = 100000.0
+rotation_offset = Vector3(0, 60, 0)
+lantern_parent = NodePath("../house3_light3")
+scare_animation = ""
+is_active = false
+
+[node name="A" type="Marker3D" parent="event1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1106.5762, 129.04073, 599.9258)
+
+[node name="D" type="Marker3D" parent="event1/A"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.596924, 129.52763, -18.584778)
+
+[node name="E" type="Marker3D" parent="event1/A"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.157776, -39.355324, -68.565)
+
+[node name="Female Dynamic Pose" parent="event1/A" instance=ExtResource("26_ad1yp")]
+transform = Transform3D(-27.752655, -11.365079, -0.7904132, -7.901174, 17.70171, 22.89588, -8.207393, 21.38888, -19.368889, 30.597046, 80.63768, -18.585022)
+
+[node name="B" type="Marker3D" parent="event1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -887.51575, 145.0152, 456.41565)
+
+[node name="C" type="Marker3D" parent="event1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -887.516, 209.11014, 456.416)
+
+[node name="GhostCrawlChessEvent" parent="event1" instance=ExtResource("26_t2e2d")]
+transform = Transform3D(25.980759, 0, 15.000008, 0, 30, 0, -15.000008, 0, 25.980759, -3765.2563, 454.38782, 1852.859)
+
+[node name="ChessboardStation" type="StaticBody3D" parent="event1"]
+transform = Transform3D(0.638769, 0, -0.286311, 0, 0.7, 0, 0.286311, 0, 0.638769, -659.162, 74.801, 597.7)
+collision_layer = 2
+script = ExtResource("20_chess_interact")
+
+[node name="chessboard" parent="event1/ChessboardStation" instance=ExtResource("19_p6ujn")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event1/ChessboardStation"]
+transform = Transform3D(0.9999999, 0, 8.940697e-08, 0, 1, 0, -8.940697e-08, 0, 0.9999999, -0.40948486, 0.462265, 0.17895508)
+shape = SubResource("BoxShape3D_p6ujn")
+debug_color = Color(0.99215686, 0, 0.26666668, 1)
+
+[node name="house3_light4" parent="house3_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -1173.626, 78.853905, 649.3428)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light4"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
 [node name="house4" parent="." instance=ExtResource("10_jatmx")]
 transform = Transform3D(0.46459532, 0, -0.18480037, 0, 0.5, 0, 0.18480037, 0, 0.46459532, -311.81744, 52.833313, 76.28923)
 script = ExtResource("13_coll")
+
+[node name="house4_lights" type="Node3D" parent="."]
+
+[node name="house4_light1" parent="house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -58.43725, 121.727295, 197.86493)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light1"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house4_light2" parent="house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 15.817364, 119.45705, -6.1187286)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light2"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house4_light3" parent="house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -426.7801, 124.08664, 146.93275)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light3"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house4_light4" parent="house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -303.0504, 126.71619, -149.77701)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light4"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
 
 [node name="house1" parent="." instance=ExtResource("11_jatmx")]
 transform = Transform3D(-43.534615, 0, 11.390235, 0, 44.999996, 0, -11.390235, 0, -43.534615, -338.456, 24.562, 1047.217)
 script = ExtResource("13_coll")
 
+[node name="house1_lights" type="Node3D" parent="."]
+
+[node name="house1_light2" parent="house1_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 79.49533, 97.678535, 678.4854)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house1_lights/house1_light2"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house1_light3" parent="house1_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 240.99036, 97.06247, 783.09607)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house1_lights/house1_light3"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
 [node name="Trees" type="Node3D" parent="."]
+visible = false
 
 [node name="House1_Tree1" parent="Trees" instance=ExtResource("14_oak")]
 transform = Transform3D(992.8, 0, 341.8, 0, 1050, 0, -341.8, 0, 992.8, -550, 24.5, 850)
@@ -236,10 +441,36 @@ transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 390.44495, 51.2, 394
 environment = SubResource("Environment_lpj7r")
 
 [node name="MoonLight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.8660253, -0.4330129, 0.2500001, 0, 0.49999994, 0.86602545, -0.50000024, -0.74999994, 0.43301257, -531.23254, 295.77, 687.61035)
+transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.7071068, -0.7071068, -0.5, 0.5, -200, 400, 500)
 light_color = Color(0.5, 0.7, 1, 1)
-light_energy = 3.5
+light_energy = 5.0
 shadow_enabled = true
 shadow_bias = 0.05
 shadow_blur = 1.175
-directional_shadow_max_distance = 500.0
+directional_shadow_max_distance = 1000.0
+
+[node name="Scene3Event" type="Node3D" parent="."]
+script = ExtResource("15_s3evt")
+
+[node name="OldCalendar" parent="." instance=ExtResource("16_cal")]
+transform = Transform3D(368.45282, -311.34763, -2.85809, -0.11205731, 14.154842, -399.93738, 155.7, 736.7919, 6.475629, -288.74985, 109.94816, 196.29662)
+
+[node name="Clock" type="Node3D" parent="."]
+
+[node name="Clock1" parent="Clock" instance=ExtResource("15_13ota")]
+transform = Transform3D(1.1182867, 9.559839, -2.712724, 0.027135164, -2.7327747, -9.619312, -9.937238, 1.0683546, -0.33154342, -463.55432, 97.20146, 943.5945)
+
+[node name="Clock2" parent="Clock" instance=ExtResource("16_hpes8")]
+transform = Transform3D(5.0531235, 8.618597, -0.43097818, 0.30711463, -0.6787292, -9.972212, -8.623899, 5.0258446, -0.60765994, 57.012238, 111.332565, 864.0246)
+
+[node name="Clock3" parent="Clock" instance=ExtResource("17_p6ujn")]
+transform = Transform3D(0.07266679, 7.900725, 6.129704, -9.999114, -0.010979837, 0.13269028, 0.11156525, -6.130125, 7.899945, -659.2055, 94.88237, 733.564)
+
+[node name="Table" type="Node3D" parent="."]
+
+[node name="Table1" parent="Table" instance=ExtResource("18_hpes8")]
+transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -668.0931, 46.388092, 593.4122)
+
+[node name="InteractivePaper" parent="Table" instance=ExtResource("25_paper")]
+transform = Transform3D(259.8076, 0, 150.00008, 0, 300, 0, -150.00008, 0, 259.8076, -640.5316, 74.72279, 602.04016)
+prompt_text = "Xem tờ giấy"

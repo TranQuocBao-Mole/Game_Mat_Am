@@ -13,6 +13,7 @@ var is_active: bool = false
 var current_tween: Tween = null
 
 func _ready() -> void:
+	process_mode = PROCESS_MODE_ALWAYS # Để hiện lời thoại ngay cả khi game đang Pause
 	panel.hide()
 	next_indicator.hide()
 	label.visible_ratio = 0.0

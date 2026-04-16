@@ -1,16 +1,17 @@
-extends StaticBody3D
+extends "res://src/scripts/common/interactable_node.gd"
 
 @export var item_data: ItemData
-@export var prompt_text: String = "Nhặt vật phẩm"
 
 func _ready() -> void:
-	# Đảm bảo vật thể ở đúng layer để Raycast của Player có thể chạm tới
-	collision_layer = 2 # Giả định layer 2 là layer tương tác
+	super._ready()
+	if not item_data:
+		print("WARNING: [ItemPickup] item_data is NULL on ", name)
 
 func interact() -> void:
+	if !is_active: return
+	
 	if item_data:
 		InventoryManager.add_item(item_data)
-		# Tùy chọn: Hiển thị thông báo nhỏ hoặc phát âm thanh ở đây
-		queue_free() # Xóa vật thể khỏi thế giới sau khi nhặt
+		queue_free()
 	else:
-		print("Lỗi: Vật thể này chưa được gán ItemData!")
+		print("Lỗi: Vật thể này chưa được gán ItemData! Node: ", name)
