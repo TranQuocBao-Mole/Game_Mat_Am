@@ -1,0 +1,357 @@
+[gd_scene load_steps=5 format=3 uid="uid://de2xr7k1mlh3p"]
+
+[ext_resource type="Script" uid="uid://pqppkyxe7why" path="res://src/ui/puzzles/candle_puzzle_ui.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bdhxi77vdw5rh" path="res://ancient_candle_ritual_bg_1776367015601.png" id="2_scroll_bg"]
+[ext_resource type="Texture2D" uid="uid://dnum1y713qb3o" path="res://candle.png" id="3_candle_sheet"]
+
+[sub_resource type="Gradient" id="Gradient_flame"]
+offsets = PackedFloat32Array(0, 0.2, 0.6, 1)
+colors = PackedColorArray(1, 1, 0.5, 1, 1, 0.6, 0.1, 1, 0.8, 0.2, 0, 0.8, 0.2, 0, 0, 0)
+
+[node name="CandlePuzzleUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.85)
+
+[node name="AspectRatio" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainPanel" type="TextureRect" parent="AspectRatio"]
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 2
+texture = ExtResource("2_scroll_bg")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="AspectRatio/MainPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 130.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 38
+text = "PHONG ẤN NGŨ CHÚ"
+horizontal_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="AspectRatio/MainPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -100.0
+offset_right = 350.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.9, 0.8, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 20
+text = "Hãy thắp sáng toàn bộ nến..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CandleContainer" type="Control" parent="AspectRatio/MainPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Candle1" type="Control" parent="AspectRatio/MainPanel/CandleContainer"]
+layout_mode = 1
+anchor_left = 0.12
+anchor_top = 0.63
+anchor_right = 0.2
+anchor_bottom = 0.71
+offset_left = 82.12
+offset_top = -3.119995
+offset_right = 82.12001
+offset_bottom = -3.119995
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+
+[node name="Body" type="TextureRect" parent="AspectRatio/MainPanel/CandleContainer/Candle1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_candle_sheet")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Flames" type="CPUParticles2D" parent="AspectRatio/MainPanel/CandleContainer/Candle1"]
+position = Vector2(40, 40)
+emitting = false
+amount = 25
+lifetime = 0.8
+randomness = 0.2
+lifetime_randomness = 0.3
+direction = Vector2(0, -1)
+spread = 20.0
+gravity = Vector2(0, -80)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_flame")
+
+[node name="Button" type="Button" parent="AspectRatio/MainPanel/CandleContainer/Candle1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="Candle2" type="Control" parent="AspectRatio/MainPanel/CandleContainer"]
+layout_mode = 1
+anchor_left = 0.28
+anchor_top = 0.65
+anchor_right = 0.36
+anchor_bottom = 0.73
+offset_left = 43.28
+offset_top = -25.599976
+offset_right = 43.28
+offset_bottom = -25.599976
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+
+[node name="Body" type="TextureRect" parent="AspectRatio/MainPanel/CandleContainer/Candle2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_candle_sheet")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Flames" type="CPUParticles2D" parent="AspectRatio/MainPanel/CandleContainer/Candle2"]
+position = Vector2(40, 40)
+emitting = false
+amount = 25
+lifetime = 0.8
+randomness = 0.2
+lifetime_randomness = 0.3
+direction = Vector2(0, -1)
+spread = 20.0
+gravity = Vector2(0, -80)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_flame")
+
+[node name="Button" type="Button" parent="AspectRatio/MainPanel/CandleContainer/Candle2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="Candle3" type="Control" parent="AspectRatio/MainPanel/CandleContainer"]
+layout_mode = 1
+anchor_left = 0.44
+anchor_top = 0.66
+anchor_right = 0.52
+anchor_bottom = 0.74
+offset_left = 5.4400024
+offset_top = -31.840027
+offset_right = 5.4400024
+offset_bottom = -31.840027
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+
+[node name="Body" type="TextureRect" parent="AspectRatio/MainPanel/CandleContainer/Candle3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_candle_sheet")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Flames" type="CPUParticles2D" parent="AspectRatio/MainPanel/CandleContainer/Candle3"]
+position = Vector2(40, 40)
+emitting = false
+amount = 25
+lifetime = 0.8
+randomness = 0.2
+lifetime_randomness = 0.3
+direction = Vector2(0, -1)
+spread = 20.0
+gravity = Vector2(0, -80)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_flame")
+
+[node name="Button" type="Button" parent="AspectRatio/MainPanel/CandleContainer/Candle3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="Candle4" type="Control" parent="AspectRatio/MainPanel/CandleContainer"]
+layout_mode = 1
+anchor_left = 0.6
+anchor_top = 0.65
+anchor_right = 0.68
+anchor_bottom = 0.73
+offset_left = -37.400024
+offset_top = -25.599976
+offset_right = -37.400024
+offset_bottom = -25.599976
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+
+[node name="Body" type="TextureRect" parent="AspectRatio/MainPanel/CandleContainer/Candle4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_candle_sheet")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Flames" type="CPUParticles2D" parent="AspectRatio/MainPanel/CandleContainer/Candle4"]
+position = Vector2(40, 40)
+emitting = false
+amount = 25
+lifetime = 0.8
+randomness = 0.2
+lifetime_randomness = 0.3
+direction = Vector2(0, -1)
+spread = 20.0
+gravity = Vector2(0, -80)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_flame")
+
+[node name="Button" type="Button" parent="AspectRatio/MainPanel/CandleContainer/Candle4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="Candle5" type="Control" parent="AspectRatio/MainPanel/CandleContainer"]
+layout_mode = 1
+anchor_left = 0.75
+anchor_top = 0.63
+anchor_right = 0.83
+anchor_bottom = 0.71
+offset_left = -65.0
+offset_top = -5.119995
+offset_right = -65.0
+offset_bottom = -5.119995
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(40, 40)
+
+[node name="Body" type="TextureRect" parent="AspectRatio/MainPanel/CandleContainer/Candle5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_candle_sheet")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Flames" type="CPUParticles2D" parent="AspectRatio/MainPanel/CandleContainer/Candle5"]
+position = Vector2(40, 40)
+emitting = false
+amount = 25
+lifetime = 0.8
+randomness = 0.2
+lifetime_randomness = 0.3
+direction = Vector2(0, -1)
+spread = 20.0
+gravity = Vector2(0, -80)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+scale_amount_min = 4.0
+scale_amount_max = 8.0
+color_ramp = SubResource("Gradient_flame")
+
+[node name="Button" type="Button" parent="AspectRatio/MainPanel/CandleContainer/Candle5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -150.0
+offset_top = 30.0
+offset_right = -40.0
+offset_bottom = 75.0
+grow_horizontal = 0
+theme_override_colors/font_color = Color(0.8, 0.7, 0.6, 1)
+theme_override_font_sizes/font_size = 18
+text = "Hủy bỏ (Esc)"
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_pressed"]

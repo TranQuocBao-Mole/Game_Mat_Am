@@ -1,0 +1,74 @@
+# Kế hoạch triển khai: Các câu đố mới cho Scene 3_1
+
+Bản kế hoạch này chi tiết hóa cách xây dựng gameplay và yêu cầu asset cho hai trò chơi giải đố kinh dị mới: **Câu đố Xếp Nến** và **Câu đố Trận đồ Ngũ Hành**.
+
+## Yêu cầu người dùng xem xét
+
+> [!IMPORTANT]
+> Cả hai câu đố sẽ sử dụng mô hình **Cửa sổ giao diện 2D (2D UI Overlay)**, tương tự như cách bạn đã làm với trò Cờ Tướng. Điều này đảm bảo việc tương tác mượt mà và tập trung mà không phụ thuộc vào vật lý 3D phức tạp.
+
+## 1. Câu đố Xếp Nến (Candle Arrangement)
+
+### Logic Gameplay
+- **Mục tiêu**: Thắp sáng một bộ nến theo đúng thứ tự cụ thể.
+- **Quy tắc**:
+    - Có 5-7 cây nến trên một bàn thờ.
+    - Mỗi cây nến có thể chuyển đổi trạng thái (Sáng/Tắt).
+    - Nếu thắp sai thứ tự, tất cả nến sẽ phụt tắt kèm theo âm thanh rùng rợn và người chơi phải bắt đầu lại.
+- **Gợi ý**: Một hình vẽ bằng máu hoặc vết cào trên tường/sàn nhà gần đó sẽ chỉ dẫn thứ tự (1, 2, 3...).
+
+### Thành phần giao diện 2D
+- **Nền**: Hình vẽ minh họa chi tiết mặt bàn thờ nhìn từ trên xuống.
+- **Tương tác**: Các `TextureButton` cho mỗi cây nến với hình ảnh lúc Sáng và Tắt.
+- **Hiệu ứng (VFX)**: Hiệu ứng lửa (particles) đơn giản cho nến đang cháy.
+
+---
+
+## 2. Câu đố Trận đồ Ngũ Hành (Five Elements)
+
+### Logic Gameplay
+- **Mục tiêu**: Đặt 5 vật phẩm đại diện cho các yếu tố (Kim, Mộc, Thủy, Hỏa, Thổ) vào đúng vị trí trong trận đồ.
+- **Quy tắc**:
+    - Người chơi phải đặt chúng theo **Vòng Tương Sinh**: Mộc -> Hỏa -> Thổ -> Kim -> Thủy.
+    - Một tờ giấy hoặc trận đồ vẽ bằng vôi trên sàn (hiện qua UI 2D) sẽ có 5 ô trống.
+- **Gợi ý**: Một bài thơ cũ trên tờ sớ tìm thấy trong phòng (Ví dụ: "Củi khô nuôi lửa, lửa hóa tro tàn...").
+
+### Thành phần giao diện 2D
+- **Nền**: Hình ảnh "Tờ giấy trên sàn" hoặc "Trận đồ bằng vôi" vẽ tay.
+- **Tương tác**: Các ô kéo-thả (Drag-and-drop) vật phẩm từ túi đồ vào trận đồ.
+
+---
+
+## 3. Các Asset 3D cần thiết (Làm đẹp bối cảnh)
+
+Để môi trường trông cao cấp và mang đậm chất "ma ám", chúng ta sẽ cần hoặc tận dụng các asset sau:
+
+| Danh mục | Asset (Từ khóa tìm kiếm) | Mục đích |
+| :--- | :--- | :--- |
+| **Câu đố** | `Red Ritual Candles`, `Talisman Paper` | Vật phẩm tương tác chính. |
+| **Nội thất** | `Ancient Asian Altar`, `Wooden Offering Table` | Nơi đặt các câu đố. |
+| **Trang trí** | `Incense Burner (Lư hương)`, `Buddha/Deity Statue` | Tạo không khí tâm linh. |
+| **Chi tiết** | `Dust Motes Particles`, `Cobwebs` | Tăng cảm giác hoang phế, lâu đời. |
+
+## Các thay đổi dự kiến
+
+### Hệ thống Gameplay
+
+#### [NEW] [candle_puzzle_ui.tscn](file:///d:/MATAM/src/ui/puzzles/candle_puzzle_ui.tscn)
+#### [NEW] [candle_puzzle_logic.gd](file:///d:/MATAM/src/scripts/games/candle_puzzle_logic.gd)
+
+#### [NEW] [elements_puzzle_ui.tscn](file:///d:/MATAM/src/ui/puzzles/elements_puzzle_ui.tscn)
+#### [NEW] [elements_puzzle_logic.gd](file:///d:/MATAM/src/scripts/games/elements_puzzle_logic.gd)
+
+#### [MODIFY] [scene_3_1.tscn](file:///d:/MATAM/scene_3_1.tscn)
+- Thêm các điểm tương tác (Interaction Points) tại Nhà 1 và Nhà 2.
+
+## Câu hỏi mở
+
+- **Bạn đã có sẵn các vât phẩm như bàn thờ hay nến chưa, hay tôi nên dùng các khối cơ bản (Cylinder/Cube) để dựng logic trước?**
+- **Chúng ta nên bắt đầu lập trình cho căn nhà nào đầu tiên?**
+
+## Kế hoạch xác minh
+
+- Kiểm tra thủ công các câu đố trên giao diện 2D để đảm bảo khi thắng sẽ kích hoạt sự kiện tiếp theo trong 3D.
+- Kiểm tra tính thẩm mỹ của các đạo cụ 3D mới trong môi trường thiếu sáng của Scene 3_1.

@@ -1,0 +1,246 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://src/ui/puzzles/elements_puzzle_ui.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://ancient_ritual_table_v2_1776363891610.png" id="2_table"]
+[ext_resource type="Texture2D" path="res://asset_spiritual_cord.png" id="3_rope"]
+
+[node name="ElementsPuzzleUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Overlay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.85)
+
+[node name="AspectRatio" type="AspectRatioContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainPanel" type="TextureRect" parent="AspectRatio"]
+custom_minimum_size = Vector2(1024, 1024)
+layout_mode = 2
+texture = ExtResource("2_table")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Title" type="Label" parent="AspectRatio/MainPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -300.0
+offset_top = 80.0
+offset_right = 300.0
+offset_bottom = 130.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.9, 0.8, 0.6, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.2, 0.1, 0, 1)
+theme_override_constants/shadow_offset_x = 3
+theme_override_constants/shadow_offset_y = 3
+theme_override_constants/outline_size = 12
+theme_override_font_sizes/font_size = 38
+text = "TRẬN ĐỒ NGŨ HÀNH"
+horizontal_alignment = 1
+
+[node name="StatsContainer" type="VBoxContainer" parent="AspectRatio/MainPanel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -280.0
+offset_top = 110.0
+offset_right = -50.0
+offset_bottom = 210.0
+grow_horizontal = 0
+theme_override_constants/separation = 12
+
+[node name="SanityLabel" type="Label" parent="AspectRatio/MainPanel/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.4, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
+text = "NGUYÊN THẦN:"
+horizontal_alignment = 2
+
+[node name="SanityBar" type="ProgressBar" parent="AspectRatio/MainPanel/StatsContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+value = 100.0
+show_percentage = false
+
+[node name="MovesLabel" type="Label" parent="AspectRatio/MainPanel/StatsContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.7, 0.3, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 24
+text = "NGUYÊN KHÍ: 15"
+horizontal_alignment = 2
+
+[node name="Diagram" type="Control" parent="AspectRatio/MainPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -300.0
+offset_right = 300.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Lines" type="Control" parent="AspectRatio/MainPanel/Diagram"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Line0" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+width = 12.0
+texture = ExtResource("3_rope")
+texture_mode = 1
+default_color = Color(0.6, 0.2, 0.15, 0.8)
+
+[node name="Line1" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+width = 12.0
+texture = ExtResource("3_rope")
+texture_mode = 1
+default_color = Color(0.6, 0.2, 0.15, 0.8)
+
+[node name="Line2" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+width = 12.0
+texture = ExtResource("3_rope")
+texture_mode = 1
+default_color = Color(0.6, 0.2, 0.15, 0.8)
+
+[node name="Line3" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+width = 12.0
+texture = ExtResource("3_rope")
+texture_mode = 1
+default_color = Color(0.6, 0.2, 0.15, 0.8)
+
+[node name="Line4" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+width = 12.0
+texture = ExtResource("3_rope")
+texture_mode = 1
+default_color = Color(0.6, 0.2, 0.15, 0.8)
+
+[node name="Slots" type="Control" parent="AspectRatio/MainPanel/Diagram"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Slot0" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.42
+anchor_top = 0.05
+anchor_right = 0.58
+anchor_bottom = 0.21
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 22
+flat = true
+
+[node name="Slot1" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.82
+anchor_top = 0.35
+anchor_right = 0.98
+anchor_bottom = 0.51
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+flat = true
+
+[node name="Slot2" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.65
+anchor_top = 0.82
+anchor_right = 0.81
+anchor_bottom = 0.98
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_font_sizes/font_size = 22
+flat = true
+
+[node name="Slot3" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.19
+anchor_top = 0.82
+anchor_right = 0.35
+anchor_bottom = 0.98
+grow_vertical = 0
+theme_override_font_sizes/font_size = 22
+flat = true
+
+[node name="Slot4" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.02
+anchor_top = 0.35
+anchor_right = 0.18
+anchor_bottom = 0.51
+grow_vertical = 2
+theme_override_font_sizes/font_size = 22
+flat = true
+
+[node name="StatusLabel" type="Label" parent="AspectRatio/MainPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -100.0
+offset_right = 400.0
+offset_bottom = -60.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.9, 0.8, 0.7, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+text = "Hãy hoán đổi các quân để tạo vòng Tương Sinh..."
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -160.0
+offset_top = 30.0
+offset_right = -40.0
+offset_bottom = 75.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 18
+text = "Đóng (Esc)"
+
+[connection signal="pressed" from="CloseButton" to="." method="_on_close_pressed"]

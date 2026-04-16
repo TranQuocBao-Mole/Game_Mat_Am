@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=34 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -25,7 +25,6 @@
 [ext_resource type="Script" uid="uid://cvs2uwjyu1jnj" path="res://src/scripts/entities/lantern_interaction.gd" id="26_lantern_interact"]
 [ext_resource type="PackedScene" uid="uid://lhgwa7vvyaa8" path="res://assets/models/ghost_crawl_chess_event/ghost_crawl_chess_event.tscn" id="26_t2e2d"]
 [ext_resource type="PackedScene" path="res://src/entities/paper_event_chess_pickup.tscn" id="27_paper5"]
-[ext_resource type="Script" uid="uid://br28dcntrmo6h" path="res://src/levels/level_1_1/paper_chess_event.gd" id="28_event_script"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -71,7 +70,6 @@ volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("1_pyw2e")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -10.058155, 377.8445, -2.015893)
-visible = false
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7576523, 0)
@@ -214,6 +212,17 @@ omni_range = 150.0
 script = ExtResource("6_rtqq5")
 max_energy = 500.0
 
+[node name="house3_light4" parent="house3_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -1173.626, 78.853905, 649.3428)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light4"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
 [node name="event1" type="Node3D" parent="."]
 
 [node name="house3_light3" parent="event1" instance=ExtResource("5_lpj7r")]
@@ -239,20 +248,16 @@ debug_color = Color(0.94082165, 0, 0.30030593, 0.41960785)
 
 [node name="PaperEventChess" parent="event1" node_paths=PackedStringArray("start_node", "end_node", "point_c", "point_e", "ghost_node", "scare_ghost_node", "lantern_parent") instance=ExtResource("27_paper5")]
 transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -1123.1393, 46.738865, 625.1417)
-script = ExtResource("28_event_script")
 start_node = NodePath("../A")
 end_node = NodePath("../B")
 point_c = NodePath("../C")
 point_e = NodePath("../A/E")
 ghost_node = NodePath("../GhostCrawlChessEvent")
 scare_ghost_node = NodePath("../A/Female Dynamic Pose")
-look_speed = 1.0
 crawl_speed = 15.0
-end_dialogue = "Quái lạ vừa nãy là gì cái đèn lúc nãy cũng biến mất rồi? chắc là tưởng tượng thôi nhưng sao tờ giấy này lại ở đây nhỉ? trên đó viết số 5 mà thôi cất đi đã"
 scare_speed = 100000.0
 rotation_offset = Vector3(0, 60, 0)
 lantern_parent = NodePath("../house3_light3")
-scare_animation = ""
 is_active = false
 
 [node name="A" type="Marker3D" parent="event1"]
@@ -287,17 +292,6 @@ script = ExtResource("20_chess_interact")
 transform = Transform3D(0.9999999, 0, 8.940697e-08, 0, 1, 0, -8.940697e-08, 0, 0.9999999, -0.40948486, 0.462265, 0.17895508)
 shape = SubResource("BoxShape3D_p6ujn")
 debug_color = Color(0.99215686, 0, 0.26666668, 1)
-
-[node name="house3_light4" parent="house3_lights" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -1173.626, 78.853905, 649.3428)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light4"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
-light_color = Color(1, 0.521569, 0.160784, 1)
-light_energy = 3.0
-omni_range = 150.0
-script = ExtResource("6_rtqq5")
-max_energy = 500.0
 
 [node name="house4" parent="." instance=ExtResource("10_jatmx")]
 transform = Transform3D(0.46459532, 0, -0.18480037, 0, 0.5, 0, 0.18480037, 0, 0.46459532, -311.81744, 52.833313, 76.28923)

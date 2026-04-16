@@ -1,0 +1,76 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://src/scenes/test/puzzle_test_room.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://src/ui/puzzles/candle_puzzle_ui.tscn" id="2_candle"]
+[ext_resource type="PackedScene" path="res://src/ui/puzzles/elements_puzzle_ui.tscn" id="3_elements"]
+
+[node name="PuzzleTestRoom" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.05, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -100.0
+offset_right = 200.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="TestCandle" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "KIỂM TRA CÂU ĐỐ XẾP NẾN"
+
+[node name="TestElements" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "KIỂM TRA CÂU ĐỐ NGŨ HÀNH"
+
+[node name="LogLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -400.0
+offset_top = 50.0
+offset_right = 400.0
+offset_bottom = 150.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 20
+text = "Log messages go here..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CandlePuzzleUI" parent="CanvasLayer" instance=ExtResource("2_candle")]
+visible = false
+
+[node name="ElementsPuzzleUI" parent="CanvasLayer" instance=ExtResource("3_elements")]
+visible = false
+
+[connection signal="pressed" from="VBoxContainer/TestCandle" to="." method="_on_test_candle_pressed"]
+[connection signal="pressed" from="VBoxContainer/TestElements" to="." method="_on_test_elements_pressed"]
