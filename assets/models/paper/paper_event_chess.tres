@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://3f1pgmaqyivw"]
+
+[ext_resource type="Script" uid="uid://bg6ffppq6il2g" path="res://src/scripts/common/item_data.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://bck32btct1vvr" path="res://assets/textures/icon_paper_5.svg" id="2_icon"]
+
+[resource]
+script = ExtResource("1_script")
+item_name = "Tờ giấy cạnh nhà kho"
+item_id = "paper_warehouse"
+description = "Một tờ giấy nhỏ tìm thấy cạnh nhà kho, trên đó có ghi số 5."
+icon = ExtResource("2_icon")

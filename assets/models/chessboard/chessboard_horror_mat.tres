@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bqm1vknb8uua3"]
+
+[ext_resource type="Texture2D" uid="uid://n5cdh0bx0snx" path="res://assets/models/chessboard/textures/VRayMtl2SG_baseColor.png" id="1_l4t2r"]
+
+[resource]
+resource_name = "chessboard_mat"
+albedo_color = Color(0.630794, 0.43060234, 0.28637105, 1)
+albedo_texture = ExtResource("1_l4t2r")
+roughness = 0.8
+texture_filter = 2

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Wooden Picnic Table - 4096px²
+* source:	https://sketchfab.com/3d-models/wooden-picnic-table-4096px2-c7d39c0bcee04553894d0de081d3aa9c
+* author:	Mark Peters (https://sketchfab.com/mark-peters)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Wooden Picnic Table - 4096px²" (https://sketchfab.com/3d-models/wooden-picnic-table-4096px2-c7d39c0bcee04553894d0de081d3aa9c) by Mark Peters (https://sketchfab.com/mark-peters) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

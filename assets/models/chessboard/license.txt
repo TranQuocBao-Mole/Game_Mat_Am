@@ -1,0 +1,11 @@
+Model Information:
+* title:	Chinese chess board - Xiangqi
+* source:	https://sketchfab.com/3d-models/chinese-chess-board-xiangqi-068525be5e4e44aaa10d34c01f72f545
+* author:	elsa2297 (https://sketchfab.com/elsa2297.ice)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Chinese chess board - Xiangqi" (https://sketchfab.com/3d-models/chinese-chess-board-xiangqi-068525be5e4e44aaa10d34c01f72f545) by elsa2297 (https://sketchfab.com/elsa2297.ice) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://lhgwa7vvyaa8"]
+
+[ext_resource type="PackedScene" uid="uid://cos1ncf1twi4q" path="res://assets/models/ghost_crawl_chess_event/GhostCrawlChessEvent.fbx" id="1_15f6m"]
+
+[node name="GhostCrawlChessEvent" instance=ExtResource("1_15f6m")]

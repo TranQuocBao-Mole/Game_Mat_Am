@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dmt2aice3o565"]
+
+[ext_resource type="PackedScene" uid="uid://vqauge86ivm" path="res://assets/models/chessboard/scene.gltf" id="1_0c43v"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_0c43v")]

@@ -1,4 +1,4 @@
-extends StaticBody3D
+extends "res://src/scripts/common/interactable_node.gd"
 
 @export var radio: Radio                     # Must have class_name Radio in radio script
 @export var picture_texture: Texture2D       # The image to display
@@ -12,7 +12,6 @@ extends StaticBody3D
 @export var audio_player: AudioStreamPlayer3D   # For playing both sounds
 
 var event_triggered := false
-var prompt_text := "Đọc giấy"
 var timer_30s: Timer
 var timer_25s: Timer   # Restored for the delayed sound
 
@@ -23,6 +22,7 @@ var picture_panel: Panel
 var texture_rect: TextureRect
 
 func _ready():
+	super._ready()
 	# Create the UI overlay
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
@@ -74,7 +74,7 @@ func _ready():
 
 func interact():
 	"""Called by the player's raycast when pressing interact."""
-	if is_open:
+	if !is_active or is_open:
 		return
 	open_picture()
 

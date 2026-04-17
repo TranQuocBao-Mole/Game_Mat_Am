@@ -21,6 +21,8 @@ DialogueManager="*res://src/ui/dialogue_manager.tscn"
 InteractionManager="*res://src/ui/interaction_prompt.tscn"
 InventoryManager="*res://src/ui/inventory_manager.gd"
 InventoryUI="*res://src/ui/inventory_ui.tscn"
+InspectManager="*res://src/ui/inspect_ui.tscn"
+ChessManager="*res://src/ui/chess_puzzle_ui.tscn"
 
 [dotnet]
 

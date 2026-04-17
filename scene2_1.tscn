@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bj1yhgsebhyrl" path="res://assets/models/japanese_torii_gate/scene.gltf" id="6_18oxp"]
 [ext_resource type="PackedScene" uid="uid://dx7d30vb7itll" path="res://assets/models/chinese_lantern/scene.gltf" id="7_g6t5d"]
 [ext_resource type="Script" uid="uid://d05bdjml6c60b" path="res://src/scripts/visual/light_flicker.gd" id="8_flicker"]
-[ext_resource type="Script" uid="uid://d0vwu8u6pib8p" path="res://src/scripts/events/ghost_event_trigger.gd" id="9_xtihu"]
+[ext_resource type="Script" uid="uid://sajh3ubqblkq" path="res://src/scripts/events/scene2/ghost_event_trigger.gd" id="9_xtihu"]
 [ext_resource type="PackedScene" uid="uid://dxcy34hwkjvvv" path="res://assets/models/lady_of_the_asylum/lady_walking.tscn" id="10_q3fba"]
 [ext_resource type="PackedScene" uid="uid://bugs6u1dum7yl" path="res://assets/models/lady_of_the_asylum/lady_crawling.tscn" id="11_q3fba"]
 [ext_resource type="PackedScene" uid="uid://daqi8o6u437ma" path="res://assets/models/old_man/breathing_idle.tscn" id="12_xq6yg"]

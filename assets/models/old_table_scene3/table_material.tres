@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" load_steps=4 format=3 uid="uid://datablemat001"]
+
+[ext_resource type="Texture2D" uid="uid://b0mhean6glu2a" path="res://assets/models/old_table_scene3/textures/PicnicTable_MTL_baseColor.png" id="1_v4mpe"]
+[ext_resource type="Texture2D" uid="uid://b2u7pidbsdvuv" path="res://assets/models/old_table_scene3/textures/PicnicTable_MTL_metallicRoughness.png" id="2_r5ytm"]
+[ext_resource type="Texture2D" uid="uid://d0tssboujjfgl" path="res://assets/models/old_table_scene3/textures/PicnicTable_MTL_normal.png" id="3_n3u8t"]
+
+[resource]
+resource_name = "PicnicTable_MTL"
+cull_mode = 2
+albedo_texture = ExtResource("1_v4mpe")
+metallic = 1.0
+metallic_texture = ExtResource("2_r5ytm")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_r5ytm")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_n3u8t")
+uv1_scale = Vector3(1, 1, 1)
+texture_filter = 2
+texture_repeat = true
