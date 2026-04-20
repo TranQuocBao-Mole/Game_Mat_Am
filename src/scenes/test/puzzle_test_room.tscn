@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=4 format=3 uid="uid://ccf0tm4yy18um"]
 
-[ext_resource type="Script" path="res://src/scenes/test/puzzle_test_room.gd" id="1_script"]
-[ext_resource type="PackedScene" path="res://src/ui/puzzles/candle_puzzle_ui.tscn" id="2_candle"]
+[ext_resource type="Script" uid="uid://d2tw14t3lf5vj" path="res://src/scenes/test/puzzle_test_room.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://de2xr7k1mlh3p" path="res://src/ui/puzzles/candle_puzzle_ui.tscn" id="2_candle"]
 [ext_resource type="PackedScene" path="res://src/ui/puzzles/elements_puzzle_ui.tscn" id="3_elements"]
 
 [node name="PuzzleTestRoom" type="Control"]

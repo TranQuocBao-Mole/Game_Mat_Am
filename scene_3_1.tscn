@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=42 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -12,11 +12,11 @@
 [ext_resource type="PackedScene" uid="uid://dmpcdw77t8h3m" path="res://assets/models/old-house-blend/scene.gltf" id="11_jatmx"]
 [ext_resource type="Script" uid="uid://di3vwk4itj7ev" path="res://src/scripts/tools/collision_generator.gd" id="13_coll"]
 [ext_resource type="PackedScene" uid="uid://kevnhnk0nq6i" path="res://assets/models/oak_trees/scene.gltf" id="14_oak"]
-[ext_resource type="PackedScene" uid="uid://cltkyhf6d833a" path="res://assets/models/clock/clock1.tscn" id="15_13ota"]
+[ext_resource type="PackedScene" uid="uid://clock1plane" path="res://assets/models/clock/clock1.tscn" id="15_13ota"]
 [ext_resource type="Script" uid="uid://rfqxieb1sxfu" path="res://src/scripts/events/scene3/old_man_disappear_event.gd" id="15_s3evt"]
 [ext_resource type="PackedScene" path="res://assets/models/old_paper_on_wall/old_calendar.tscn" id="16_cal"]
-[ext_resource type="PackedScene" uid="uid://cltlyhf6d833b" path="res://assets/models/clock/clock2.tscn" id="16_hpes8"]
-[ext_resource type="PackedScene" uid="uid://cltmyhf6d833c" path="res://assets/models/clock/clock3.tscn" id="17_p6ujn"]
+[ext_resource type="PackedScene" uid="uid://clock2plane" path="res://assets/models/clock/clock2.tscn" id="16_hpes8"]
+[ext_resource type="PackedScene" uid="uid://clock3plane" path="res://assets/models/clock/clock3.tscn" id="17_p6ujn"]
 [ext_resource type="PackedScene" uid="uid://bqm8fnlr71mao" path="res://assets/models/old_table_scene3/sketchfab_scene.tscn" id="18_hpes8"]
 [ext_resource type="PackedScene" uid="uid://vqauge86ivm" path="res://assets/models/chessboard/scene.gltf" id="19_p6ujn"]
 [ext_resource type="Script" uid="uid://2ovodh63t236" path="res://src/scripts/entities/chessboard_interaction.gd" id="20_chess_interact"]
@@ -24,7 +24,13 @@
 [ext_resource type="PackedScene" uid="uid://btr66c88ika8e" path="res://assets/models/ghost_crawl_chess_event/female_dynamic_pose.tscn" id="26_ad1yp"]
 [ext_resource type="Script" uid="uid://cvs2uwjyu1jnj" path="res://src/scripts/entities/lantern_interaction.gd" id="26_lantern_interact"]
 [ext_resource type="PackedScene" uid="uid://lhgwa7vvyaa8" path="res://assets/models/ghost_crawl_chess_event/ghost_crawl_chess_event.tscn" id="26_t2e2d"]
+[ext_resource type="PackedScene" uid="uid://d3st7461oeafc" path="res://assets/models/vietnamese_altar/scene.gltf" id="26_x1bhe"]
 [ext_resource type="PackedScene" path="res://src/entities/paper_event_chess_pickup.tscn" id="27_paper5"]
+[ext_resource type="Script" uid="uid://cuka3vyi5iee0" path="res://src/scripts/entities/altar_radio_interact.gd" id="29_radio_script"]
+[ext_resource type="PackedScene" uid="uid://dj8n47oavcs7k" path="res://assets/models/low_poly_radio/scene.gltf" id="30_radio_model"]
+[ext_resource type="Script" uid="uid://b0u8486enqf0l" path="res://src/scripts/entities/candle_puzzle_paper_interact.gd" id="31_paper_script"]
+[ext_resource type="PackedScene" uid="uid://d3wpwrokid5rt" path="res://assets/models/paper/scene.gltf" id="32_paper_model"]
+[ext_resource type="PackedScene" uid="uid://dwck8v3k3sps5" path="res://assets/models/barely_used_red_candle/scene.gltf" id="33_candle_model"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -65,6 +71,12 @@ fog_sky_affect = 0.3
 volumetric_fog_enabled = true
 volumetric_fog_density = 0.002
 volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_radio"]
+size = Vector3(13.0173645, 6.7888184, 6.6943817)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_paper_puzzle"]
+size = Vector3(10.826172, 1.1053467, 13.790039)
 
 [node name="scene3_1" type="Node3D"]
 
@@ -372,7 +384,6 @@ script = ExtResource("6_rtqq5")
 max_energy = 500.0
 
 [node name="Trees" type="Node3D" parent="."]
-visible = false
 
 [node name="House1_Tree1" parent="Trees" instance=ExtResource("14_oak")]
 transform = Transform3D(992.8, 0, 341.8, 0, 1050, 0, -341.8, 0, 992.8, -550, 24.5, 850)
@@ -468,3 +479,48 @@ transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -668.0931, 46.388092, 593.
 [node name="InteractivePaper" parent="Table" instance=ExtResource("25_paper")]
 transform = Transform3D(259.8076, 0, 150.00008, 0, 300, 0, -150.00008, 0, 259.8076, -640.5316, 74.72279, 602.04016)
 prompt_text = "Xem tờ giấy"
+
+[node name="Sketchfab_Scene2" parent="." instance=ExtResource("26_x1bhe")]
+transform = Transform3D(12.1801815, 0, -8.754605, 0, 14.999999, 0, 8.754605, 0, 12.1801815, 166.91074, 6.9292526, 792.8112)
+
+[node name="CandlePuzzle" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 165.46303, 55.18223, 803.6786)
+
+[node name="alter_radio" type="StaticBody3D" parent="CandlePuzzle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.22734, 15.000004, -15.687744)
+collision_layer = 2
+script = ExtResource("29_radio_script")
+
+[node name="radio_model" parent="CandlePuzzle/alter_radio" instance=ExtResource("30_radio_model")]
+transform = Transform3D(15.558974, 0, 98.78217, 0, 100, 0, -98.78217, 0, 15.558974, 3.5053406, -0.9243927, 6.4198)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CandlePuzzle/alter_radio"]
+transform = Transform3D(0.99464166, 0, -0.10338279, 0, 1, 0, 0.10338279, 0, 0.99464166, 3.383728, 0.8944092, 5.966736)
+shape = SubResource("BoxShape3D_radio")
+
+[node name="paper_candlegame_even" type="StaticBody3D" parent="CandlePuzzle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 14, 5)
+collision_layer = 2
+script = ExtResource("31_paper_script")
+
+[node name="paper_model" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("32_paper_model")]
+transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CandlePuzzle/paper_candlegame_even"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11328125, 0.30267334, 0.05029297)
+shape = SubResource("BoxShape3D_paper_puzzle")
+
+[node name="candle1" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.1, -1)
+
+[node name="candle2" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.1, -1)
+
+[node name="candle3" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+
+[node name="candle4" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.1, 1)
+
+[node name="candle5" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.1, 1)

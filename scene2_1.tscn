@@ -69,7 +69,7 @@ shadow_blur = 2.0
 directional_shadow_max_distance = 500.0
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("1_0ftg6")]
-transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -10.058155, 100.06247, -2.015893)
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -14.073841, 97.63022, 3.303565)
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7576523, 0)
@@ -95,16 +95,8 @@ shape = SubResource("BoxShape3D_wall_ns")
 transform = Transform3D(-0.7700569, 0, -0.6379752, 0, 1, 0, 0.6379752, 0, -0.7700569, -3.6550179, -5.722046e-06, 124.11748)
 shape = SubResource("BoxShape3D_wall_ns")
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
-transform = Transform3D(0.24528646, -0.16932397, -0.9545493, 0.049821343, 0.98552924, -0.16201721, 0.96817, -0.007816311, 0.25017297, -61.24923, 3.8146973e-06, -0.4874344)
-shape = SubResource("BoxShape3D_wall_ns")
-
-[node name="CollisionShape3D4" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
-transform = Transform3D(0.37552464, 0.07602158, -0.9236898, -0.034099635, 0.9970889, 0.06819941, 0.92618525, 0.0058869156, 0.37702367, -56.677055, 3.8146973e-06, -0.9367523)
-shape = SubResource("BoxShape3D_wall_ns")
-
 [node name="CollisionShape3D5" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
-transform = Transform3D(0.5646505, 0, 0.8253309, 0, 1, 0, -0.8253309, 0, 0.5646505, -79.95996, 3.8146973e-06, 123.974754)
+transform = Transform3D(0.5646505, 0, 0.8253309, 0, 1, 0, -0.8253309, 0, 0.5646505, -73.918846, 3.8146973e-06, 116.79464)
 shape = SubResource("BoxShape3D_wall_ns")
 
 [node name="CollisionShape3D6" type="CollisionShape3D" parent="Sketchfab_Scene/Decorration/RockWall_North"]
