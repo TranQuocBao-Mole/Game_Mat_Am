@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnum1y713qb3o"
-path="res://.godot/imported/candle.png-2e69bd711bbccd0a62592bd6749057ea.ctex"
+uid="uid://bgd7rjearwlhv"
+path="res://.godot/imported/talisman_paper.png-cabc1dd575337e198b3380972bfcb923.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://candle.png"
-dest_files=["res://.godot/imported/candle.png-2e69bd711bbccd0a62592bd6749057ea.ctex"]
+source_file="res://assets/textures/puzzles/talisman/talisman_paper.png"
+dest_files=["res://.godot/imported/talisman_paper.png-cabc1dd575337e198b3380972bfcb923.ctex"]
 
 [params]
 

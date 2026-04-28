@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bhplroraaf4cj"
-path="res://.godot/imported/ancient_ritual_table_v2_1776363891610.png-19e484a82fd010321dd0c376ec57c8d8.ctex"
+uid="uid://digrt4x4m5yo"
+path="res://.godot/imported/coin_bg.png-a288ebcd07f3c214e85fa68da597f301.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ancient_ritual_table_v2_1776363891610.png"
-dest_files=["res://.godot/imported/ancient_ritual_table_v2_1776363891610.png-19e484a82fd010321dd0c376ec57c8d8.ctex"]
+source_file="res://assets/textures/puzzles/coin/coin_bg.png"
+dest_files=["res://.godot/imported/coin_bg.png-a288ebcd07f3c214e85fa68da597f301.ctex"]
 
 [params]
 

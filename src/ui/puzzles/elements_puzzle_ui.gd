@@ -15,7 +15,7 @@ var shake_intensity = 0.0
 var original_panel_pos: Vector2 = Vector2.ZERO
 
 # Asset Ngũ Ngọc
-const ORBS_SHEET_PATH = "res://element_orbs_sheet_1776362934567.png"
+const ORBS_SHEET_PATH = "res://assets/textures/puzzles/elements/element_orbs_sheet_1776362934567.png"
 
 # Màu sắc nguyên tố (Tự nhiên, không bị cháy sáng)
 var element_colors = {
@@ -134,7 +134,7 @@ func _update_lines():
 		var e2 = logic.slots[(i + 1) % 5]
 		
 		# Tẩy cấu trúc Line2D cũ để dùng Texture mới
-		line.texture = load("res://asset_spiritual_cord.png")
+		line.texture = load("res://assets/textures/puzzles/elements/asset_spiritual_cord.png")
 		line.texture_mode = Line2D.LINE_TEXTURE_STRETCH
 		
 		var start_pos = slots_container.get_child(i).position + Vector2(50, 50)
@@ -212,7 +212,9 @@ func open_puzzle():
 func _on_close_pressed():
 	hide()
 	var players = get_tree().get_nodes_in_group("player")
-	for p in players:
-		p.set_movement_enabled(true)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if players.size() > 0:
+		for p in players: p.set_movement_enabled(true)
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	puzzle_finished.emit(false)

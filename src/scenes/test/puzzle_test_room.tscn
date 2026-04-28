@@ -49,6 +49,18 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "KIỂM TRA CÂU ĐỐ NGŨ HÀNH"
 
+[node name="TestCoin" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "KIỂM TRA CÂU ĐỐ CÂN XU"
+
+[node name="TestTalisman" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "KIỂM TRA CÂU ĐỐ VẼ BÙA"
+
 [node name="LogLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -74,3 +86,5 @@ visible = false
 
 [connection signal="pressed" from="VBoxContainer/TestCandle" to="." method="_on_test_candle_pressed"]
 [connection signal="pressed" from="VBoxContainer/TestElements" to="." method="_on_test_elements_pressed"]
+[connection signal="pressed" from="VBoxContainer/TestCoin" to="." method="_on_test_coin_pressed"]
+[connection signal="pressed" from="VBoxContainer/TestTalisman" to="." method="_on_test_talisman_pressed"]

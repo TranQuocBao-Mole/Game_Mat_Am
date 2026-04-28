@@ -279,10 +279,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1106.5762, 129.04073, 599.92
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.596924, 129.52763, -18.584778)
 
 [node name="E" type="Marker3D" parent="event1/A"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 111.157776, -39.355324, -68.565)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.617065, -39.355324, -52.708374)
 
 [node name="Female Dynamic Pose" parent="event1/A" instance=ExtResource("26_ad1yp")]
-transform = Transform3D(-27.752655, -11.365079, -0.7904132, -7.901174, 17.70171, 22.89588, -8.207393, 21.38888, -19.368889, 30.597046, 80.63768, -18.585022)
+transform = Transform3D(-27.752655, -11.365079, -0.7904132, -7.901174, 17.70171, 22.89588, -8.207393, 21.38888, -19.368889, 30.597046, 65.81929, -18.585022)
 
 [node name="B" type="Marker3D" parent="event1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -887.51575, 145.0152, 456.41565)

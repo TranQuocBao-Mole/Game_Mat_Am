@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dpimkrqv862n1"
-path="res://.godot/imported/asset_spiritual_cord.png-459b8a095ac4cf512eab7d93d0ee788f.ctex"
+uid="uid://cnekoity1uf48"
+path="res://.godot/imported/scale_sprite.jpg-705f9f6469425e11ac0bd92174c9b8e9.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://asset_spiritual_cord.png"
-dest_files=["res://.godot/imported/asset_spiritual_cord.png-459b8a095ac4cf512eab7d93d0ee788f.ctex"]
+source_file="res://assets/textures/puzzles/coin/scale_sprite.jpg"
+dest_files=["res://.godot/imported/scale_sprite.jpg-705f9f6469425e11ac0bd92174c9b8e9.ctex"]
 
 [params]
 

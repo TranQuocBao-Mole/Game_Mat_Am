@@ -9,7 +9,7 @@ var logic = CandlePuzzleLogic.new()
 
 # Cấu hình puzzle
 const CANDLE_COUNT = 5
-const CANDLE_SHEET_PATH = "res://ritual_candle_top_down_sheet_v2_1776367257619.png"
+const CANDLE_SHEET_PATH = "res://assets/textures/puzzles/candle/ritual_candle_top_down_sheet_v2_1776367257619.png"
 # Sheet 819x430: Frame Trái = Tắt (0,0,409,430) | Frame Phải = Sáng (410,0,409,430)
 const FRAME_W = 409
 const FRAME_H = 430
@@ -91,7 +91,9 @@ func open_puzzle():
 func _on_close_pressed():
 	hide()
 	var players = get_tree().get_nodes_in_group("player")
-	for p in players:
-		p.set_movement_enabled(true)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	if players.size() > 0:
+		for p in players: p.set_movement_enabled(true)
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	puzzle_finished.emit(false)

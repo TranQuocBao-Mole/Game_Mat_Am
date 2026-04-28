@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://lvcibogpn41e"
-path="res://.godot/imported/element_orbs_sheet_1776362934567.png-43e55756eda2dd6aec9305f94f42e65a.ctex"
+uid="uid://c1sc6nsdbvpoo"
+path="res://.godot/imported/ancient_candle_ritual_bg_1776367015601.png-173545bcdb9a449fc1cf745b6764891e.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://element_orbs_sheet_1776362934567.png"
-dest_files=["res://.godot/imported/element_orbs_sheet_1776362934567.png-43e55756eda2dd6aec9305f94f42e65a.ctex"]
+source_file="res://assets/textures/puzzles/candle/ancient_candle_ritual_bg_1776367015601.png"
+dest_files=["res://.godot/imported/ancient_candle_ritual_bg_1776367015601.png-173545bcdb9a449fc1cf745b6764891e.ctex"]
 
 [params]
 

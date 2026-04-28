@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://src/ui/puzzles/elements_puzzle_ui.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://ancient_ritual_table_v2_1776363891610.png" id="2_table"]
-[ext_resource type="Texture2D" path="res://asset_spiritual_cord.png" id="3_rope"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/elements/ancient_ritual_table_v2_1776363891610.png" id="2_table"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/elements/asset_spiritual_cord.png" id="3_rope"]
 
 [node name="ElementsPuzzleUI" type="Control"]
 layout_mode = 3
@@ -210,37 +210,41 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 22
 flat = true
 
-[node name="StatusLabel" type="Label" parent="AspectRatio/MainPanel"]
+[node name="GuidePanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 380.0
+offset_bottom = 120.0
+
+[node name="StatusLabel" type="Label" parent="GuidePanel"]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -400.0
-offset_top = -100.0
-offset_right = 400.0
-offset_bottom = -60.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = -15.0
+offset_bottom = -10.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme_override_colors/font_color = Color(0.9, 0.8, 0.7, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 18
 text = "Hãy hoán đổi các quân để tạo vòng Tương Sinh..."
-horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="CloseButton" type="Button" parent="."]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -160.0
+offset_left = -70.0
 offset_top = 30.0
-offset_right = -40.0
-offset_bottom = 75.0
+offset_right = -30.0
+offset_bottom = 70.0
 grow_horizontal = 0
-theme_override_font_sizes/font_size = 18
-text = "Đóng (Esc)"
+theme_override_font_sizes/font_size = 20
+text = "X"
 
 [connection signal="pressed" from="CloseButton" to="." method="_on_close_pressed"]

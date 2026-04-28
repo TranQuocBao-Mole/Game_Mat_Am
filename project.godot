@@ -22,7 +22,11 @@ InteractionManager="*res://src/ui/interaction_prompt.tscn"
 InventoryManager="*res://src/ui/inventory_manager.gd"
 InventoryUI="*res://src/ui/inventory_ui.tscn"
 InspectManager="*res://src/ui/inspect_ui.tscn"
-ChessManager="*res://src/ui/chess_puzzle_ui.tscn"
+ChessManager="*res://src/ui/puzzles/chess_puzzle_ui.tscn"
+CandleManager="*res://src/ui/puzzles/candle_puzzle_ui.tscn"
+ElementsManager="*res://src/ui/puzzles/elements_puzzle_ui.tscn"
+CoinManager="*res://src/ui/puzzles/coin_puzzle_ui.tscn"
+TalismanManager="*res://src/ui/puzzles/talisman_puzzle_ui.tscn"
 
 [dotnet]
 

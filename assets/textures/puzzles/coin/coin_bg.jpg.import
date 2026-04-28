@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c2sjrqeowo7yc"
-path="res://.godot/imported/ritual_candle_top_down_sheet_v2_1776367257619.png-63caf293e4c261f4e0804c16c569ea53.ctex"
+uid="uid://cpscu1uvqejtp"
+path="res://.godot/imported/coin_bg.jpg-48b8b215c9586295871a8c0e07591f95.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://ritual_candle_top_down_sheet_v2_1776367257619.png"
-dest_files=["res://.godot/imported/ritual_candle_top_down_sheet_v2_1776367257619.png-63caf293e4c261f4e0804c16c569ea53.ctex"]
+source_file="res://assets/textures/puzzles/coin/coin_bg.jpg"
+dest_files=["res://.godot/imported/coin_bg.jpg-48b8b215c9586295871a8c0e07591f95.ctex"]
 
 [params]
 

@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://de2xr7k1mlh3p"]
 
-[ext_resource type="Script" uid="uid://pqppkyxe7why" path="res://src/ui/puzzles/candle_puzzle_ui.gd" id="1_script"]
-[ext_resource type="Texture2D" uid="uid://bdhxi77vdw5rh" path="res://ancient_candle_ritual_bg_1776367015601.png" id="2_scroll_bg"]
-[ext_resource type="Texture2D" uid="uid://dnum1y713qb3o" path="res://candle.png" id="3_candle_sheet"]
+[ext_resource type="Script" path="res://src/ui/puzzles/candle_puzzle_ui.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/candle/ancient_candle_ritual_bg_1776367015601.png" id="2_scroll_bg"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/candle/candle.png" id="3_candle_sheet"]
 
 [sub_resource type="Gradient" id="Gradient_flame"]
 offsets = PackedFloat32Array(0, 0.2, 0.6, 1)
@@ -61,26 +61,29 @@ theme_override_font_sizes/font_size = 38
 text = "PHONG ẤN NGŨ CHÚ"
 horizontal_alignment = 1
 
-[node name="StatusLabel" type="Label" parent="AspectRatio/MainPanel"]
+[node name="GuidePanel" type="Panel" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 30.0
+offset_right = 380.0
+offset_bottom = 120.0
+
+[node name="StatusLabel" type="Label" parent="GuidePanel"]
 layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -350.0
-offset_top = -100.0
-offset_right = 350.0
-offset_bottom = -60.0
+offset_left = 15.0
+offset_top = 10.0
+offset_right = -15.0
+offset_bottom = -10.0
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 theme_override_colors/font_color = Color(0.9, 0.8, 0.7, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
-theme_override_font_sizes/font_size = 20
+theme_override_font_sizes/font_size = 18
 text = "Hãy thắp sáng toàn bộ nến..."
-horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 2
 
 [node name="CandleContainer" type="Control" parent="AspectRatio/MainPanel"]
 layout_mode = 1
@@ -345,13 +348,12 @@ layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -150.0
+offset_left = -70.0
 offset_top = 30.0
-offset_right = -40.0
-offset_bottom = 75.0
+offset_right = -30.0
+offset_bottom = 70.0
 grow_horizontal = 0
-theme_override_colors/font_color = Color(0.8, 0.7, 0.6, 1)
-theme_override_font_sizes/font_size = 18
-text = "Hủy bỏ (Esc)"
+theme_override_font_sizes/font_size = 20
+text = "X"
 
 [connection signal="pressed" from="CloseButton" to="." method="_on_close_pressed"]
