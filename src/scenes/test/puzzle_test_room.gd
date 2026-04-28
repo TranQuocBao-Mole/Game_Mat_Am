@@ -6,7 +6,7 @@ extends Control
 
 func _ready():
 	_setup_test_ui()
-	log_label.text = "PHÒNG THỬ NGHIỆM CÂU ĐỐ\n[1] Nến | [2] Ngũ Hành | [3] Cân Xu | [4] Vẽ Bùa"
+	log_label.text = "PHÒNG THỬ NGHIỆM CÂU ĐỐ\n[1] Nến | [2] Ngũ Hành | [3] Cân Xu | [4] Vẽ Bùa | [5] Thử Độc"
 	
 	candle_puzzle.puzzle_finished.connect(_on_puzzle_finished.bind("Xếp Nến"))
 	elements_puzzle.puzzle_finished.connect(_on_puzzle_finished.bind("Ngũ Hành"))
@@ -14,10 +14,16 @@ func _ready():
 		get_node("/root/CoinManager").puzzle_finished.connect(_on_puzzle_finished.bind("Cân Xu"))
 	if has_node("/root/TalismanManager"):
 		get_node("/root/TalismanManager").puzzle_finished.connect(_on_puzzle_finished.bind("Vẽ Bùa"))
+	if has_node("/root/PoisonManager"):
+		get_node("/root/PoisonManager").puzzle_finished.connect(_on_puzzle_finished.bind("Thử Độc"))
 
 func _setup_test_ui():
 	# Làm cho các nút trong phòng test trông xịn hơn và hỗ trợ điều khiển phím
-	for btn in [$VBoxContainer/TestCandle, $VBoxContainer/TestElements, $VBoxContainer/TestCoin, $VBoxContainer/TestTalisman]:
+	var test_buttons = [$VBoxContainer/TestCandle, $VBoxContainer/TestElements, $VBoxContainer/TestCoin, $VBoxContainer/TestTalisman]
+	if has_node("VBoxContainer/TestPoison"):
+		test_buttons.append($VBoxContainer/TestPoison)
+		
+	for btn in test_buttons:
 		btn.focus_mode = Control.FOCUS_ALL
 		var sb_focus = StyleBoxFlat.new()
 		sb_focus.draw_center = false
@@ -29,6 +35,10 @@ func _input(event):
 	# Nếu đang chơi puzzle thì không nhận phím chọn game
 	if candle_puzzle.visible or elements_puzzle.visible:
 		return
+	# Kiểm tra thêm các puzzle autoload
+	if has_node("/root/CoinManager") and get_node("/root/CoinManager").visible: return
+	if has_node("/root/TalismanManager") and get_node("/root/TalismanManager").visible: return
+	if has_node("/root/PoisonManager") and get_node("/root/PoisonManager").visible: return
 		
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_1:
@@ -39,6 +49,8 @@ func _input(event):
 			_on_test_coin_pressed()
 		elif event.keycode == KEY_4:
 			_on_test_talisman_pressed()
+		elif event.keycode == KEY_5:
+			_on_test_poison_pressed()
 
 func _on_test_candle_pressed():
 	log_label.text = "Đang kiểm tra: Câu đố Xếp Nến..."
@@ -49,23 +61,24 @@ func _on_test_elements_pressed():
 	elements_puzzle.open_puzzle()
 
 func _on_test_coin_pressed():
-	print("[DEBUG] TestRoom: Coin button pressed")
 	log_label.text = "Đang kiểm tra: Câu đố Cân Xu..."
 	if has_node("/root/CoinManager"):
-		print("[DEBUG] TestRoom: Found /root/CoinManager")
 		get_node("/root/CoinManager").open_puzzle()
-	else:
-		print("[ERR] TestRoom: /root/CoinManager NOT FOUND!")
 
 func _on_test_talisman_pressed():
 	log_label.text = "Đang kiểm tra: Câu đố Vẽ Bùa..."
 	if has_node("/root/TalismanManager"):
 		get_node("/root/TalismanManager").open_puzzle()
 
+func _on_test_poison_pressed():
+	log_label.text = "Đang kiểm tra: Câu đố Thử Độc..."
+	if has_node("/root/PoisonManager"):
+		get_node("/root/PoisonManager").open_puzzle()
+
 func _on_puzzle_finished(won: bool, puzzle_name: String):
 	if won:
-		log_label.text = "CHÚC MỪNG! Giải xong [" + puzzle_name + "]\n[1] Thử lại nến | [2] Thử lại Ngũ hành"
+		log_label.text = "CHÚC MỪNG! Giải xong [" + puzzle_name + "]\n[1-5] Thử lại các câu đố"
 		log_label.modulate = Color.GOLD
 	else:
-		log_label.text = "PHÒNG THỬ NGHIỆM\n[1] Nến | [2] Ngũ Hành | [3] Cân Xu | [4] Vẽ Bùa"
+		log_label.text = "PHÒNG THỬ NGHIỆM CÂU ĐỐ\n[1] Nến | [2] Ngũ Hành | [3] Cân Xu | [4] Vẽ Bùa | [5] Thử Độc"
 		log_label.modulate = Color.WHITE

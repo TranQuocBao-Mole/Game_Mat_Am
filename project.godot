@@ -27,6 +27,7 @@ CandleManager="*res://src/ui/puzzles/candle_puzzle_ui.tscn"
 ElementsManager="*res://src/ui/puzzles/elements_puzzle_ui.tscn"
 CoinManager="*res://src/ui/puzzles/coin_puzzle_ui.tscn"
 TalismanManager="*res://src/ui/puzzles/talisman_puzzle_ui.tscn"
+PoisonManager="*res://src/ui/puzzles/poison_puzzle_ui.tscn"
 
 [dotnet]
 
