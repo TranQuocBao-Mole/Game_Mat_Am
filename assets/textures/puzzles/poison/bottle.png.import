@@ -3,11 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://4h2ut7usi2ib"
-valid=false
+path="res://.godot/imported/bottle.png-85d84a03b0020eca3e9d275fd616898d.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
 source_file="res://assets/textures/puzzles/poison/bottle.png"
+dest_files=["res://.godot/imported/bottle.png-85d84a03b0020eca3e9d275fd616898d.ctex"]
 
 [params]
 
