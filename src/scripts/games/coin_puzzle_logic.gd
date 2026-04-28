@@ -53,6 +53,10 @@ func weigh(left_indices: Array, right_indices: Array) -> int:
 		{"res": 1, "list": if_right_heavier}
 	]
 	
+	# Xáo trộn danh sách trước khi sắp xếp để nếu có nhiều kết quả 
+	# cùng độ khó, AI sẽ chọn ngẫu nhiên thay vì luôn chọn cái đầu tiên.
+	counts.shuffle()
+	
 	# Sắp xếp để tìm tập hợp giữ lại nhiều ĐỒNG XU nghi vấn nhất
 	counts.sort_custom(func(a, b):
 		var a_suspects = []
@@ -60,12 +64,9 @@ func weigh(left_indices: Array, right_indices: Array) -> int:
 		var b_suspects = []
 		for s in b["list"]: if not b_suspects.has(s["index"]): b_suspects.append(s["index"])
 		
-		# Ưu tiên kết quả giữ lại nhiều ĐỒNG XU hơn
 		return a_suspects.size() > b_suspects.size()
 	)
 	
-	# Nếu là lượt cân 1 hoặc 2, và kết quả dẫn đến chỉ còn 1 xu nghi vấn
-	# hãy cố gắng chọn kết quả khác nếu có thể để kéo dài trò chơi
 	var choice = counts[0]
 	if weigh_count < 3:
 		for c in counts:
