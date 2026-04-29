@@ -14,15 +14,16 @@ func _ready() -> void:
 	print("DEBUG: [Scene3Event] Script loaded, waiting...")
 	
 	# Tự động ẩn đèn house3_light3 và tờ giấy khi bắt đầu scene
-	var target_light = get_tree().root.find_child("house3_light3", true, false)
+	var target_light = get_tree().current_scene.find_child("house3_light3", true, false)
 	if target_light:
 		target_light.visible = false
 		print("DEBUG: [Scene3Event] house3_light3 has been hidden.")
 
-	var paper_chess = get_tree().root.find_child("PaperEventChess", true, false)
+	var paper_chess = get_tree().current_scene.find_child("PaperEventChess", true, false)
 	if paper_chess:
 		paper_chess.visible = false
-		print("DEBUG: [Scene3Event] PaperEventChess has been hidden.")
+		paper_chess.is_active = false
+		print("DEBUG: [Scene3Event] PaperEventChess has been hidden and deactivated.")
 	
 	# Tìm player trong scene
 	await get_tree().create_timer(0.5).timeout

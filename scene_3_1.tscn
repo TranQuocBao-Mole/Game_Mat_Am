@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=47 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -30,7 +30,15 @@
 [ext_resource type="PackedScene" uid="uid://dj8n47oavcs7k" path="res://assets/models/low_poly_radio/scene.gltf" id="30_radio_model"]
 [ext_resource type="Script" uid="uid://b0u8486enqf0l" path="res://src/scripts/entities/candle_puzzle_paper_interact.gd" id="31_paper_script"]
 [ext_resource type="PackedScene" uid="uid://d3wpwrokid5rt" path="res://assets/models/paper/scene.gltf" id="32_paper_model"]
+[ext_resource type="PackedScene" uid="uid://dklqtggxawoxw" path="res://assets/models/round_neoclassical_side_table__lowpoly_asset/sketchfab_scene.tscn" id="32_ygo2c"]
 [ext_resource type="PackedScene" uid="uid://dwck8v3k3sps5" path="res://assets/models/barely_used_red_candle/scene.gltf" id="33_candle_model"]
+[ext_resource type="Script" uid="uid://fmhc8dh7gbev" path="res://src/scripts/entities/elements_table_interaction.gd" id="34_elements_interact"]
+[ext_resource type="Script" uid="uid://yjaufodhfdgo" path="res://src/scripts/common/item_pickup.gd" id="35_pickup_script"]
+[ext_resource type="Resource" path="res://assets/models/paper/paper_event_elements.tres" id="36_item_data"]
+[ext_resource type="PackedScene" path="res://src/entities/paper_event_elements_pickup.tscn" id="37_paper_elements_pickup"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_paper_puzzle"]
+size = Vector3(0.10638046, 0.21302795, 0.12936401)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -75,10 +83,11 @@ volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_radio"]
 size = Vector3(13.0173645, 6.7888184, 6.6943817)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_paper_puzzle"]
-size = Vector3(10.826172, 1.1053467, 13.790039)
+[sub_resource type="BoxShape3D" id="BoxShape3D_elements_board"]
+size = Vector3(1.9785156, 1.2763672, 1.6660156)
 
 [node name="scene3_1" type="Node3D"]
+
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("1_pyw2e")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -10.058155, 377.8445, -2.015893)
@@ -259,14 +268,14 @@ shape = SubResource("BoxShape3D_lantern")
 debug_color = Color(0.94082165, 0, 0.30030593, 0.41960785)
 
 [node name="PaperEventChess" parent="event1" node_paths=PackedStringArray("start_node", "end_node", "point_c", "point_e", "ghost_node", "scare_ghost_node", "lantern_parent") instance=ExtResource("27_paper5")]
-transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -1123.1393, 46.738865, 625.1417)
+transform = Transform3D(500, 0, 0, 0, 500, 0, 0, 0, 500, -1123.1393, 49.82385, 625.1417)
 start_node = NodePath("../A")
 end_node = NodePath("../B")
 point_c = NodePath("../C")
 point_e = NodePath("../A/E")
 ghost_node = NodePath("../GhostCrawlChessEvent")
 scare_ghost_node = NodePath("../A/Female Dynamic Pose")
-crawl_speed = 15.0
+crawl_speed = 300.0
 scare_speed = 100000.0
 rotation_offset = Vector3(0, 60, 0)
 lantern_parent = NodePath("../house3_light3")
@@ -279,7 +288,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1106.5762, 129.04073, 599.92
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.596924, 129.52763, -18.584778)
 
 [node name="E" type="Marker3D" parent="event1/A"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94.617065, -39.355324, -52.708374)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.45654, -44.576202, -38.19818)
 
 [node name="Female Dynamic Pose" parent="event1/A" instance=ExtResource("26_ad1yp")]
 transform = Transform3D(-27.752655, -11.365079, -0.7904132, -7.901174, 17.70171, 22.89588, -8.207393, 21.38888, -19.368889, 30.597046, 65.81929, -18.585022)
@@ -454,9 +463,6 @@ shadow_bias = 0.05
 shadow_blur = 1.175
 directional_shadow_max_distance = 1000.0
 
-[node name="Scene3Event" type="Node3D" parent="."]
-script = ExtResource("15_s3evt")
-
 [node name="OldCalendar" parent="." instance=ExtResource("16_cal")]
 transform = Transform3D(368.45282, -311.34763, -2.85809, -0.11205731, 14.154842, -399.93738, 155.7, 736.7919, 6.475629, -288.74985, 109.94816, 196.29662)
 
@@ -480,47 +486,65 @@ transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -668.0931, 46.388092, 593.
 transform = Transform3D(259.8076, 0, 150.00008, 0, 300, 0, -150.00008, 0, 259.8076, -640.5316, 74.72279, 602.04016)
 prompt_text = "Xem tờ giấy"
 
-[node name="Sketchfab_Scene2" parent="." instance=ExtResource("26_x1bhe")]
+[node name="event2" type="Node3D" parent="."]
+
+[node name="Sketchfab_Scene2" parent="event2" instance=ExtResource("26_x1bhe")]
 transform = Transform3D(12.1801815, 0, -8.754605, 0, 14.999999, 0, 8.754605, 0, 12.1801815, 166.91074, 6.9292526, 792.8112)
 
-[node name="CandlePuzzle" type="Node3D" parent="."]
+[node name="CandlePuzzle" type="Node3D" parent="event2"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 165.46303, 55.18223, 803.6786)
 
-[node name="alter_radio" type="StaticBody3D" parent="CandlePuzzle"]
+[node name="alter_radio" type="StaticBody3D" parent="event2/CandlePuzzle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.22734, 15.000004, -15.687744)
 collision_layer = 2
 script = ExtResource("29_radio_script")
 
-[node name="radio_model" parent="CandlePuzzle/alter_radio" instance=ExtResource("30_radio_model")]
+[node name="radio_model" parent="event2/CandlePuzzle/alter_radio" instance=ExtResource("30_radio_model")]
 transform = Transform3D(15.558974, 0, 98.78217, 0, 100, 0, -98.78217, 0, 15.558974, 3.5053406, -0.9243927, 6.4198)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CandlePuzzle/alter_radio"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event2/CandlePuzzle/alter_radio"]
 transform = Transform3D(0.99464166, 0, -0.10338279, 0, 1, 0, 0.10338279, 0, 0.99464166, 3.383728, 0.8944092, 5.966736)
 shape = SubResource("BoxShape3D_radio")
 
-[node name="paper_candlegame_even" type="StaticBody3D" parent="CandlePuzzle"]
+[node name="paper_candlegame_even" type="StaticBody3D" parent="event2/CandlePuzzle"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 14, 5)
 collision_layer = 2
 script = ExtResource("31_paper_script")
 
-[node name="paper_model" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("32_paper_model")]
+[node name="paper_model" parent="event2/CandlePuzzle/paper_candlegame_even" instance=ExtResource("32_paper_model")]
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CandlePuzzle/paper_candlegame_even"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event2/CandlePuzzle/paper_candlegame_even"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11328125, 0.30267334, 0.05029297)
 shape = SubResource("BoxShape3D_paper_puzzle")
+debug_color = Color(0.9142602, 0.16206804, 0.6027289, 0.41960785)
 
-[node name="candle1" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+[node name="candle1" parent="event2/CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.1, -1)
 
-[node name="candle2" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+[node name="candle2" parent="event2/CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.1, -1)
 
-[node name="candle3" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+[node name="candle3" parent="event2/CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
 
-[node name="candle4" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+[node name="candle4" parent="event2/CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.1, 1)
 
-[node name="candle5" parent="CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
+[node name="candle5" parent="event2/CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.1, 1)
+
+[node name="element_game_board" parent="." instance=ExtResource("32_ygo2c")]
+transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -409.45285, 64.42497, 1115.2443)
+
+[node name="BoardInteract" type="StaticBody3D" parent="element_game_board"]
+collision_layer = 2
+script = ExtResource("34_elements_interact")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="element_game_board/BoardInteract"]
+transform = Transform3D(0.48666888, 0, -0.114684954, 0, 0.09999996, 0, 0.114684954, 0, 0.48666888, -0.34977722, 0.58692837, -0.57966614)
+shape = SubResource("BoxShape3D_elements_board")
+
+[node name="Scene3Event" type="Node3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
+script = ExtResource("15_s3evt")

@@ -4,16 +4,18 @@
 [ext_resource type="Texture2D" path="res://assets/textures/puzzles/elements/ancient_ritual_table_v2_1776363891610.png" id="2_table"]
 [ext_resource type="Texture2D" path="res://assets/textures/puzzles/elements/asset_spiritual_cord.png" id="3_rope"]
 
-[node name="ElementsPuzzleUI" type="Control"]
+[node name="ElementsPuzzleUI" type="CanvasLayer"]
+script = ExtResource("1_script")
+
+[node name="Root" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_script")
 
-[node name="Overlay" type="ColorRect" parent="."]
+[node name="Overlay" type="ColorRect" parent="Root"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,22 +24,24 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.85)
 
-[node name="AspectRatio" type="AspectRatioContainer" parent="."]
+[node name="AspectRatio" type="AspectRatioContainer" parent="Root"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+alignment_horizontal = 1
+alignment_vertical = 1
 
-[node name="MainPanel" type="TextureRect" parent="AspectRatio"]
+[node name="MainPanel" type="TextureRect" parent="Root/AspectRatio"]
 custom_minimum_size = Vector2(1024, 1024)
 layout_mode = 2
 texture = ExtResource("2_table")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="Title" type="Label" parent="AspectRatio/MainPanel"]
+[node name="Title" type="Label" parent="Root/AspectRatio/MainPanel"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -57,7 +61,7 @@ theme_override_font_sizes/font_size = 38
 text = "TRẬN ĐỒ NGŨ HÀNH"
 horizontal_alignment = 1
 
-[node name="StatsContainer" type="VBoxContainer" parent="AspectRatio/MainPanel"]
+[node name="StatsContainer" type="VBoxContainer" parent="Root/AspectRatio/MainPanel"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
@@ -69,7 +73,7 @@ offset_bottom = 210.0
 grow_horizontal = 0
 theme_override_constants/separation = 12
 
-[node name="SanityLabel" type="Label" parent="AspectRatio/MainPanel/StatsContainer"]
+[node name="SanityLabel" type="Label" parent="Root/AspectRatio/MainPanel/StatsContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.4, 0.3, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -78,13 +82,13 @@ theme_override_font_sizes/font_size = 22
 text = "NGUYÊN THẦN:"
 horizontal_alignment = 2
 
-[node name="SanityBar" type="ProgressBar" parent="AspectRatio/MainPanel/StatsContainer"]
+[node name="SanityBar" type="ProgressBar" parent="Root/AspectRatio/MainPanel/StatsContainer"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 value = 100.0
 show_percentage = false
 
-[node name="MovesLabel" type="Label" parent="AspectRatio/MainPanel/StatsContainer"]
+[node name="MovesLabel" type="Label" parent="Root/AspectRatio/MainPanel/StatsContainer"]
 layout_mode = 2
 theme_override_colors/font_color = Color(0.9, 0.7, 0.3, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -93,7 +97,7 @@ theme_override_font_sizes/font_size = 24
 text = "NGUYÊN KHÍ: 15"
 horizontal_alignment = 2
 
-[node name="Diagram" type="Control" parent="AspectRatio/MainPanel"]
+[node name="Diagram" type="Control" parent="Root/AspectRatio/MainPanel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -107,7 +111,7 @@ offset_bottom = 300.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Lines" type="Control" parent="AspectRatio/MainPanel/Diagram"]
+[node name="Lines" type="Control" parent="Root/AspectRatio/MainPanel/Diagram"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -115,37 +119,37 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Line0" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+[node name="Line0" type="Line2D" parent="Root/AspectRatio/MainPanel/Diagram/Lines"]
 width = 12.0
 texture = ExtResource("3_rope")
 texture_mode = 1
 default_color = Color(0.6, 0.2, 0.15, 0.8)
 
-[node name="Line1" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+[node name="Line1" type="Line2D" parent="Root/AspectRatio/MainPanel/Diagram/Lines"]
 width = 12.0
 texture = ExtResource("3_rope")
 texture_mode = 1
 default_color = Color(0.6, 0.2, 0.15, 0.8)
 
-[node name="Line2" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+[node name="Line2" type="Line2D" parent="Root/AspectRatio/MainPanel/Diagram/Lines"]
 width = 12.0
 texture = ExtResource("3_rope")
 texture_mode = 1
 default_color = Color(0.6, 0.2, 0.15, 0.8)
 
-[node name="Line3" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+[node name="Line3" type="Line2D" parent="Root/AspectRatio/MainPanel/Diagram/Lines"]
 width = 12.0
 texture = ExtResource("3_rope")
 texture_mode = 1
 default_color = Color(0.6, 0.2, 0.15, 0.8)
 
-[node name="Line4" type="Line2D" parent="AspectRatio/MainPanel/Diagram/Lines"]
+[node name="Line4" type="Line2D" parent="Root/AspectRatio/MainPanel/Diagram/Lines"]
 width = 12.0
 texture = ExtResource("3_rope")
 texture_mode = 1
 default_color = Color(0.6, 0.2, 0.15, 0.8)
 
-[node name="Slots" type="Control" parent="AspectRatio/MainPanel/Diagram"]
+[node name="Slots" type="Control" parent="Root/AspectRatio/MainPanel/Diagram"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -153,7 +157,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Slot0" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+[node name="Slot0" type="Button" parent="Root/AspectRatio/MainPanel/Diagram/Slots"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.42
@@ -164,7 +168,7 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 22
 flat = true
 
-[node name="Slot1" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+[node name="Slot1" type="Button" parent="Root/AspectRatio/MainPanel/Diagram/Slots"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.82
@@ -176,7 +180,7 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 22
 flat = true
 
-[node name="Slot2" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+[node name="Slot2" type="Button" parent="Root/AspectRatio/MainPanel/Diagram/Slots"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.65
@@ -188,7 +192,7 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 22
 flat = true
 
-[node name="Slot3" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+[node name="Slot3" type="Button" parent="Root/AspectRatio/MainPanel/Diagram/Slots"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.19
@@ -199,7 +203,7 @@ grow_vertical = 0
 theme_override_font_sizes/font_size = 22
 flat = true
 
-[node name="Slot4" type="Button" parent="AspectRatio/MainPanel/Diagram/Slots"]
+[node name="Slot4" type="Button" parent="Root/AspectRatio/MainPanel/Diagram/Slots"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.02
@@ -210,14 +214,14 @@ grow_vertical = 2
 theme_override_font_sizes/font_size = 22
 flat = true
 
-[node name="GuidePanel" type="Panel" parent="."]
+[node name="GuidePanel" type="Panel" parent="Root"]
 layout_mode = 0
 offset_left = 30.0
 offset_top = 30.0
 offset_right = 380.0
 offset_bottom = 120.0
 
-[node name="StatusLabel" type="Label" parent="GuidePanel"]
+[node name="StatusLabel" type="Label" parent="Root/GuidePanel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -234,7 +238,7 @@ text = "Hãy hoán đổi các quân để tạo vòng Tương Sinh..."
 vertical_alignment = 1
 autowrap_mode = 2
 
-[node name="CloseButton" type="Button" parent="."]
+[node name="CloseButton" type="Button" parent="Root"]
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0

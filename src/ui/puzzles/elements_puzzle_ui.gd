@@ -1,4 +1,4 @@
-extends Control
+extends CanvasLayer
 
 signal puzzle_finished(won: bool)
 
@@ -38,17 +38,18 @@ func _ready():
 	_setup_ui()
 	hide()
 
-func _process(delta):
+func _process(_delta):
 	if visible:
-		# Lấy tọa độ gốc chuẩn khi node đã hiện
-		if original_panel_pos == Vector2.ZERO:
+		# Đợi cho đến khi panel có kích thước và vị trí ổn định từ container
+		if original_panel_pos == Vector2.ZERO and main_panel.position != Vector2.ZERO:
 			original_panel_pos = main_panel.position
 			
 		# Hiệu ứng rung màn hình
-		if shake_intensity > 0:
+		if shake_intensity > 0 and original_panel_pos != Vector2.ZERO:
 			main_panel.position = original_panel_pos + Vector2(randf_range(-1, 1), randf_range(-1, 1)) * shake_intensity
 			shake_intensity = lerp(shake_intensity, 0.0, 0.1)
-		else:
+		elif original_panel_pos != Vector2.ZERO:
+			# Đảm bảo reset lại đúng vị trí trung tâm của container nếu không rung
 			main_panel.position = original_panel_pos
 
 func _setup_ui():
@@ -161,7 +162,7 @@ func _animate_selection(index: int, is_selected: bool):
 		tween.tween_property(slot, "scale", Vector2(1.0, 1.0), 0.1)
 		slot.modulate.a = 0.9
 
-func _animate_swap(idx_a: int, idx_b: int):
+func _animate_swap(_idx_a: int, _idx_b: int):
 	var tween = create_tween()
 	main_panel.modulate = Color(1.3, 1.3, 1.8)
 	tween.tween_property(main_panel, "modulate", Color(1, 1, 1), 0.2)

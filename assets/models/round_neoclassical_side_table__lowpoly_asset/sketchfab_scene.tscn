@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dklqtggxawoxw"]
+
+[ext_resource type="PackedScene" uid="uid://d3da5daturlfk" path="res://assets/models/round_neoclassical_side_table__lowpoly_asset/scene.gltf" id="1_7go31"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_7go31")]
+
+[node name="Tisch_klein_Tisch_klein_0" parent="Sketchfab_model/dd9cfc17ad154cafa3c3047f62f98b0c_fbx/RootNode/Tisch_klein" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 1.4210855e-14, 0, -1.4210855e-14, 1, 80.7123, -1.9073486e-05, 125.47247)

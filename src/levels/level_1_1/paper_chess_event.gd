@@ -88,8 +88,9 @@ func _start_horror_event():
 	# --- CHẠY ANIMATION ---
 	var anim_player = ghost_node.find_child("AnimationPlayer", true)
 	if anim_player and anim_player.get_animation_list().size() > 0:
+		anim_player.speed_scale = crawl_speed / 15.0 # Chỉnh tốc độ animation tỉ lệ thuận với crawl_speed (lấy 15 làm mốc 1x ban đầu)
 		anim_player.play(anim_player.get_animation_list()[0])
-		print("[DEBUG] Đang chạy animation: ", anim_player.current_animation)
+		print("[DEBUG] Đang chạy animation: ", anim_player.current_animation, " với tốc độ ", anim_player.speed_scale)
 
 	# --- BƯỚC 2: XOAY CAMERA NHÌN ĐIỂM C ---
 	var head = player.get_node("Head")

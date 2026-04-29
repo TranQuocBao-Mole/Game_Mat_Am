@@ -1,0 +1,317 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 1478,
+      "max": [
+        31.498754501342773,
+        13.758319854736328,
+        32.12322998046875
+      ],
+      "min": [
+        -41.88059616088867,
+        -51.266212463378906,
+        -42.01068878173828
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 17736,
+      "componentType": 5126,
+      "count": 1478,
+      "max": [
+        0.9898214340209961,
+        1.0,
+        1.0
+      ],
+      "min": [
+        -0.9898214936256409,
+        -1.0,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 1478,
+      "max": [
+        1.0,
+        0.9463528990745544,
+        0.9961208701133728,
+        1.0
+      ],
+      "min": [
+        -1.0,
+        -0.9463537335395813,
+        -0.996120810508728,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 1478,
+      "max": [
+        0.9984970092773438,
+        1.4479700326919556
+      ],
+      "min": [
+        0.00149648601654917,
+        0.0014941291883587837
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 11824,
+      "componentType": 5126,
+      "count": 1478,
+      "max": [
+        0.9984970092773438,
+        1.4479700326919556
+      ],
+      "min": [
+        0.00149648601654917,
+        0.0014941291883587837
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 23648,
+      "componentType": 5126,
+      "count": 1478,
+      "max": [
+        0.9984970092773438,
+        1.4479700326919556
+      ],
+      "min": [
+        0.00149648601654917,
+        0.0014941291883587837
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 5208,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "tina.hill (https://sketchfab.com/tina.hill)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/round-neoclassical-side-table-lowpoly-asset-a552b370ccc849048915de9e6684f31f",
+      "title": "Round Neoclassical Side Table | Lowpoly Asset"
+    },
+    "generator": "Sketchfab-17.3.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 20832,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 35472,
+      "byteOffset": 20832,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 35472,
+      "byteOffset": 56304,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 23648,
+      "byteOffset": 91776,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 115424,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/Tisch_klein_baseColor.png"
+    },
+    {
+      "uri": "textures/Tisch_klein_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/Tisch_klein_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Tisch_klein",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Tisch_klein_Tisch_klein_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "TEXCOORD_2": 5
+          },
+          "indices": 6,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        -1.0,
+        0.0,
+        0.0,
+        1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.009999999776482582,
+        0.0,
+        0.0,
+        -0.009999999776482582,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "dd9cfc17ad154cafa3c3047f62f98b0c.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.9999999999999867,
+        -1.6292067073209113e-07,
+        0.0,
+        0.0,
+        1.6292067073209113e-07,
+        0.9999999999999867,
+        0.0,
+        -121.2962875366211,
+        46.95442199707031,
+        -171.39219665527344,
+        1.0
+      ],
+      "name": "Tisch_klein"
+    },
+    {
+      "mesh": 0,
+      "name": "Tisch_klein_Tisch_klein_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}
