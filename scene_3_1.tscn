@@ -1,4 +1,4 @@
-[gd_scene load_steps=47 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=45 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -33,12 +33,6 @@
 [ext_resource type="PackedScene" uid="uid://dklqtggxawoxw" path="res://assets/models/round_neoclassical_side_table__lowpoly_asset/sketchfab_scene.tscn" id="32_ygo2c"]
 [ext_resource type="PackedScene" uid="uid://dwck8v3k3sps5" path="res://assets/models/barely_used_red_candle/scene.gltf" id="33_candle_model"]
 [ext_resource type="Script" uid="uid://fmhc8dh7gbev" path="res://src/scripts/entities/elements_table_interaction.gd" id="34_elements_interact"]
-[ext_resource type="Script" uid="uid://yjaufodhfdgo" path="res://src/scripts/common/item_pickup.gd" id="35_pickup_script"]
-[ext_resource type="Resource" path="res://assets/models/paper/paper_event_elements.tres" id="36_item_data"]
-[ext_resource type="PackedScene" path="res://src/entities/paper_event_elements_pickup.tscn" id="37_paper_elements_pickup"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_paper_puzzle"]
-size = Vector3(0.10638046, 0.21302795, 0.12936401)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -83,11 +77,13 @@ volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_radio"]
 size = Vector3(13.0173645, 6.7888184, 6.6943817)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_paper_puzzle"]
+size = Vector3(9.951156, 1.1455765, 12.718197)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_elements_board"]
 size = Vector3(1.9785156, 1.2763672, 1.6660156)
 
 [node name="scene3_1" type="Node3D"]
-
 
 [node name="Sketchfab_Scene" parent="." instance=ExtResource("1_pyw2e")]
 transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, -10.058155, 377.8445, -2.015893)
@@ -279,6 +275,10 @@ crawl_speed = 300.0
 scare_speed = 100000.0
 rotation_offset = Vector3(0, 60, 0)
 lantern_parent = NodePath("../house3_light3")
+jumpscare_offset = Vector3(0, -30, 0)
+jumpscare_distance = 50.0
+jumpscare_rotation_offset = Vector3(-0.23949759, -2.7777479, -1.0318012)
+jumpscare_shake_intensity = 0.3
 is_active = false
 
 [node name="A" type="Marker3D" parent="event1"]
@@ -291,7 +291,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 30.596924, 129.52763, -18.584
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 77.45654, -44.576202, -38.19818)
 
 [node name="Female Dynamic Pose" parent="event1/A" instance=ExtResource("26_ad1yp")]
-transform = Transform3D(-27.752655, -11.365079, -0.7904132, -7.901174, 17.70171, 22.89588, -8.207393, 21.38888, -19.368889, 30.597046, 65.81929, -18.585022)
+transform = Transform3D(-16.563656, -22.761366, -10.371381, -25.011862, 14.958706, 7.1164455, -0.22791624, 12.576053, -27.235832, 30.597046, 65.81929, -18.585022)
 
 [node name="B" type="Marker3D" parent="event1"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -887.51575, 145.0152, 456.41565)
@@ -515,7 +515,7 @@ script = ExtResource("31_paper_script")
 transform = Transform3D(50, 0, 0, 0, 50, 0, 0, 0, 50, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="event2/CandlePuzzle/paper_candlegame_even"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11328125, 0.30267334, 0.05029297)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.21240234, -0.16360474, -0.4432373)
 shape = SubResource("BoxShape3D_paper_puzzle")
 debug_color = Color(0.9142602, 0.16206804, 0.6027289, 0.41960785)
 

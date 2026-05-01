@@ -6,7 +6,8 @@ extends "res://src/scripts/common/item_pickup.gd"
 @export var point_c: Node3D ## ĐIỂM C: Điểm camera nhìn theo
 @export var point_e: Node3D ## ĐIỂM E: Nơi con ma rơi xuống hù dọa
 @export var ghost_node: Node3D ## Con Ma BÒ (kéo GhostCrawl vào đây)
-@export var scare_ghost_node: Node3D ## Con Ma HÙ (kéo Female Dynamic Pose vào đây)
+@export var scare_ghost_node: Node3D ## Con ma cũ (sẽ bị ẩn đi)
+@export var jumpscare_ghost_scene: PackedScene ## KÉO FILE female_dynamic_pose.tscn VÀO ĐÂY
 @export var look_speed: float = 1.0
 @export var crawl_speed: float = 50.0 ## Tốc độ bò (units/giây)
 @export var end_dialogues: Array[String] = [
@@ -21,6 +22,13 @@ extends "res://src/scripts/common/item_pickup.gd"
 @export var rotation_offset: Vector3 = Vector3(0, 180, 0) ## Điều chỉnh hướng mặt con ma BÒ (degrees)
 @export var lantern_parent: Node3D ## Node lồng đèn sẽ biến mất (house3_light3)
 @export var scare_animation: String = "" ## Tên animation khi hù dọa (Dừ trống = ngừng animation, đặt tên = chạy animation đó)
+
+@export_group("Jumpscare Manual Tuning")
+@export var jumpscare_offset: Vector3 = Vector3(0, -1.4, 0) ## Chỉnh tọa độ thủ công (X: ngang, Y: cao thấp, Z: xa gần)
+@export var jumpscare_distance: float = 1.2 ## Khoảng cách từ mặt
+@export var jumpscare_scale: float = 30.0 ## Độ lớn của con ma
+@export var jumpscare_rotation_offset: Vector3 = Vector3(0, 0, 0) ## Xoay thêm (degrees)
+@export var jumpscare_shake_intensity: float = 0.7 ## Lực rung màn hình
 
 func interact() -> void:
 	print("[DEBUG] Đã nhấn tương tác vào tờ giấy!")
@@ -148,42 +156,50 @@ func _start_horror_event():
 	)
 
 func _on_dialogue_done():
-	print("[DEBUG] Hội thoại xong, bắt đầu cú hù dọa (rơi xuống E)...")
+	print("[DEBUG] Hội thoại xong, bắt đầu NHÂN BẢN con ma từ Scene...")
 	
-	if not point_e or not scare_ghost_node:
-		print("[DEBUG] Thiếu điểm E hoặc Node con ma hù dọa, kết thúc sự kiện.")
+	if not scare_ghost_node:
+		print("[ERROR] Chưa gán scare_ghost_node trong Inspector!")
 		_finalize_event()
 		return
 	
-	var pos_e = point_e.global_position
+	# 1. Ẩn con ma gốc đi
+	scare_ghost_node.visible = false
 	
-	# Hiện con ma ngay tại vị trí đặt sẵn trong Scene (trên trần nhà)
-	scare_ghost_node.visible = true
-	print("[DEBUG] Con ma hù xuất hiện tại: ", scare_ghost_node.global_position)
+	# 2. Nhân bản con ma từ chính cái bạn đã chỉnh trong Scene
+	var new_ghost = scare_ghost_node.duplicate()
+	get_tree().root.add_child(new_ghost)
+	new_ghost.name = "CON_MA_NHAN_BAN"
+	new_ghost.visible = true # Hiện bản sao lên
 	
-	# --- ANIMATION ---
-	var anim_player = scare_ghost_node.find_child("AnimationPlayer", true)
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		var camera = player.get_node("Head/Camera3D")
+		if camera:
+			# 3. Đặt vị trí và hướng xoay (Dùng logic Inspector của bạn)
+			var target_pos = camera.global_position + (-camera.global_transform.basis.z * jumpscare_distance) + jumpscare_offset
+			
+			var t = Transform3D()
+			t.origin = target_pos
+			t.basis = camera.global_transform.basis.scaled(Vector3(jumpscare_scale, jumpscare_scale, jumpscare_scale))
+			
+			new_ghost.global_transform = t
+			new_ghost.rotate_object_local(Vector3.UP, PI)
+			
+			if jumpscare_rotation_offset != Vector3.ZERO:
+				new_ghost.rotation_degrees += jumpscare_rotation_offset
+			
+			_shake_camera(camera, 0.6, jumpscare_shake_intensity)
+	
+	# 4. Chạy animation cho con ma mới
+	var anim_player = new_ghost.find_child("AnimationPlayer", true)
 	if anim_player:
 		if scare_animation != "" and anim_player.has_animation(scare_animation):
 			anim_player.play(scare_animation)
-			print("[DEBUG] Chạy animation hù dọa: ", scare_animation)
-		else:
-			anim_player.stop()
 	
-	# Rơi thẳng xuống điểm E
-	var dist = scare_ghost_node.global_position.distance_to(pos_e)
-	var scare_duration = dist / scare_speed
-	print("[DEBUG] Rơi xuống E, khoảng cách: ", dist, " | Thời gian: ", scare_duration, "s")
-	
-	var scare_tween = create_tween()
-	scare_tween.tween_property(scare_ghost_node, "global_position", pos_e, scare_duration)
-	
-	scare_tween.finished.connect(func():
-		# Chờ 2s sau khi tới E
-		print("[DEBUG] Đã tới E, chờ 2s để ngất...")
-		await get_tree().create_timer(2.0).timeout
-		_start_faint_sequence()
-	)
+	# KÍCH HOẠT LỆNH NGẤT (Chờ 0.8s để thấy cái xác rồi xỉu luôn)
+	await get_tree().create_timer(0.8).timeout
+	_start_faint_sequence()
 
 func _start_faint_sequence():
 	# 1. Tạo màn hình đen
@@ -227,11 +243,20 @@ func _on_faint_dialogue_done_wrapper():
 	_on_faint_dialogue_done(_fade_overlay_ref, _canvas_ref)
 
 func _on_faint_dialogue_done(fade_overlay, canvas):
-	# 4. Xóa lồng đèn (Lúc màn hình vẫn đang đen thui)
+	# 4. Xóa lồng đèn và CÁC CON MA (Lúc màn hình vẫn đang đen thui)
+	var spawned_ghost = get_tree().root.get_node_or_null("CON_MA_NHAN_BAN")
+	if spawned_ghost:
+		spawned_ghost.queue_free()
+		
+	if ghost_node:
+		ghost_node.queue_free()
+	if scare_ghost_node:
+		scare_ghost_node.queue_free()
+
 	if lantern_parent:
-		lantern_parent.visible = false # Ẩn ngay lập tức
-		lantern_parent.queue_free() # Xóa khỏi bộ nhớ
-		print("[DEBUG] Đã xóa lồng đèn trong bóng tối.")
+		lantern_parent.visible = false
+		lantern_parent.queue_free()
+		print("[DEBUG] Đã xóa lồng đèn và con ma trong bóng tối.")
 	
 	# 5. Fade màn hình sáng lại
 	var tween = create_tween()
@@ -248,16 +273,65 @@ func _on_faint_dialogue_done(fade_overlay, canvas):
 		_finalize_event()
 
 func _finalize_event():
-	print("[DEBUG] Hoàn tất toàn bộ chuỗi sự kiện.")
+	print("[DEBUG] Hoàn tất toàn bộ chuỗi sự kiện. Khôi phục điều khiển.")
+	
+	# 2. Khôi phục điều khiển cho Player
 	var player = get_tree().get_first_node_in_group("player")
 	if not player: player = get_tree().current_scene.find_child("Player", true, false)
 	
-	# Bật lại MouseLook
-	var mouse_look = player.get_node_or_null("Head/MouseLook")
-	if mouse_look:
-		mouse_look.set_process(true)
-		mouse_look.set_process_input(true)
-		mouse_look.set_physics_process(true)
+	if player:
+		var mouse_look = player.get_node_or_null("Head/MouseLook")
+		if mouse_look:
+			mouse_look.set_process(true)
+			mouse_look.set_process_input(true)
+			mouse_look.set_physics_process(true)
+		player.set_movement_enabled(true)
+	
+	queue_free() # Xóa tờ giấy (Script này)
+
+func _shake_node(node: Node3D, duration: float, intensity: float = 0.1, rot_intensity: float = 0.2, target_pos: Vector3 = Vector3.ZERO):
+	if not node: return
+	var original_pos = node.global_position
+	var original_rot = node.global_rotation
+	var shake_tween = create_tween()
+	
+	var steps = int(duration / 0.03)
+	for i in range(steps):
+		var t = float(i) / steps # Tỉ lệ thời gian trôi qua (0.0 đến 1.0)
 		
-	player.set_movement_enabled(true)
-	queue_free() # Xóa tờ giấy
+		# Nếu có target_pos, dịch chuyển vị trí gốc dần về phía đó (tiến tới 70% quãng đường)
+		var base_pos = original_pos
+		if target_pos != Vector3.ZERO:
+			base_pos = original_pos.lerp(target_pos, t * 0.7)
+			
+		var pos_offset = Vector3(
+			randf_range(-intensity, intensity),
+			randf_range(-intensity, intensity),
+			randf_range(-intensity, intensity)
+		)
+		
+		var rot_offset = Vector3(
+			randf_range(-rot_intensity, rot_intensity),
+			randf_range(-rot_intensity, rot_intensity),
+			randf_range(-rot_intensity, rot_intensity)
+		)
+		
+		shake_tween.tween_property(node, "global_position", base_pos + pos_offset, 0.03)
+		shake_tween.parallel().tween_property(node, "global_rotation", original_rot + rot_offset, 0.03)
+	
+	# Kết thúc không trả về vị trí cũ mà giữ nguyên vị trí đã tiến sát (để tạo cảm giác đe dọa)
+
+func _shake_camera(camera: Camera3D, duration: float, intensity: float = 0.1):
+	var original_offset = camera.h_offset
+	var original_v_offset = camera.v_offset
+	var shake_tween = create_tween()
+	
+	var steps = int(duration / 0.05)
+	for i in range(steps):
+		var h_off = randf_range(-intensity, intensity)
+		var v_off = randf_range(-intensity, intensity)
+		shake_tween.tween_property(camera, "h_offset", h_off, 0.05)
+		shake_tween.parallel().tween_property(camera, "v_offset", v_off, 0.05)
+	
+	shake_tween.tween_property(camera, "h_offset", original_offset, 0.05)
+	shake_tween.parallel().tween_property(camera, "v_offset", original_v_offset, 0.05)

@@ -53,21 +53,27 @@ func _tint_recursive(node: Node):
 	for child in node.get_children():
 		_tint_recursive(child)
 
-func interact():
-	if ChessManager:
-		# Nếu đã giải xong, chỉ hiện lời thoại thắc mắc
-		if ChessManager.is_game_solved:
-			prompt_text = "Xem bàn cờ"
-			if DialogueManager:
-				DialogueManager.show_text("Một bàn cờ tướng")
-			return
-			
+func interact() -> void:
+	if not ChessManager:
+		print("[ERROR] ChessManager not found!")
+		return
+		
+	# 1. Nếu đã giải xong, chỉ hiện lời thoại thắc mắc
+	if ChessManager.is_game_solved:
+		if DialogueManager:
+			DialogueManager.show_text("Một bàn cờ tướng")
+		return
+		
+	# 2. Nếu chưa giải, mở UI giải đố cờ
+	if chess_puzzle_scene:
+		var puzzle_instance = chess_puzzle_scene.instantiate()
+		get_tree().root.add_child(puzzle_instance)
+		
 		# Khóa di chuyển của người chơi
 		var players = get_tree().get_nodes_in_group("player")
 		if players.size() > 0:
 			players[0].set_movement_enabled(false)
 		
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		ChessManager.start_game()
 	else:
-		print("ChessManager not found!")
+		print("[ERROR] chess_puzzle_scene not found!")
