@@ -1,4 +1,4 @@
-[gd_scene load_steps=45 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=48 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -33,6 +33,8 @@
 [ext_resource type="PackedScene" uid="uid://dklqtggxawoxw" path="res://assets/models/round_neoclassical_side_table__lowpoly_asset/sketchfab_scene.tscn" id="32_ygo2c"]
 [ext_resource type="PackedScene" uid="uid://dwck8v3k3sps5" path="res://assets/models/barely_used_red_candle/scene.gltf" id="33_candle_model"]
 [ext_resource type="Script" uid="uid://fmhc8dh7gbev" path="res://src/scripts/entities/elements_table_interaction.gd" id="34_elements_interact"]
+[ext_resource type="PackedScene" uid="uid://bpau2wj5niha1" path="res://assets/models/lock/lock.tscn" id="34_jhiqw"]
+[ext_resource type="Script" uid="uid://l2vjyf8isfs7" path="res://src/scripts/entities/door_teleport.gd" id="36_door_teleport"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -45,9 +47,6 @@ size = Vector3(0.8, 3.2, 0.8)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h8f27"]
 size = Vector3(4.5, 0.5, 0.8)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_lantern"]
-size = Vector3(23.950073, 28.88057, 20.333984)
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i803j"]
 sky_top_color = Color(0.05, 0.08, 0.15, 1)
@@ -74,6 +73,9 @@ volumetric_fog_enabled = true
 volumetric_fog_density = 0.002
 volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_lantern"]
+size = Vector3(23.950073, 28.88057, 20.333984)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_radio"]
 size = Vector3(13.0173645, 6.7888184, 6.6943817)
 
@@ -82,6 +84,9 @@ size = Vector3(9.951156, 1.1455765, 12.718197)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_elements_board"]
 size = Vector3(1.9785156, 1.2763672, 1.6660156)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lock"]
+size = Vector3(0.083740234, 0.17358398, 0.1649414)
 
 [node name="scene3_1" type="Node3D"]
 
@@ -138,42 +143,8 @@ transform = Transform3D(0.46448666, 0, -0.8855802, 0, 1, 0, 0.8855802, 0, 0.4644
 shape = SubResource("BoxShape3D_p6ujn")
 debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
-[node name="Sketchfab_Scene3" parent="Sketchfab_Scene/Decorration" instance=ExtResource("3_jatmx")]
-transform = Transform3D(0.1464219, 0, -0.26184088, 0, 0.3, 0, 0.26184088, 0, 0.1464219, -50.60266, -18.986088, 75.573524)
-
-[node name="Sketchfab_Scene4" parent="Sketchfab_Scene/Decorration" instance=ExtResource("3_jatmx")]
-transform = Transform3D(0.22236095, 0, 0.2013843, 0, 0.3, 0, -0.2013843, 0, 0.22236095, 39.1258, -18.986088, 46.750412)
-
-[node name="Sketchfab_Scene5" parent="Sketchfab_Scene/Decorration" instance=ExtResource("3_jatmx")]
-transform = Transform3D(-0.24617736, 0, 0.17145477, 0, 0.3, 0, -0.17145477, 0, -0.24617736, 18.273342, -18.986088, -5.35035)
-
-[node name="gate" parent="Sketchfab_Scene" instance=ExtResource("4_i803j")]
-transform = Transform3D(5.854127, 0, 1.3149912, 0, 6, 0, -1.3149912, 0, 5.854127, -35.437397, -18.88517, 3.3577008)
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Sketchfab_Scene/gate"]
-
-[node name="PillarLeft" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16, 1.4, 0)
-shape = SubResource("BoxShape3D_kjjv5")
-
-[node name="PillarRight" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16, 1.4, 0)
-shape = SubResource("BoxShape3D_kjjv5")
-
-[node name="BeamTop" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.92, 0)
-shape = SubResource("BoxShape3D_h8f27")
-
-[node name="BeamMiddle" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27, 0)
-shape = SubResource("BoxShape3D_h8f27")
-
-[node name="GateBarrier" type="CollisionShape3D" parent="Sketchfab_Scene/gate/StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
-shape = SubResource("BoxShape3D_h8f27")
-
 [node name="light1" parent="Sketchfab_Scene" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -28.5043, -8.910712, 1.5319318)
+transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -32.852345, -11.002728, -0.76953465)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Sketchfab_Scene/light1"]
 transform = Transform3D(5.0000005, 0, 0, 0, 5.0000005, 0, 0, 0, 5.0000005, 0, -167.30865, 0)
@@ -184,9 +155,20 @@ script = ExtResource("6_rtqq5")
 max_energy = 1000.0
 
 [node name="light2" parent="Sketchfab_Scene" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.01, 0, 0, 0, 0.01, 0, 0, 0, 0.01, -42.328587, -9.138102, 4.8703427)
+transform = Transform3D(0.010692145, 0, 0, 0, 0.010692145, 0, 0, 0, 0.010363541, -41.78629, -11.687322, 1.1852111)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="Sketchfab_Scene/light2"]
+transform = Transform3D(5.0000005, 0, 0, 0, 5.0000005, 0, 0, 0, 5.0000005, 89.8999, -44.40796, -39.380188)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 5.0
+omni_range = 300.0
+script = ExtResource("6_rtqq5")
+max_energy = 1000.0
+
+[node name="light2" parent="Sketchfab_Scene/light2" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.010692145, 0, 0, 0, 0.010692145, 0, 0, 0, 0.01036354, 740.51294, -11.687317, 1.1852036)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Sketchfab_Scene/light2/light2"]
 transform = Transform3D(5.0000005, 0, 0, 0, 5.0000005, 0, 0, 0, 5.0000005, 89.8999, -44.40796, -39.380188)
 light_color = Color(1, 0.521569, 0.160784, 1)
 light_energy = 5.0
@@ -197,20 +179,22 @@ max_energy = 1000.0
 [node name="Player" parent="." instance=ExtResource("2_i4dfr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -176.347, 139.065, 321.86)
 
-[node name="house2" parent="." instance=ExtResource("8_2chjh")]
+[node name="WorldAssets" type="Node3D" parent="."]
+
+[node name="house2" parent="WorldAssets" instance=ExtResource("8_2chjh")]
 transform = Transform3D(-10.863195, 0, -16.792587, 0, 19.999998, 0, 16.792587, 0, -10.863195, 90.41211, 46.440132, 910.17035)
 script = ExtResource("13_coll")
 
-[node name="house3" parent="." instance=ExtResource("9_13ota")]
-transform = Transform3D(26.458597, 0, -36.399765, 0, 45, 0, 36.399765, 0, 26.458597, -839.75305, 32.635864, 675.8747)
+[node name="house3" parent="WorldAssets" instance=ExtResource("9_13ota")]
+transform = Transform3D(26.460344, -0.008265057, -36.398495, 0.0038159324, 45, -0.0074440967, 36.398495, 0.0012902512, 26.460344, -839.75305, 32.635864, 675.8747)
 script = ExtResource("13_coll")
 
-[node name="house3_lights" type="Node3D" parent="."]
+[node name="house3_lights" type="Node3D" parent="WorldAssets"]
 
-[node name="house3_light1" parent="house3_lights" instance=ExtResource("5_lpj7r")]
+[node name="house3_light1" parent="WorldAssets/house3_lights" instance=ExtResource("5_lpj7r")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -582.3238, 104.41055, 837.8542)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light1"]
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house3_lights/house3_light1"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
 light_color = Color(1, 0.521569, 0.160784, 1)
 light_energy = 3.0
@@ -218,10 +202,10 @@ omni_range = 150.0
 script = ExtResource("6_rtqq5")
 max_energy = 500.0
 
-[node name="house3_light2" parent="house3_lights" instance=ExtResource("5_lpj7r")]
+[node name="house3_light2" parent="WorldAssets/house3_lights" instance=ExtResource("5_lpj7r")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -879.1019, 102.15079, 1049.7612)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light2"]
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house3_lights/house3_light2"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
 light_color = Color(1, 0.521569, 0.160784, 1)
 light_energy = 3.0
@@ -229,16 +213,213 @@ omni_range = 150.0
 script = ExtResource("6_rtqq5")
 max_energy = 500.0
 
-[node name="house3_light4" parent="house3_lights" instance=ExtResource("5_lpj7r")]
+[node name="house3_light4" parent="WorldAssets/house3_lights" instance=ExtResource("5_lpj7r")]
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -1173.626, 78.853905, 649.3428)
 
-[node name="OmniLight3D" type="OmniLight3D" parent="house3_lights/house3_light4"]
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house3_lights/house3_light4"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
 light_color = Color(1, 0.521569, 0.160784, 1)
 light_energy = 3.0
 omni_range = 150.0
 script = ExtResource("6_rtqq5")
 max_energy = 500.0
+
+[node name="house4" parent="WorldAssets" instance=ExtResource("10_jatmx")]
+transform = Transform3D(0.46459532, 0, -0.18480037, 0, 0.5, 0, 0.18480037, 0, 0.46459532, -311.81744, 52.833313, 76.28923)
+script = ExtResource("13_coll")
+
+[node name="house4_lights" type="Node3D" parent="WorldAssets"]
+
+[node name="house4_light1" parent="WorldAssets/house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -58.43725, 121.727295, 197.86493)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house4_lights/house4_light1"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house4_light2" parent="WorldAssets/house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 15.817364, 119.45705, -6.1187286)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house4_lights/house4_light2"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house4_light3" parent="WorldAssets/house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -426.7801, 124.08664, 146.93275)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house4_lights/house4_light3"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house4_light4" parent="WorldAssets/house4_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -303.0504, 126.71619, -149.77701)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house4_lights/house4_light4"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house1" parent="WorldAssets" instance=ExtResource("11_jatmx")]
+transform = Transform3D(-43.534615, 0, 11.390235, 0, 44.999996, 0, -11.390235, 0, -43.534615, -338.456, 24.562, 1047.217)
+script = ExtResource("13_coll")
+
+[node name="house1_lights" type="Node3D" parent="WorldAssets"]
+
+[node name="house1_light2" parent="WorldAssets/house1_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 79.49533, 97.678535, 678.4854)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house1_lights/house1_light2"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house1_light3" parent="WorldAssets/house1_lights" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 240.99036, 97.06247, 783.09607)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house1_lights/house1_light3"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="Trees" type="Node3D" parent="WorldAssets"]
+
+[node name="House1_Tree1" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(992.8, 0, 341.8, 0, 1050, 0, -341.8, 0, 992.8, -550, 24.5, 850)
+
+[node name="House1_Tree2" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -732.9681, 24.500061, 1114.9812)
+
+[node name="House1_Tree3" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(742.3, 0, -742.3, 0, 1050, 0, 742.3, 0, 742.3, -550, 24.5, 1250)
+
+[node name="House1_Tree4" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-1034.3, 0, 181.1, 0, 1050, 0, -181.1, 0, -1034.3, -150, 24.5, 1250)
+
+[node name="House2_Tree1" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 445.26184, 46.4, 710)
+
+[node name="House2_Tree2" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(525, 0, 909.3, 0, 1050, 0, -909.3, 0, 525, 160.78119, 46.39994, 568.4492)
+
+[node name="House2_Tree3" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-525, 0, -909.3, 0, 1050, 0, 909.3, 0, -525, 290, 46.4, 1110)
+
+[node name="House2_Tree4" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(7.35, 0, -1049.8, 0, 1050, 0, 1049.8, 0, 7.35, -110, 46.4, 1110)
+
+[node name="House3_Tree1" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -1040, 32.6, 475)
+
+[node name="House3_Tree2" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(909.3, 0, 525, 0, 1050, 0, -525, 0, 909.3, 23.866882, 32.6, 317.71085)
+
+[node name="House3_Tree3" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-178.5, 0, 1034.3, 0, 1050, 0, -1034.3, 0, -178.5, -1040, 32.6, 875)
+
+[node name="House3_Tree4" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(909.3, 0, -525, 0, 1050, 0, 525, 0, 909.3, -640, 32.6, 875)
+
+[node name="House4_Tree1" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -510, 52.8, -124)
+
+[node name="House4_Tree2" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(909.3, 0, 525, 0, 1050, 0, -525, 0, 909.3, -111, 52.8, -124)
+
+[node name="House4_Tree3" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(-525, 0, 909.3, 0, 1050, 0, -909.3, 0, -525, 203.05487, 52.8, 391.2333)
+
+[node name="House4_Tree4" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(0, 0, -1050, 0, 1050, 0, 1050, 0, 0, 194.54126, 52.8, 276)
+
+[node name="Between_House2_House4_Tree1" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 323.96054, 48.00006, 610.5017)
+
+[node name="Between_House2_House4_Tree2" parent="WorldAssets/Trees" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 466.35144, 49.6, 493.25)
+
+[node name="WorldAssets#Sketchfab_Scene3" parent="WorldAssets" instance=ExtResource("3_jatmx")]
+transform = Transform3D(0.1464219, 0, -0.26184088, 0, 0.3, 0, 0.26184088, 0, 0.1464219, -50.60266, -18.986088, 75.573524)
+
+[node name="WorldAssets#Sketchfab_Scene4" parent="WorldAssets" instance=ExtResource("3_jatmx")]
+transform = Transform3D(0.22236095, 0, 0.2013843, 0, 0.3, 0, -0.2013843, 0, 0.22236095, 39.1258, -18.986088, 46.750412)
+
+[node name="WorldAssets#Sketchfab_Scene5" parent="WorldAssets" instance=ExtResource("3_jatmx")]
+transform = Transform3D(-0.24617736, 0, 0.17145477, 0, 0.3, 0, -0.17145477, 0, -0.24617736, 18.273342, -18.986088, -5.35035)
+
+[node name="WorldAssets#gate" parent="WorldAssets" instance=ExtResource("4_i803j")]
+transform = Transform3D(77.87996, -5.354852, 17.493896, 5.2246637, 79.82059, 1.1735975, -17.533218, -1.4901161e-07, 78.05502, -752.64825, 38.796295, 0.6304474)
+
+[node name="Sketchfab_Scene_gate#StaticBody3D" type="StaticBody3D" parent="WorldAssets"]
+
+[node name="Sketchfab_Scene_gate_StaticBody3D#PillarLeft" type="CollisionShape3D" parent="WorldAssets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.16, 1.4, 0)
+shape = SubResource("BoxShape3D_kjjv5")
+
+[node name="Sketchfab_Scene_gate_StaticBody3D#PillarRight" type="CollisionShape3D" parent="WorldAssets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16, 1.4, 0)
+shape = SubResource("BoxShape3D_kjjv5")
+
+[node name="Sketchfab_Scene_gate_StaticBody3D#BeamTop" type="CollisionShape3D" parent="WorldAssets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.92, 0)
+shape = SubResource("BoxShape3D_h8f27")
+
+[node name="Sketchfab_Scene_gate_StaticBody3D#BeamMiddle" type="CollisionShape3D" parent="WorldAssets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27, 0)
+shape = SubResource("BoxShape3D_h8f27")
+
+[node name="Sketchfab_Scene_gate_StaticBody3D#GateBarrier" type="CollisionShape3D" parent="WorldAssets"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0)
+shape = SubResource("BoxShape3D_h8f27")
+
+[node name="Trees#Between_House2_House4_Tree3" parent="WorldAssets" instance=ExtResource("14_oak")]
+transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 390.44495, 51.2, 394.4519)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="WorldAssets"]
+environment = SubResource("Environment_lpj7r")
+
+[node name="MoonLight" type="DirectionalLight3D" parent="WorldAssets"]
+transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.70710677, -0.7071068, -0.5, 0.5, -200, 400, 500)
+light_color = Color(0.5, 0.7, 1, 1)
+light_energy = 5.0
+shadow_enabled = true
+shadow_bias = 0.05
+shadow_blur = 1.175
+directional_shadow_max_distance = 1000.0
+
+[node name="Clock" type="Node3D" parent="WorldAssets"]
+
+[node name="Clock1" parent="WorldAssets/Clock" instance=ExtResource("15_13ota")]
+transform = Transform3D(1.1182867, 9.559839, -2.712724, 0.027135164, -2.7327747, -9.619312, -9.937238, 1.0683546, -0.33154342, -463.55432, 97.20146, 943.5945)
+
+[node name="Clock2" parent="WorldAssets/Clock" instance=ExtResource("16_hpes8")]
+transform = Transform3D(5.0531235, 8.618597, -0.43097818, 0.30711463, -0.6787292, -9.972212, -8.623899, 5.0258446, -0.60765994, 57.012238, 111.332565, 864.0246)
+
+[node name="Clock3" parent="WorldAssets/Clock" instance=ExtResource("17_p6ujn")]
+transform = Transform3D(0.07266679, 7.900725, 6.129704, -9.999114, -0.010979837, 0.13269028, 0.11156525, -6.130125, 7.899945, -659.2055, 94.88237, 733.564)
+
+[node name="OldCalendar" parent="WorldAssets" instance=ExtResource("16_cal")]
+transform = Transform3D(368.45282, -311.34763, -2.85809, -0.11205731, 14.154842, -399.93738, 155.7, 736.7919, 6.475629, -288.74985, 109.94816, 196.29662)
 
 [node name="event1" type="Node3D" parent="."]
 
@@ -314,175 +495,12 @@ transform = Transform3D(0.9999999, 0, 8.940697e-08, 0, 1, 0, -8.940697e-08, 0, 0
 shape = SubResource("BoxShape3D_p6ujn")
 debug_color = Color(0.99215686, 0, 0.26666668, 1)
 
-[node name="house4" parent="." instance=ExtResource("10_jatmx")]
-transform = Transform3D(0.46459532, 0, -0.18480037, 0, 0.5, 0, 0.18480037, 0, 0.46459532, -311.81744, 52.833313, 76.28923)
-script = ExtResource("13_coll")
+[node name="Table" type="Node3D" parent="event1"]
 
-[node name="house4_lights" type="Node3D" parent="."]
-
-[node name="house4_light1" parent="house4_lights" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -58.43725, 121.727295, 197.86493)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light1"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
-light_color = Color(1, 0.521569, 0.160784, 1)
-light_energy = 3.0
-omni_range = 150.0
-script = ExtResource("6_rtqq5")
-max_energy = 500.0
-
-[node name="house4_light2" parent="house4_lights" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 15.817364, 119.45705, -6.1187286)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light2"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
-light_color = Color(1, 0.521569, 0.160784, 1)
-light_energy = 3.0
-omni_range = 150.0
-script = ExtResource("6_rtqq5")
-max_energy = 500.0
-
-[node name="house4_light3" parent="house4_lights" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -426.7801, 124.08664, 146.93275)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light3"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
-light_color = Color(1, 0.521569, 0.160784, 1)
-light_energy = 3.0
-omni_range = 150.0
-script = ExtResource("6_rtqq5")
-max_energy = 500.0
-
-[node name="house4_light4" parent="house4_lights" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -303.0504, 126.71619, -149.77701)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="house4_lights/house4_light4"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
-light_color = Color(1, 0.521569, 0.160784, 1)
-light_energy = 3.0
-omni_range = 150.0
-script = ExtResource("6_rtqq5")
-max_energy = 500.0
-
-[node name="house1" parent="." instance=ExtResource("11_jatmx")]
-transform = Transform3D(-43.534615, 0, 11.390235, 0, 44.999996, 0, -11.390235, 0, -43.534615, -338.456, 24.562, 1047.217)
-script = ExtResource("13_coll")
-
-[node name="house1_lights" type="Node3D" parent="."]
-
-[node name="house1_light2" parent="house1_lights" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 79.49533, 97.678535, 678.4854)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="house1_lights/house1_light2"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
-light_color = Color(1, 0.521569, 0.160784, 1)
-light_energy = 3.0
-omni_range = 150.0
-script = ExtResource("6_rtqq5")
-max_energy = 500.0
-
-[node name="house1_light3" parent="house1_lights" instance=ExtResource("5_lpj7r")]
-transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 240.99036, 97.06247, 783.09607)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="house1_lights/house1_light3"]
-transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
-light_color = Color(1, 0.521569, 0.160784, 1)
-light_energy = 3.0
-omni_range = 150.0
-script = ExtResource("6_rtqq5")
-max_energy = 500.0
-
-[node name="Trees" type="Node3D" parent="."]
-
-[node name="House1_Tree1" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(992.8, 0, 341.8, 0, 1050, 0, -341.8, 0, 992.8, -550, 24.5, 850)
-
-[node name="House1_Tree2" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -732.9681, 24.500061, 1114.9812)
-
-[node name="House1_Tree3" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(742.3, 0, -742.3, 0, 1050, 0, 742.3, 0, 742.3, -550, 24.5, 1250)
-
-[node name="House1_Tree4" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(-1034.3, 0, 181.1, 0, 1050, 0, -181.1, 0, -1034.3, -150, 24.5, 1250)
-
-[node name="House2_Tree1" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 445.26184, 46.4, 710)
-
-[node name="House2_Tree2" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(525, 0, 909.3, 0, 1050, 0, -909.3, 0, 525, 160.78119, 46.39994, 568.4492)
-
-[node name="House2_Tree3" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(-525, 0, -909.3, 0, 1050, 0, 909.3, 0, -525, 290, 46.4, 1110)
-
-[node name="House2_Tree4" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(7.35, 0, -1049.8, 0, 1050, 0, 1049.8, 0, 7.35, -110, 46.4, 1110)
-
-[node name="House3_Tree1" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -1040, 32.6, 475)
-
-[node name="House3_Tree2" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(909.3, 0, 525, 0, 1050, 0, -525, 0, 909.3, 23.866882, 32.6, 317.71085)
-
-[node name="House3_Tree3" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(-178.5, 0, 1034.3, 0, 1050, 0, -1034.3, 0, -178.5, -1040, 32.6, 875)
-
-[node name="House3_Tree4" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(909.3, 0, -525, 0, 1050, 0, 525, 0, 909.3, -640, 32.6, 875)
-
-[node name="House4_Tree1" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, -510, 52.8, -124)
-
-[node name="House4_Tree2" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(909.3, 0, 525, 0, 1050, 0, -525, 0, 909.3, -111, 52.8, -124)
-
-[node name="House4_Tree3" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(-525, 0, 909.3, 0, 1050, 0, -909.3, 0, -525, 203.05487, 52.8, 391.2333)
-
-[node name="House4_Tree4" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(0, 0, -1050, 0, 1050, 0, 1050, 0, 0, 194.54126, 52.8, 276)
-
-[node name="Between_House2_House4_Tree1" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 323.96054, 48.00006, 610.5017)
-
-[node name="Between_House2_House4_Tree2" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 466.35144, 49.6, 493.25)
-
-[node name="Between_House2_House4_Tree3" parent="Trees" instance=ExtResource("14_oak")]
-transform = Transform3D(1050, 0, 0, 0, 1050, 0, 0, 0, 1050, 390.44495, 51.2, 394.4519)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_lpj7r")
-
-[node name="MoonLight" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.7071068, -0.7071068, -0.5, 0.5, -200, 400, 500)
-light_color = Color(0.5, 0.7, 1, 1)
-light_energy = 5.0
-shadow_enabled = true
-shadow_bias = 0.05
-shadow_blur = 1.175
-directional_shadow_max_distance = 1000.0
-
-[node name="OldCalendar" parent="." instance=ExtResource("16_cal")]
-transform = Transform3D(368.45282, -311.34763, -2.85809, -0.11205731, 14.154842, -399.93738, 155.7, 736.7919, 6.475629, -288.74985, 109.94816, 196.29662)
-
-[node name="Clock" type="Node3D" parent="."]
-
-[node name="Clock1" parent="Clock" instance=ExtResource("15_13ota")]
-transform = Transform3D(1.1182867, 9.559839, -2.712724, 0.027135164, -2.7327747, -9.619312, -9.937238, 1.0683546, -0.33154342, -463.55432, 97.20146, 943.5945)
-
-[node name="Clock2" parent="Clock" instance=ExtResource("16_hpes8")]
-transform = Transform3D(5.0531235, 8.618597, -0.43097818, 0.30711463, -0.6787292, -9.972212, -8.623899, 5.0258446, -0.60765994, 57.012238, 111.332565, 864.0246)
-
-[node name="Clock3" parent="Clock" instance=ExtResource("17_p6ujn")]
-transform = Transform3D(0.07266679, 7.900725, 6.129704, -9.999114, -0.010979837, 0.13269028, 0.11156525, -6.130125, 7.899945, -659.2055, 94.88237, 733.564)
-
-[node name="Table" type="Node3D" parent="."]
-
-[node name="Table1" parent="Table" instance=ExtResource("18_hpes8")]
+[node name="Table1" parent="event1/Table" instance=ExtResource("18_hpes8")]
 transform = Transform3D(40, 0, 0, 0, 40, 0, 0, 0, 40, -668.0931, 46.388092, 593.4122)
 
-[node name="InteractivePaper" parent="Table" instance=ExtResource("25_paper")]
+[node name="InteractivePaper" parent="event1/Table" instance=ExtResource("25_paper")]
 transform = Transform3D(259.8076, 0, 150.00008, 0, 300, 0, -150.00008, 0, 259.8076, -640.5316, 74.72279, 602.04016)
 prompt_text = "Xem tờ giấy"
 
@@ -534,17 +552,40 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.1, 1)
 [node name="candle5" parent="event2/CandlePuzzle/paper_candlegame_even" instance=ExtResource("33_candle_model")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0.1, 1)
 
-[node name="element_game_board" parent="." instance=ExtResource("32_ygo2c")]
+[node name="event3" type="Node3D" parent="."]
+
+[node name="element_game_board" parent="event3" instance=ExtResource("32_ygo2c")]
 transform = Transform3D(30, 0, 0, 0, 30, 0, 0, 0, 30, -409.45285, 64.42497, 1115.2443)
 
-[node name="BoardInteract" type="StaticBody3D" parent="element_game_board"]
+[node name="BoardInteract" type="StaticBody3D" parent="event3/element_game_board"]
 collision_layer = 2
 script = ExtResource("34_elements_interact")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="element_game_board/BoardInteract"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event3/element_game_board/BoardInteract"]
 transform = Transform3D(0.48666888, 0, -0.114684954, 0, 0.09999996, 0, 0.114684954, 0, 0.48666888, -0.34977722, 0.58692837, -0.57966614)
 shape = SubResource("BoxShape3D_elements_board")
 
 [node name="Scene3Event" type="Node3D" parent="."]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
 script = ExtResource("15_s3evt")
+
+[node name="lock" parent="." instance=ExtResource("34_jhiqw")]
+transform = Transform3D(-50.875664, 0, -31.806707, 0, 60, 0, 31.806707, 0, -50.875664, -816.6343, 92.11401, 995.1634)
+
+[node name="House3_DoorInteract" type="StaticBody3D" parent="." node_paths=PackedStringArray("outside_marker", "inside_marker", "lock_model")]
+transform = Transform3D(60, 0, 0, 0, 60, 0, 0, 0, 60, -817.984, 92.114, 993.497)
+collision_layer = 2
+script = ExtResource("36_door_teleport")
+outside_marker = NodePath("../House3_OutsideMarker")
+inside_marker = NodePath("../House3_InsideMarker")
+lock_model = NodePath("../lock")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="House3_DoorInteract"]
+transform = Transform3D(0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0)
+shape = SubResource("BoxShape3D_lock")
+
+[node name="House3_InsideMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -839.753, 40, 675.875)
+
+[node name="House3_OutsideMarker" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -817.984, 92.114, 998.497)

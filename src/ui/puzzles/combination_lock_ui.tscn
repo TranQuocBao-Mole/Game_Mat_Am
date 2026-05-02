@@ -1,0 +1,287 @@
+[gd_scene load_steps=7 format=3 uid="uid://cy8p2u7l1v8q"]
+
+[ext_resource type="Script" uid="uid://d2p1q4w7x1m0" path="res://src/ui/puzzles/combination_lock_ui.gd" id="1_lock"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.05, 0.05, 0.07, 0.85)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.12, 0.12, 0.15, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.35, 0.35, 0.4, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_btn"]
+bg_color = Color(0.2, 0.2, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.4, 0.4, 0.45, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_unlock"]
+bg_color = Color(0.15, 0.25, 0.15, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.3, 0.5, 0.3, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="LabelSettings" id="LabelSettings_digit"]
+font_size = 72
+font_color = Color(0.9, 0.9, 1, 1)
+outline_size = 12
+outline_color = Color(0, 0, 0.2, 1)
+shadow_size = 8
+shadow_color = Color(0, 0, 0, 0.5)
+
+[node name="CombinationLockUI" type="CanvasLayer"]
+script = ExtResource("1_lock")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Dimmer" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="MainPanel" type="Panel" parent="Control"]
+custom_minimum_size = Vector2(600, 450)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -225.0
+offset_right = 300.0
+offset_bottom = 225.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="Title" type="Label" parent="Control/MainPanel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 20.0
+offset_right = 150.0
+offset_bottom = 60.0
+grow_horizontal = 2
+text = "Ổ KHÓA KÝ ỨC"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Digits" type="HBoxContainer" parent="Control/MainPanel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -220.0
+offset_top = -100.0
+offset_right = 220.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="Digit1" type="VBoxContainer" parent="Control/MainPanel/Digits"]
+layout_mode = 2
+alignment = 1
+
+[node name="Up" type="Button" parent="Control/MainPanel/Digits/Digit1"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▲"
+
+[node name="Label" type="Label" parent="Control/MainPanel/Digits/Digit1"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_digit")
+horizontal_alignment = 1
+
+[node name="Down" type="Button" parent="Control/MainPanel/Digits/Digit1"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▼"
+
+[node name="Digit2" type="VBoxContainer" parent="Control/MainPanel/Digits"]
+layout_mode = 2
+alignment = 1
+
+[node name="Up" type="Button" parent="Control/MainPanel/Digits/Digit2"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▲"
+
+[node name="Label" type="Label" parent="Control/MainPanel/Digits/Digit2"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_digit")
+horizontal_alignment = 1
+
+[node name="Down" type="Button" parent="Control/MainPanel/Digits/Digit2"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▼"
+
+[node name="Digit3" type="VBoxContainer" parent="Control/MainPanel/Digits"]
+layout_mode = 2
+alignment = 1
+
+[node name="Up" type="Button" parent="Control/MainPanel/Digits/Digit3"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▲"
+
+[node name="Label" type="Label" parent="Control/MainPanel/Digits/Digit3"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_digit")
+horizontal_alignment = 1
+
+[node name="Down" type="Button" parent="Control/MainPanel/Digits/Digit3"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▼"
+
+[node name="Digit4" type="VBoxContainer" parent="Control/MainPanel/Digits"]
+layout_mode = 2
+alignment = 1
+
+[node name="Up" type="Button" parent="Control/MainPanel/Digits/Digit4"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▲"
+
+[node name="Label" type="Label" parent="Control/MainPanel/Digits/Digit4"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_digit")
+horizontal_alignment = 1
+
+[node name="Down" type="Button" parent="Control/MainPanel/Digits/Digit4"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▼"
+
+[node name="Digit5" type="VBoxContainer" parent="Control/MainPanel/Digits"]
+layout_mode = 2
+alignment = 1
+
+[node name="Up" type="Button" parent="Control/MainPanel/Digits/Digit5"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▲"
+
+[node name="Label" type="Label" parent="Control/MainPanel/Digits/Digit5"]
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_digit")
+horizontal_alignment = 1
+
+[node name="Down" type="Button" parent="Control/MainPanel/Digits/Digit5"]
+custom_minimum_size = Vector2(60, 40)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_btn")
+text = "▼"
+
+[node name="UnlockButton" type="Button" parent="Control/MainPanel"]
+custom_minimum_size = Vector2(200, 60)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/normal = SubResource("StyleBoxFlat_unlock")
+text = "MỞ KHÓA"
+
+[node name="ResultLabel" type="Label" parent="Control/MainPanel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -35.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Nhập mã số..."
+horizontal_alignment = 1
+
+[node name="CloseButton" type="Button" parent="Control/MainPanel"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 0
+text = "X"
+
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit1/Up" to="." method="_on_digit_up" binds= [0]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit1/Down" to="." method="_on_digit_down" binds= [0]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit2/Up" to="." method="_on_digit_up" binds= [1]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit2/Down" to="." method="_on_digit_down" binds= [1]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit3/Up" to="." method="_on_digit_up" binds= [2]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit3/Down" to="." method="_on_digit_down" binds= [2]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit4/Up" to="." method="_on_digit_up" binds= [3]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit4/Down" to="." method="_on_digit_down" binds= [3]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit5/Up" to="." method="_on_digit_up" binds= [4]]
+[connection signal="pressed" from="Control/MainPanel/Digits/Digit5/Down" to="." method="_on_digit_down" binds= [4]]
+[connection signal="pressed" from="Control/MainPanel/UnlockButton" to="." method="_on_unlock_pressed"]
+[connection signal="pressed" from="Control/MainPanel/CloseButton" to="." method="_on_close_pressed"]

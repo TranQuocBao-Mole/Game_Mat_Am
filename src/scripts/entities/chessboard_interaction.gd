@@ -6,10 +6,18 @@ extends StaticBody3D
 
 # Ghi nhớ layer ban đầu từ Editor
 @onready var _original_layer = collision_layer
+@export var chess_puzzle_scene: PackedScene
 
 func _ready():
 	apply_tint()
 	_update_state()
+	
+	# Tự động tìm file UI nếu chưa được gán trong Inspector
+	if chess_puzzle_scene == null:
+		var path = "res://src/ui/puzzles/chess_puzzle_ui.tscn"
+		if ResourceLoader.exists(path):
+			chess_puzzle_scene = load(path)
+	
 	if ChessManager:
 		if ChessManager.is_game_solved:
 			prompt_text = "Xem bàn cờ"
@@ -67,12 +75,19 @@ func interact() -> void:
 	# 2. Nếu chưa giải, mở UI giải đố cờ
 	if chess_puzzle_scene:
 		var puzzle_instance = chess_puzzle_scene.instantiate()
-		get_tree().root.add_child(puzzle_instance)
 		
-		# Khóa di chuyển của người chơi
-		var players = get_tree().get_nodes_in_group("player")
-		if players.size() > 0:
-			players[0].set_movement_enabled(false)
+		# Đảm bảo UI hiện lên trên cùng bằng cách bọc vào CanvasLayer nếu nó chưa phải là CanvasLayer
+		if not puzzle_instance is CanvasLayer:
+			var cl = CanvasLayer.new()
+			cl.layer = 5 # Giảm xuống để Dialogue (thường ở layer cao hơn) có thể hiện đè lên
+			get_tree().root.add_child(cl)
+			cl.add_child(puzzle_instance)
+		else:
+			get_tree().root.add_child(puzzle_instance)
+			
+		# Gọi hàm bắt đầu game đã tìm thấy trong chess_puzzle_ui.gd
+		if puzzle_instance.has_method("start_game"):
+			puzzle_instance.start_game()
 		
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:

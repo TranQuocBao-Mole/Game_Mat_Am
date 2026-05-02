@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d2tw14t3lf5vj" path="res://src/scenes/test/puzzle_test_room.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://de2xr7k1mlh3p" path="res://src/ui/puzzles/candle_puzzle_ui.tscn" id="2_candle"]
 [ext_resource type="PackedScene" path="res://src/ui/puzzles/elements_puzzle_ui.tscn" id="3_elements"]
+[ext_resource type="PackedScene" uid="uid://cy8p2u7l1v8q" path="res://src/ui/puzzles/combination_lock_ui.tscn" id="4_lock"]
 
 [node name="PuzzleTestRoom" type="Control"]
 layout_mode = 3
@@ -67,6 +68,12 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "KIỂM TRA CÂU ĐỐ THỬ ĐỘC"
 
+[node name="TestLock" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "KIỂM TRA Ổ KHÓA (MÃ: 97529)"
+
 [node name="LogLabel" type="Label" parent="."]
 layout_mode = 1
 anchors_preset = 5
@@ -90,8 +97,12 @@ visible = false
 [node name="ElementsPuzzleUI" parent="CanvasLayer" instance=ExtResource("3_elements")]
 visible = false
 
+[node name="CombinationLockUI" parent="CanvasLayer" instance=ExtResource("4_lock")]
+visible = false
+
 [connection signal="pressed" from="VBoxContainer/TestCandle" to="." method="_on_test_candle_pressed"]
 [connection signal="pressed" from="VBoxContainer/TestElements" to="." method="_on_test_elements_pressed"]
 [connection signal="pressed" from="VBoxContainer/TestCoin" to="." method="_on_test_coin_pressed"]
 [connection signal="pressed" from="VBoxContainer/TestTalisman" to="." method="_on_test_talisman_pressed"]
 [connection signal="pressed" from="VBoxContainer/TestPoison" to="." method="_on_test_poison_pressed"]
+[connection signal="pressed" from="VBoxContainer/TestLock" to="." method="_on_test_lock_pressed"]

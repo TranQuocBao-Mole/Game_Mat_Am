@@ -8,6 +8,7 @@ signal puzzle_finished(won: bool)
 @onready var moves_label = find_child("MovesLabel")
 @onready var sanity_bar = find_child("SanityBar")
 @onready var main_panel = find_child("MainPanel")
+var is_game_solved: bool = false
 
 var logic = ElementsPuzzleLogic.new()
 var selected_slot: int = -1
@@ -177,6 +178,7 @@ func _on_conflict_occurred(_p1: int, _p2: int):
 	flash.tween_property(main_panel, "self_modulate", Color(1, 1, 1), 0.5)
 
 func _on_puzzle_solved():
+	is_game_solved = true
 	status_label.text = "VẠN VẬT QUY NHẤT! PHONG ẤN ĐÃ MỞ."
 	status_label.modulate = Color(2.0, 1.8, 0.5)
 	

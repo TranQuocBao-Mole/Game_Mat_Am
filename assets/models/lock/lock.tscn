@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://bpau2wj5niha1"]
+
+[ext_resource type="PackedScene" uid="uid://kk0auy7m64hq" path="res://assets/models/lock/scene.gltf" id="1_pbfj3"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_pbfj3")]
+
+[node name="Object_2" parent="Sketchfab_model/82a2b5df2d244675ba97f16721580d89_fbx" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5806942, 0, 0)
+
+[node name="Weel_2_2" parent="Sketchfab_model/82a2b5df2d244675ba97f16721580d89_fbx/Object_2/RootNode/Lock/Null_2" index="0"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 2.350347, 0.053831518, 0)
+
+[node name="Weel_4_2" parent="Sketchfab_model/82a2b5df2d244675ba97f16721580d89_fbx/Object_2/RootNode/Lock/Null_2" index="1"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 1.300699, 0.053831518, 0)
+
+[node name="Weel_3_2" parent="Sketchfab_model/82a2b5df2d244675ba97f16721580d89_fbx/Object_2/RootNode/Lock/Null_2" index="2"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, 0.251051, 0.053831518, 0)
+
+[node name="Weel_2_3" parent="Sketchfab_model/82a2b5df2d244675ba97f16721580d89_fbx/Object_2/RootNode/Lock/Null_2" index="3"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, -0.798597, 0.053831518, 0)
+
+[node name="Weel_1_2" parent="Sketchfab_model/82a2b5df2d244675ba97f16721580d89_fbx/Object_2/RootNode/Lock/Null_2" index="4"]
+transform = Transform3D(1, 0, 0, 0, -1, 8.742278e-08, 0, -8.742278e-08, -1, -1.848245, 0.053831518, 0)

@@ -2,6 +2,7 @@ extends Control
 
 @onready var candle_puzzle = $CanvasLayer/CandlePuzzleUI
 @onready var elements_puzzle = $CanvasLayer/ElementsPuzzleUI
+@onready var lock_puzzle = $CanvasLayer/CombinationLockUI
 @onready var log_label = $LogLabel
 
 func _ready():
@@ -16,12 +17,15 @@ func _ready():
 		get_node("/root/TalismanManager").puzzle_finished.connect(_on_puzzle_finished.bind("Vẽ Bùa"))
 	if has_node("/root/PoisonManager"):
 		get_node("/root/PoisonManager").puzzle_finished.connect(_on_puzzle_finished.bind("Thử Độc"))
+	lock_puzzle.puzzle_finished.connect(_on_puzzle_finished.bind("Ổ Khóa"))
 
 func _setup_test_ui():
 	# Làm cho các nút trong phòng test trông xịn hơn và hỗ trợ điều khiển phím
 	var test_buttons = [$VBoxContainer/TestCandle, $VBoxContainer/TestElements, $VBoxContainer/TestCoin, $VBoxContainer/TestTalisman]
 	if has_node("VBoxContainer/TestPoison"):
 		test_buttons.append($VBoxContainer/TestPoison)
+	if has_node("VBoxContainer/TestLock"):
+		test_buttons.append($VBoxContainer/TestLock)
 		
 	for btn in test_buttons:
 		btn.focus_mode = Control.FOCUS_ALL
@@ -39,6 +43,7 @@ func _input(event):
 	if has_node("/root/CoinManager") and get_node("/root/CoinManager").visible: return
 	if has_node("/root/TalismanManager") and get_node("/root/TalismanManager").visible: return
 	if has_node("/root/PoisonManager") and get_node("/root/PoisonManager").visible: return
+	if lock_puzzle.visible: return
 		
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_1:
@@ -51,6 +56,8 @@ func _input(event):
 			_on_test_talisman_pressed()
 		elif event.keycode == KEY_5:
 			_on_test_poison_pressed()
+		elif event.keycode == KEY_6:
+			_on_test_lock_pressed()
 
 func _on_test_candle_pressed():
 	log_label.text = "Đang kiểm tra: Câu đố Xếp Nến..."
@@ -75,10 +82,14 @@ func _on_test_poison_pressed():
 	if has_node("/root/PoisonManager"):
 		get_node("/root/PoisonManager").open_puzzle()
 
+func _on_test_lock_pressed():
+	log_label.text = "Đang kiểm tra: Ổ khóa (Mã: 97529)..."
+	lock_puzzle.open_puzzle()
+
 func _on_puzzle_finished(won: bool, puzzle_name: String):
 	if won:
 		log_label.text = "CHÚC MỪNG! Giải xong [" + puzzle_name + "]\n[1-5] Thử lại các câu đố"
 		log_label.modulate = Color.GOLD
 	else:
-		log_label.text = "PHÒNG THỬ NGHIỆM CÂU ĐỐ\n[1] Nến | [2] Ngũ Hành | [3] Cân Xu | [4] Vẽ Bùa | [5] Thử Độc"
+		log_label.text = "PHÒNG THỬ NGHIỆM CÂU ĐỐ\n[1] Nến | [2] Ngũ Hành | [3] Cân Xu | [4] Vẽ Bùa | [5] Thử Độc | [6] Ổ Khóa"
 		log_label.modulate = Color.WHITE

@@ -4,6 +4,7 @@ signal puzzle_finished(won: bool)
 
 @onready var candle_container = find_child("CandleContainer")
 @onready var status_label = find_child("StatusLabel")
+var is_game_solved: bool = false
 
 var logic = CandlePuzzleLogic.new()
 
@@ -64,6 +65,7 @@ func _refresh_ui():
 			body.modulate = Color(1, 1, 1, 1) # Hiển thị màu gốc của sprite, không tô màu
 
 func _on_puzzle_solved():
+	is_game_solved = true
 	status_label.text = "PHONG ẤN ĐÃ MỞ! Hào quang quy tụ."
 	status_label.modulate = Color(2.5, 2.0, 1.0)
 	
