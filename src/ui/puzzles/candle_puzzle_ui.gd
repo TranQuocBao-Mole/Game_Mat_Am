@@ -81,7 +81,8 @@ func _on_puzzle_solved():
 
 func open_puzzle():
 	show()
-	logic.reset_puzzle()
+	if not is_game_solved:
+		logic.reset_puzzle()
 	_refresh_ui()
 	status_label.text = "Thắp sáng Ngũ Chú để tìm đường thoát..."
 	

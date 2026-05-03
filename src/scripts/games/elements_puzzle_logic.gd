@@ -18,9 +18,9 @@ var element_names = {
 }
 
 var slots: Array = [] # Lưu các Element hiện tại ở 5 vị trí
-var max_sanity: int = 5
-var current_sanity: int = 5
-var moves_left: int = 15
+var max_sanity: int = 10
+var current_sanity: int = 10
+var moves_left: int = 20
 
 # Cặp tương sinh: [Kim, Thủy], [Thủy, Mộc], [Mộc, Hỏa], [Hỏa, Thổ], [Thổ, Kim]
 var generation_pairs = [[1, 2], [2, 3], [3, 4], [4, 5], [5, 1]]
@@ -37,7 +37,7 @@ func setup_puzzle():
         slots.shuffle()
         
     current_sanity = max_sanity
-    moves_left = 15
+    moves_left = 20
 
 func swap_elements(idx_a: int, idx_b: int):
     if moves_left <= 0: return
@@ -55,14 +55,19 @@ func swap_elements(idx_a: int, idx_b: int):
         out_of_sanity.emit()
 
 func _check_for_conflicts():
-    # Kiểm tra các cặp kề nhau trong vòng tròn
+    # Kiểm tra xem có BẤT KỲ cặp nào xung khắc không
+    var has_conflict = false
     for i in range(5):
         var e1 = slots[i]
         var e2 = slots[(i + 1) % 5]
         
         if is_conflict_pair(e1, e2):
-            current_sanity -= 1
+            has_conflict = true
             conflict_occurred.emit(i, (i + 1) % 5)
+    
+    # Chỉ trừ đúng 1 máu mỗi lượt nếu có xung khắc, bất kể bao nhiêu cặp
+    if has_conflict:
+        current_sanity -= 1
 
 func is_link_valid(e1: Element, e2: Element) -> bool:
     if e1 == Element.NONE or e2 == Element.NONE: return false

@@ -73,22 +73,13 @@ func interact() -> void:
 		return
 		
 	# 2. Nếu chưa giải, mở UI giải đố cờ
-	if chess_puzzle_scene:
-		var puzzle_instance = chess_puzzle_scene.instantiate()
-		
-		# Đảm bảo UI hiện lên trên cùng bằng cách bọc vào CanvasLayer nếu nó chưa phải là CanvasLayer
-		if not puzzle_instance is CanvasLayer:
-			var cl = CanvasLayer.new()
-			cl.layer = 5 # Giảm xuống để Dialogue (thường ở layer cao hơn) có thể hiện đè lên
-			get_tree().root.add_child(cl)
-			cl.add_child(puzzle_instance)
-		else:
-			get_tree().root.add_child(puzzle_instance)
-			
-		# Gọi hàm bắt đầu game đã tìm thấy trong chess_puzzle_ui.gd
-		if puzzle_instance.has_method("start_game"):
-			puzzle_instance.start_game()
+	if ChessManager:
+		# Gọi trực tiếp Manager gốc thay vì tạo bản sao mới
+		if ChessManager.has_method("start_game"):
+			ChessManager.start_game()
+		elif ChessManager.has_method("open_puzzle"):
+			ChessManager.open_puzzle()
 		
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	else:
-		print("[ERROR] chess_puzzle_scene not found!")
+		print("LOI: Không tìm thấy ChessManager (Autoload)!")

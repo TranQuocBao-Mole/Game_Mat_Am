@@ -202,7 +202,8 @@ func _on_game_over():
 func open_puzzle():
 	show()
 	original_panel_pos = Vector2.ZERO # Reset để lấy lại tọa độ chuẩn
-	logic.setup_puzzle()
+	if not is_game_solved:
+		logic.setup_puzzle()
 	_refresh_ui()
 	status_label.text = "Hãy cân bằng Ngũ Hành..."
 	status_label.modulate = Color(0.9, 0.8, 0.7)

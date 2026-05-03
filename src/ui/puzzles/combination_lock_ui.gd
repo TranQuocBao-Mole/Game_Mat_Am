@@ -67,9 +67,26 @@ func _on_unlock_pressed():
 	if is_correct:
 		# KIỂM TRA MANH MỐI
 		var clues_ok = true
-		if ChessManager and not ChessManager.is_game_solved: clues_ok = false
-		if CandleManager and not CandleManager.is_game_solved: clues_ok = false
-		if ElementsManager and not ElementsManager.is_game_solved: clues_ok = false
+		var missing_clues = []
+		
+		var chess_ok = ChessManager.is_game_solved if ChessManager else false
+		var candle_ok = CandleManager.is_game_solved if CandleManager else false
+		var elements_ok = ElementsManager.is_game_solved if ElementsManager else false
+		
+		print("[DEBUG] Trạng thái các trò chơi:")
+		print(" - Cờ tướng: ", chess_ok)
+		print(" - Xếp nến: ", candle_ok)
+		print(" - Ngũ hành: ", elements_ok)
+		
+		if not chess_ok:
+			clues_ok = false
+			missing_clues.append("Cờ tướng")
+		if not candle_ok:
+			clues_ok = false
+			missing_clues.append("Xếp nến")
+		if not elements_ok:
+			clues_ok = false
+			missing_clues.append("Ngũ hành")
 		
 		if clues_ok:
 			_on_win()

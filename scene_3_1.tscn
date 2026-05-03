@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=49 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -35,6 +35,7 @@
 [ext_resource type="Script" uid="uid://fmhc8dh7gbev" path="res://src/scripts/entities/elements_table_interaction.gd" id="34_elements_interact"]
 [ext_resource type="PackedScene" uid="uid://bpau2wj5niha1" path="res://assets/models/lock/lock.tscn" id="34_jhiqw"]
 [ext_resource type="Script" uid="uid://l2vjyf8isfs7" path="res://src/scripts/entities/door_teleport.gd" id="36_door_teleport"]
+[ext_resource type="PackedScene" uid="uid://10yk2a2b2agm" path="res://assets/models/ghost_event4/stalking.tscn" id="36_iocmh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -206,6 +207,17 @@ max_energy = 500.0
 transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, -879.1019, 102.15079, 1049.7612)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house3_lights/house3_light2"]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
+light_color = Color(1, 0.521569, 0.160784, 1)
+light_energy = 3.0
+omni_range = 150.0
+script = ExtResource("6_rtqq5")
+max_energy = 500.0
+
+[node name="house3_light2" parent="WorldAssets/house3_lights/house3_light2" instance=ExtResource("5_lpj7r")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 1015.699, -94.88162, 239.29395)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldAssets/house3_lights/house3_light2/house3_light2"]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 50, 0)
 light_color = Color(1, 0.521569, 0.160784, 1)
 light_energy = 3.0
@@ -565,27 +577,42 @@ script = ExtResource("34_elements_interact")
 transform = Transform3D(0.48666888, 0, -0.114684954, 0, 0.09999996, 0, 0.114684954, 0, 0.48666888, -0.34977722, 0.58692837, -0.57966614)
 shape = SubResource("BoxShape3D_elements_board")
 
-[node name="Scene3Event" type="Node3D" parent="."]
+[node name="event4" type="Node3D" parent="."]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
-script = ExtResource("15_s3evt")
 
-[node name="lock" parent="." instance=ExtResource("34_jhiqw")]
-transform = Transform3D(-50.875664, 0, -31.806707, 0, 60, 0, 31.806707, 0, -50.875664, -816.6343, 92.11401, 995.1634)
+[node name="lock" parent="event4" instance=ExtResource("34_jhiqw")]
+transform = Transform3D(-50.87567, 0, -31.806711, 0, 60.000008, 0, 31.806711, 0, -50.87567, -816.6344, 92.11401, 995.1634)
 
-[node name="House3_DoorInteract" type="StaticBody3D" parent="." node_paths=PackedStringArray("outside_marker", "inside_marker", "lock_model")]
-transform = Transform3D(60, 0, 0, 0, 60, 0, 0, 0, 60, -817.984, 92.114, 993.497)
+[node name="House3_DoorInteract" type="StaticBody3D" parent="event4" node_paths=PackedStringArray("outside_marker", "inside_marker", "lock_model", "stalking_entity")]
+transform = Transform3D(60.000008, 0, 0, 0, 60.000008, 0, 0, 0, 60.000008, -817.98413, 92.114, 993.497)
 collision_layer = 2
 script = ExtResource("36_door_teleport")
 outside_marker = NodePath("../House3_OutsideMarker")
 inside_marker = NodePath("../House3_InsideMarker")
 lock_model = NodePath("../lock")
+stalking_entity = NodePath("../../stalking")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="House3_DoorInteract"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event4/House3_DoorInteract"]
 transform = Transform3D(0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0)
 shape = SubResource("BoxShape3D_lock")
 
-[node name="House3_InsideMarker" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -839.753, 40, 675.875)
+[node name="House3_InsideMarker" type="Marker3D" parent="event4"]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -861.2579, 66.74041, 987.0657)
 
-[node name="House3_OutsideMarker" type="Marker3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -817.984, 92.114, 998.497)
+[node name="House3_OutsideMarker" type="Marker3D" parent="event4"]
+transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -814.2095, 92.114, 1018.842)
+
+[node name="Scene3Event" type="Node3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
+script = ExtResource("15_s3evt")
+
+[node name="stalking" parent="." instance=ExtResource("36_iocmh")]
+transform = Transform3D(-10.884313, 0, -22.50626, 0, 25, 0, 22.50626, 0, -10.884313, -714.46295, 41.28719, 1064.5001)
+visible = false
+
+[node name="GhostLight" type="SpotLight3D" parent="stalking"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 3, 2)
+light_color = Color(0.8, 0.9, 1, 1)
+light_energy = 15.0
+spot_range = 10.0
+spot_attenuation = 0.5

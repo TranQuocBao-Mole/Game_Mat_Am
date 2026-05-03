@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://10yk2a2b2agm"]
+
+[ext_resource type="PackedScene" uid="uid://mlotptufpgl4" path="res://assets/models/ghost_event4/scene.gltf" id="1_eqlyb"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_eqlyb")]

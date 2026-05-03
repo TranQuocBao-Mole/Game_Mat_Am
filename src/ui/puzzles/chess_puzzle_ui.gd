@@ -663,6 +663,7 @@ func _check_win_condition() -> bool:
 	return false
 
 func _on_win():
+	is_game_solved = true # Bật ngay lập tức khi thắng
 	print("DEBUG: [ChessPuzzle] Thắng cuộc! Khởi động sự kiện đèn bí ẩn...")
 	is_active = false
 	is_player_turn = false
@@ -746,7 +747,6 @@ func _on_win():
 		
 		player.set_movement_enabled(true) # Mở khóa lại
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED) # Trả lại quyền điều khiển hướng nhìn
-		is_game_solved = true # Đánh dấu đã giải xong
 		print("DEBUG: [ChessPuzzle] Kết thúc sự kiện, mở khóa người chơi và trả lại chuột.")
 
 	else:
