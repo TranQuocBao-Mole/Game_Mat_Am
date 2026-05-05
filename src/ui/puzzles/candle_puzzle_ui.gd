@@ -65,7 +65,8 @@ func _refresh_ui():
 			body.modulate = Color(1, 1, 1, 1) # Hiển thị màu gốc của sprite, không tô màu
 
 func _on_puzzle_solved():
-	is_game_solved = true
+	is_game_solved = true # Bật ngay lập tức khi thắng
+	GameState.is_candle_puzzle_solved = true
 	status_label.text = "PHONG ẤN ĐÃ MỞ! Hào quang quy tụ."
 	status_label.modulate = Color(2.5, 2.0, 1.0)
 	

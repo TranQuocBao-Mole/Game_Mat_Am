@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkumwx4fyo0cf"]
+
+[ext_resource type="PackedScene" uid="uid://burq7wxjds3ch" path="res://assets/models/horror_ghost/scene.gltf" id="1_f1v17"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_f1v17")]

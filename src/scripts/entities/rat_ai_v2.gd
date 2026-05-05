@@ -77,14 +77,14 @@ func _ready():
 	name_label.double_sided = false
 	name_label.no_depth_test = true # Nhìn xuyên tường giống Roblox
 	name_label.pixel_size = 0.05 # Phong to chu (Vi map x20 rat rong)
-	name_label.font_size = 64
-	name_label.outline_size = 20
+	name_label.font_size = 85 # To hon ~30% so voi goc
+	name_label.outline_size = 25
 	name_label.outline_modulate = Color.BLACK
 	name_label.modulate = Color.YELLOW # Chu mau vang cho noi bat
 	name_label.top_level = true
 	add_child(name_label)
 
-func _on_animation_finished(anim_name: String):
+func _on_animation_finished(_anim_name: String):
 	if anim_finish_callback.is_valid():
 		anim_finish_callback.call()
 		anim_finish_callback = Callable()
@@ -146,10 +146,13 @@ func _process(_delta):
 	
 	# Cap nhat vi tri Ten tren dau
 	if name_label:
-		name_label.global_position = global_position + Vector3(0, 10.0, 0)
+		name_label.global_position = global_position + Vector3(0, 15.0, 0) # Cao vua phai
 		name_label.text = rat_name
-		# Chỉ hiện tên khi đã mở khóa
-		name_label.visible = GameState.is_rat_hunt_unlocked
+		# Chỉ hiện tên khi đã mở khóa (Chỉ kiểm tra khi đang chạy game)
+		if not Engine.is_editor_hint():
+			name_label.visible = GameState.is_rat_hunt_unlocked
+		else:
+			name_label.visible = false
 
 func _physics_process(delta):
 	if Engine.is_editor_hint() or current_state == State.CAUGHT or not player: return
@@ -290,6 +293,7 @@ func _input(event):
 
 func interact():
 	if current_state == State.CAUGHT or not player: return
+	if Engine.is_editor_hint(): return
 	if not GameState.is_rat_hunt_unlocked: 
 		if get_tree().root.has_node("DialogueManager"):
 			get_tree().root.get_node("DialogueManager").show_text("Bạn chưa biết cách bắt sinh vật này...")
@@ -306,6 +310,15 @@ func catch_rat():
 	
 	if player and player.has_method("add_item"):
 		player.add_item("mouse", 1, rat_name)
+		
+		# Cap nhat Quest HUD
+		var q_manager = get_node_or_null("/root/QuestSystem")
+		if q_manager and q_manager.is_quest_active:
+			var current_mice = player.get_item_count("mouse")
+			if current_mice < 3:
+				q_manager.update_progress(current_mice)
+			else:
+				q_manager.start_quest("find_rats", "MANG CHUỘT VỀ BÌNH ĐỘC", 0) # Update title without (3/3)
 	elif player and "mice_count" in player:
 		player.mice_count += 1
 	

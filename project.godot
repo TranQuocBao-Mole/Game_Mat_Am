@@ -28,6 +28,9 @@ ElementsManager="*res://src/ui/puzzles/elements_puzzle_ui.tscn"
 CoinManager="*res://src/ui/puzzles/coin_puzzle_ui.tscn"
 TalismanManager="*res://src/ui/puzzles/talisman_puzzle_ui.tscn"
 PoisonManager="*res://src/ui/puzzles/poison_puzzle_ui.tscn"
+QuestSystem="*res://src/scripts/managers/quest_manager.gd"
+QuestHUD="*res://src/ui/quest_hud.tscn"
+GameState="*res://src/scripts/common/global_state.gd"
 
 [dotnet]
 
@@ -89,7 +92,7 @@ interact={
 }
 inventory={
 "deadzone": 0.2,
-"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":89,"key_label":0,"unicode":121,"location":0,"echo":false,"script":null)
+"events": [Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":-1,"window_id":0,"alt_pressed":false,"shift_pressed":false,"ctrl_pressed":false,"meta_pressed":false,"pressed":false,"keycode":0,"physical_keycode":4194306,"key_label":0,"unicode":0,"location":0,"echo":false,"script":null)
 ]
 }
 

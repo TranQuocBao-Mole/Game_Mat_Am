@@ -1,0 +1,8 @@
+Model Information:
+* title:	Chinese Commode
+* source:	https://sketchfab.com/3d-models/chinese-commode-81ce733563444b2d851524ca94a30e7a
+* author:	Console Art Cybernetic (https://sketchfab.com/cacybernetic)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

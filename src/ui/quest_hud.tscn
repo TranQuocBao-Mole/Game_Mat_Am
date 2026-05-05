@@ -1,0 +1,98 @@
+[gd_scene load_steps=3 format=3 uid="uid://quest_hud_123"]
+
+[sub_resource type="GDScript" id="GDScript_quest_hud"]
+script/source = "extends CanvasLayer
+
+@onready var label = $Control/PanelContainer/QuestLabel
+@onready var panel = $Control/PanelContainer
+
+func _ready():
+	panel.hide()
+	var q_manager = get_node_or_null(\"/root/QuestSystem\")
+	if q_manager:
+		q_manager.quest_updated.connect(_on_quest_updated)
+		q_manager.quest_completed.connect(_on_quest_completed)
+		
+		# Neu game dang co quest san khi load scene
+		if q_manager.is_quest_active:
+			_on_quest_updated(q_manager.get_display_text())
+
+func _on_quest_updated(text: String):
+	label.text = text
+	panel.show()
+	
+	# Hieu ung xuat hien nhe nhang
+	panel.modulate.a = 0
+	var tween = create_tween()
+	tween.tween_property(panel, \"modulate:a\", 1.0, 0.5)
+
+func _on_quest_completed():
+	var tween = create_tween()
+	tween.tween_property(panel, \"modulate:a\", 0, 0.5)
+	await tween.finished
+	panel.hide()
+"
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quest_title"]
+bg_color = Color(0, 0, 0, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+
+[node name="QuestHUD" type="CanvasLayer"]
+layer = 10
+script = SubResource("GDScript_quest_hud")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -420.0
+offset_top = 30.0
+offset_right = -30.0
+offset_bottom = 80.0
+grow_horizontal = 0
+mouse_filter = 2
+
+[node name="PanelContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -214.0
+offset_bottom = 33.0
+grow_horizontal = 0
+mouse_filter = 2
+theme_override_constants/separation = 15
+alignment = 2
+
+[node name="QuestLabel" type="Label" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 2
+theme_override_constants/shadow_offset_y = 2
+theme_override_font_sizes/font_size = 15
+text = "TÌM 3 CON CHUỘT (0/3)"
+vertical_alignment = 1
+
+[node name="TitleBox" type="PanelContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_quest_title")
+
+[node name="Label" type="Label" parent="Control/PanelContainer/TitleBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 13
+text = "NHIỆM VỤ"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+

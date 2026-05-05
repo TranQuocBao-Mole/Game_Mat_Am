@@ -93,7 +93,7 @@ func toggle_teleport():
 	tween_out.tween_property(fade_overlay, "color:a", 1.0, 1.0)
 	if env:
 		tween_out.tween_property(env.environment, "ambient_light_energy", 0.0, 1.0)
-		tween_out.tween_property(env.environment, "exposure_energy", 0.0, 1.0)
+		tween_out.tween_property(env.environment, "tonemap_exposure", 0.0, 1.0)
 	
 	await tween_out.finished
 	await get_tree().create_timer(0.4).timeout # Khoảng lặng ngắn
@@ -144,7 +144,7 @@ func toggle_teleport():
 	tween_in.tween_property(fade_overlay, "color:a", 0.0, 1.0)
 	if env:
 		tween_in.tween_property(env.environment, "ambient_light_energy", 4.0, 1.0)
-		tween_in.tween_property(env.environment, "exposure_energy", 1.0, 1.0)
+		tween_in.tween_property(env.environment, "tonemap_exposure", 1.0, 1.0)
 	
 	await tween_in.finished
 	canvas.queue_free()

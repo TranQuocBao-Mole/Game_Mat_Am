@@ -1,0 +1,11 @@
+Model Information:
+* title:	phonograph
+* source:	https://sketchfab.com/3d-models/phonograph-16969cfef8de45eaaa73d2560b100be9
+* author:	linus1178 (https://sketchfab.com/linus1178)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "phonograph" (https://sketchfab.com/3d-models/phonograph-16969cfef8de45eaaa73d2560b100be9) by linus1178 (https://sketchfab.com/linus1178) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

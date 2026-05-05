@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dll8cu31j8c2x"]
+
+[ext_resource type="PackedScene" uid="uid://bo1imsex8h372" path="res://assets/models/creepy_head/scene.gltf" id="1_k0b6h"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_k0b6h")]
+
+[node name="Sketchfab_model" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -1, 2.220446e-16, 0, -2.220446e-16, -1, 0, 0, 0)
+
+[node name="Creepy_Doll_Head_obj_cleaner_materialmerger_gles" parent="Sketchfab_model" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.83852947, -1.5127089, 3.3588885e-16)

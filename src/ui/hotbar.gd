@@ -10,8 +10,8 @@ func _ready():
 	# Kết nối trực tiếp với Singleton cho ổn định
 	InventoryManager.item_added.connect(_on_item_updated)
 	InventoryManager.inventory_updated.connect(update_hotbar)
-	print("DEBUG: Hotbar đã kết nối với InventoryManager")
 	
+	selector.move_to_front() # Đảm bảo khung chọn nằm trên cùng
 	update_hotbar()
 	update_selector()
 
@@ -35,7 +35,9 @@ func update_selector():
 	# Di chuyển khung chọn đến vị trí ô tương ứng
 	var target_slot = grid.get_child(selected_slot)
 	if target_slot:
-		selector.global_position = target_slot.global_position
+		# Sử dụng position tương đối để chính xác hơn
+		selector.position = grid.position + target_slot.position
+		selector.size = target_slot.size
 
 func update_hotbar():
 	# Xóa các ô cũ (nếu có) và tạo mới hoặc cập nhật
@@ -47,16 +49,16 @@ func update_hotbar():
 		var icon_rect = slot.get_node("Icon")
 		var count_label = slot.get_node("Count")
 		
+		# Luôn hiển thị số thứ tự ô (1, 2, 3...)
+		count_label.text = str(i + 1)
+		count_label.show()
+		
 		if i < inventory_items.size():
 			var item = inventory_items[i]
 			icon_rect.texture = item.icon
 			icon_rect.show()
-			# Hiển thị số thứ tự (1, 2, 3...) thay vì số lượng
-			count_label.text = str(i + 1)
-			count_label.show()
 		else:
 			icon_rect.hide()
-			count_label.hide()
 
 func _on_item_updated(_item):
 	update_hotbar()

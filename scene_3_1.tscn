@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=62 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -37,8 +37,16 @@
 [ext_resource type="Script" uid="uid://l2vjyf8isfs7" path="res://src/scripts/entities/door_teleport.gd" id="36_door_teleport"]
 [ext_resource type="PackedScene" uid="uid://dxbgy6dmobvh" path="res://assets/models/poison_vase/poison_vase.tscn" id="36_iocmh"]
 [ext_resource type="Script" uid="uid://bybqsnyo8q322" path="res://src/scripts/entities/poison_interaction.gd" id="37_poison_interact"]
-[ext_resource type="PackedScene" uid="uid://10yk2a2b2agm" path="res://assets/models/ghost_event4/stalking.tscn" id="40_stalking"]
-[ext_resource type="PackedScene" uid="uid://c1h2i3j4k5l6m" path="res://src/entities/rat_ai_entity.tscn" id="41_rat_entity"]
+[ext_resource type="PackedScene" uid="uid://b5jpvmxrqcy10" path="res://assets/models/table_event6/table_event_6.tscn" id="40_table_event_6"]
+[ext_resource type="PackedScene" uid="uid://10yk2a2b2agm" path="res://assets/models/ghost_event4/stalking.tscn" id="41_ghost_stalking"]
+[ext_resource type="PackedScene" uid="uid://c1h2i3j4k5l6m" path="res://src/entities/rat_ai_entity.tscn" id="42_rat_entity"]
+[ext_resource type="PackedScene" uid="uid://dgf6ty24xwo7p" path="res://assets/models/coin/coin.tscn" id="43_coin_model"]
+[ext_resource type="PackedScene" uid="uid://dll8cu31j8c2x" path="res://assets/models/creepy_head/creepy_head.tscn" id="44_4pjcv"]
+[ext_resource type="PackedScene" uid="uid://go8pu81ekbvs" path="res://assets/models/balance_scale/balance_scales.tscn" id="44_balance_scale"]
+[ext_resource type="PackedScene" uid="uid://bl8novdqbftm2" path="res://assets/models/lady_of_the_asylum/example/scene.gltf" id="45_mnxjt"]
+[ext_resource type="PackedScene" uid="uid://47m7o8i4bmum" path="res://assets/models/phonograph/phonograph.tscn" id="45_phonograph"]
+[ext_resource type="PackedScene" uid="uid://dkumwx4fyo0cf" path="res://assets/models/horror_ghost/horror_girl.tscn" id="47_7d1r8"]
+[ext_resource type="Script" uid="uid://c2caamu4562ap" path="res://src/scripts/entities/phonograph_event_trigger.gd" id="48_trigger_script"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -65,17 +73,20 @@ sky_material = SubResource("ProceduralSkyMaterial_i803j")
 sky = SubResource("Sky_eerie")
 ambient_light_source = 2
 ambient_light_color = Color(0.15, 0.2, 0.3, 1)
-ambient_light_energy = 4.0
+ambient_light_energy = 0.5
 tonemap_mode = 2
+ssao_enabled = true
+ssil_enabled = true
+sdfgi_enabled = true
 glow_enabled = true
-glow_strength = 1.2
-glow_bloom = 0.1
+glow_strength = 0.5
+glow_bloom = 0.05
 fog_enabled = true
 fog_light_color = Color(0.1, 0.15, 0.2, 1)
+fog_density = 0.005
 fog_sky_affect = 0.3
-volumetric_fog_enabled = true
-volumetric_fog_density = 0.002
-volumetric_fog_albedo = Color(0.15, 0.2, 0.3, 1)
+adjustment_enabled = true
+adjustment_contrast = 1.15
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lantern"]
 size = Vector3(23.950073, 28.88057, 20.333984)
@@ -94,6 +105,9 @@ size = Vector3(0.083740234, 0.17358398, 0.1649414)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_poison_vase"]
 size = Vector3(400, 422.99365, 268.31836)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_phonograph_trigger"]
+size = Vector3(7.776367, 93.453125, 39.087402)
 
 [node name="scene3_1" type="Node3D"]
 
@@ -419,10 +433,11 @@ environment = SubResource("Environment_lpj7r")
 [node name="MoonLight" type="DirectionalLight3D" parent="WorldAssets"]
 transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.70710677, -0.7071068, -0.5, 0.5, -200, 400, 500)
 light_color = Color(0.5, 0.7, 1, 1)
-light_energy = 5.0
+light_energy = 2.0
+light_volumetric_fog_energy = 2.0
 shadow_enabled = true
 shadow_bias = 0.05
-shadow_blur = 1.175
+shadow_blur = 1.5
 directional_shadow_max_distance = 1000.0
 
 [node name="Clock" type="Node3D" parent="WorldAssets"]
@@ -602,7 +617,7 @@ stalking_entity = NodePath("../stalking")
 transform = Transform3D(0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0)
 shape = SubResource("BoxShape3D_lock")
 
-[node name="stalking" parent="event4" instance=ExtResource("40_stalking")]
+[node name="stalking" parent="event4" instance=ExtResource("41_ghost_stalking")]
 transform = Transform3D(-13.071085, 0, -27.00272, 0, 30.000002, 0, 27.00272, 0, -13.071085, -620.04645, 41.489986, 1071.6761)
 visible = false
 
@@ -653,7 +668,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -217.18604, 0, -63.8125)
 [node name="poison_vase3_sub3" parent="event5/PoisonVaseInteraction/poison_vase/poison_vase4/poison_vase3_sub/poison_vase3_sub2" instance=ExtResource("36_iocmh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.771484, 24.085693, -38.646484)
 
-[node name="Rat1" parent="event5" instance=ExtResource("41_rat_entity")]
+[node name="Rat1" parent="event5" instance=ExtResource("42_rat_entity")]
 transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, -119.49441, 50.402546, 686.7704)
 show_debug = false
 rat_name = "Lão gà khô "
@@ -663,7 +678,7 @@ detection_range_normal = 150.0
 detection_range_crouch = 90.0
 catch_range = 100.0
 
-[node name="Rat3" parent="event5" instance=ExtResource("41_rat_entity")]
+[node name="Rat3" parent="event5" instance=ExtResource("42_rat_entity")]
 transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, -178.77452, 50.402546, 686.7704)
 show_debug = false
 rat_name = "Tí Xì Mi"
@@ -673,7 +688,7 @@ detection_range_normal = 150.0
 detection_range_crouch = 90.0
 catch_range = 100.0
 
-[node name="Rat2" parent="event5" instance=ExtResource("41_rat_entity")]
+[node name="Rat2" parent="event5" instance=ExtResource("42_rat_entity")]
 transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -178.77452, 50.402546, 753.45886)
 show_debug = false
 rat_name = "Đừng bắt tui, tui hiền khô hà"
@@ -686,3 +701,101 @@ catch_range = 100.0
 [node name="Scene3Event" type="Node3D" parent="."]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
 script = ExtResource("15_s3evt")
+
+[node name="table_event6" parent="." instance=ExtResource("40_table_event_6")]
+transform = Transform3D(-6.821373, 0, -18.800768, 0, 20, 0, 18.800768, 0, -6.821373, -333.76047, 40.717987, 40.081394)
+
+[node name="coin" type="Node3D" parent="table_event6"]
+transform = Transform3D(-0.017053433, 0, 0.04700192, 0, 0.05, 0, -0.04700192, 0, -0.017053433, -7.575664, -2.0358994, -15.003858)
+
+[node name="coin1" parent="table_event6/coin" instance=ExtResource("43_coin_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -333.11752, 79.88426, 56.891125)
+
+[node name="Phonograph" parent="table_event6/coin" instance=ExtResource("45_phonograph")]
+transform = Transform3D(-1.4035101, 0, -3.7456853, 0, 4, 0, 3.7456853, 0, -1.4035101, -332.82916, 79.88426, 38.77627)
+
+[node name="PhonographEventTrigger" type="Area3D" parent="table_event6/coin" node_paths=PackedStringArray("phonograph_node", "scary_head", "scary_girl", "scary_girl_7", "scary_girl_8", "scary_girl_9", "scary_girl_10", "candle_light_1", "candle_light_2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -212.414, 79.88426, 93.85632)
+collision_mask = 3
+script = ExtResource("48_trigger_script")
+phonograph_node = NodePath("../Phonograph/StaticBody3D")
+scary_head = NodePath("../scaryhead6")
+scary_girl = NodePath("../scarygirl6")
+scary_girl_7 = NodePath("../scarygirl7")
+scary_girl_8 = NodePath("../scarygirl8")
+scary_girl_9 = NodePath("../scarygirl9")
+scary_girl_10 = NodePath("../scarygirl10")
+candle_light_1 = NodePath("../Candle/OmniLight3D")
+candle_light_2 = NodePath("../Candle2/OmniLight3D")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="table_event6/coin/PhonographEventTrigger"]
+transform = Transform3D(0.92971224, 0, -0.36828682, 0, 1, 0, 0.36828682, 0, 0.92971224, -41.99298, 22.274414, -24.174736)
+shape = SubResource("BoxShape3D_phonograph_trigger")
+
+[node name="Candle" parent="table_event6/coin" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -340.91632, 79.72829, 45.546154)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="table_event6/coin/Candle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.468666, 0)
+light_color = Color(1, 0.611765, 0.282353, 1)
+light_energy = 3.0
+omni_range = 30.0
+omni_attenuation = 0.5
+
+[node name="coin2" parent="table_event6/coin" instance=ExtResource("43_coin_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -331.75696, 80.01348, 54.926407)
+
+[node name="coin3" parent="table_event6/coin" instance=ExtResource("43_coin_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -335.29773, 79.99926, 56.025444)
+
+[node name="coin4" parent="table_event6/coin" instance=ExtResource("43_coin_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -333.9073, 79.91317, 54.926407)
+
+[node name="coin5" parent="table_event6/coin" instance=ExtResource("43_coin_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -330.32465, 79.96914, 54.926407)
+
+[node name="coin6" parent="table_event6/coin" instance=ExtResource("43_coin_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -333.11752, 80.00843, 58.50355)
+
+[node name="coin7" parent="table_event6/coin" instance=ExtResource("43_coin_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -334.06137, 79.87782, 53.015972)
+
+[node name="Candle2" parent="table_event6/coin" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -348.50894, 79.88426, 62.051266)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="table_event6/coin/Candle2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.468666, 0)
+light_color = Color(1, 0.611765, 0.282353, 1)
+light_energy = 3.0
+omni_range = 30.0
+omni_attenuation = 0.5
+
+[node name="balance_scale" parent="table_event6/coin" instance=ExtResource("44_balance_scale")]
+transform = Transform3D(0.037647687, 0, 0.0705879, 0, 0.08, 0, -0.0705879, 0, 0.037647687, -338.35806, 80.101845, 55.533627)
+
+[node name="scaryhead6" parent="table_event6/coin" instance=ExtResource("44_4pjcv")]
+transform = Transform3D(-1.9042065, 0.86084616, -6.6807885, 0.23596656, 6.9468646, 0.82787395, 6.731888, 4.0724586e-08, -1.9187714, -186.72897, 63.744514, 97.5676)
+visible = false
+
+[node name="scarygirl6" parent="table_event6/coin" instance=ExtResource("45_mnxjt")]
+transform = Transform3D(-8.268734, 0, -49.31154, 0, 50, 0, 49.31154, 0, -8.268734, -162.94353, 48.687332, 91.70174)
+visible = false
+
+[node name="scarygirl7" parent="table_event6/coin" instance=ExtResource("45_mnxjt")]
+transform = Transform3D(-15.717016, 0, -47.465515, 0, 50, 0, 47.465515, 0, -15.717016, -240.41805, 49.12094, 91.70174)
+visible = false
+
+[node name="scarygirl8" parent="table_event6/coin" instance=ExtResource("45_mnxjt")]
+transform = Transform3D(-18.816063, 0, -46.32446, 0, 50, 0, 46.32446, 0, -18.816063, -269.82657, 18.080742, 65.22807)
+visible = false
+
+[node name="scarygirl9" parent="table_event6/coin" instance=ExtResource("45_mnxjt")]
+transform = Transform3D(-49.76956, 0, -4.7948933, 0, 50.000008, 0, 4.7948933, 0, -49.76956, -301.1672, 18.080742, 113.341675)
+visible = false
+
+[node name="scarygirl10" parent="table_event6/coin" instance=ExtResource("45_mnxjt")]
+transform = Transform3D(36.154984, 0, -34.537178, 0, 49.999992, 0, 34.537178, 0, 36.154984, -255.58177, 5.052387, 15.684101)
+visible = false
+
+[node name="Sketchfab_Scene" parent="table_event6/coin" instance=ExtResource("47_7d1r8")]
+transform = Transform3D(21.84838, 0, -97.58406, 0, 100, 0, 97.58406, 0, 21.84838, -768.98193, 93.93894, 2.9999962)

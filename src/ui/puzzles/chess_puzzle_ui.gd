@@ -33,16 +33,16 @@ func _on_grid_draw():
 	
 	# Vẽ đường ngang (10 đường)
 	for r in range(10):
-		var y = r * TILE_SIZE + OFFSET_Y + (TILE_SIZE / 2)
-		var start = Vector2(OFFSET_X + TILE_SIZE / 2, y)
-		var end = Vector2(OFFSET_X + TILE_SIZE / 2 + TILE_SIZE * 8, y)
+		var y = r * TILE_SIZE + OFFSET_Y + (TILE_SIZE / 2.0)
+		var start = Vector2(OFFSET_X + TILE_SIZE / 2.0, y)
+		var end = Vector2(OFFSET_X + TILE_SIZE / 2.0 + TILE_SIZE * 8.0, y)
 		draw_node.draw_line(start, end, color, line_width)
 		
 	# Vẽ đường dọc (9 đường)
 	for c in range(9):
-		var x = c * TILE_SIZE + OFFSET_X + (TILE_SIZE / 2)
-		var start_y = OFFSET_Y + (TILE_SIZE / 2)
-		var end_y = OFFSET_Y + (TILE_SIZE / 2) + TILE_SIZE * 9
+		var x = c * TILE_SIZE + OFFSET_X + (TILE_SIZE / 2.0)
+		var start_y = OFFSET_Y + (TILE_SIZE / 2.0)
+		var end_y = OFFSET_Y + (TILE_SIZE / 2.0) + TILE_SIZE * 9.0
 		
 		if c == 0 or c == 8:
 			# Hai biên dọc vẽ suốt
@@ -55,10 +55,10 @@ func _on_grid_draw():
 	# Vẽ Cung Tướng (Đường chéo)
 	var palace_offsets = [0, 7] # Hàng bắt đầu của cung đỏ và đen
 	for r_start in palace_offsets:
-		var x1 = 3 * TILE_SIZE + OFFSET_X + TILE_SIZE / 2
-		var y1 = r_start * TILE_SIZE + OFFSET_Y + TILE_SIZE / 2
-		var x2 = 5 * TILE_SIZE + OFFSET_X + TILE_SIZE / 2
-		var y2 = (r_start + 2) * TILE_SIZE + OFFSET_Y + TILE_SIZE / 2
+		var x1 = 3 * TILE_SIZE + OFFSET_X + TILE_SIZE / 2.0
+		var y1 = r_start * TILE_SIZE + OFFSET_Y + TILE_SIZE / 2.0
+		var x2 = 5 * TILE_SIZE + OFFSET_X + TILE_SIZE / 2.0
+		var y2 = (r_start + 2) * TILE_SIZE + OFFSET_Y + TILE_SIZE / 2.0
 		draw_node.draw_line(Vector2(x1, y1), Vector2(x2, y2), color, line_width)
 		draw_node.draw_line(Vector2(x2, y1), Vector2(x1, y2), color, line_width)
 
@@ -488,20 +488,20 @@ func _get_all_valid_moves(color: String, check_safety: bool = true) -> Array:
 			if p and p.color == color:
 				var possible_targets = _get_possible_targets(fr, fc, p)
 				for target in possible_targets:
-					var tr = target[0]
-					var tc = target[1]
+					var target_r = target[0]
+					var target_c = target[1]
 					
-					if logic.is_valid_move(fr, fc, tr, tc):
+					if logic.is_valid_move(fr, fc, target_r, target_c):
 						if check_safety:
 							# Kiểm tra xem đi xong có bị chiếu tướng không (Luật cờ tướng)
-							var captured = _simulate_move(fr, fc, tr, tc)
+							var captured = _simulate_move(fr, fc, target_r, target_c)
 							var is_safe = not _is_checking_general(color)
-							_undo_move(fr, fc, tr, tc, captured)
+							_undo_move(fr, fc, target_r, target_c, captured)
 							
 							if is_safe:
-								moves.append({"fr": fr, "fc": fc, "tr": tr, "tc": tc})
+								moves.append({"fr": fr, "fc": fc, "tr": target_r, "tc": target_c})
 						else:
-							moves.append({"fr": fr, "fc": fc, "tr": tr, "tc": tc})
+							moves.append({"fr": fr, "fc": fc, "tr": target_r, "tc": target_c})
 	return moves
 
 # Trả về danh sách ô đích có thể đi đến cho một quân cờ
@@ -581,15 +581,15 @@ func _get_possible_targets(from_r: int, from_c: int, piece: Dictionary) -> Array
 				if from_c + 1 < 9: targets.append([from_r, from_c + 1])
 	return targets
 
-func _simulate_move(fr, fc, tr, tc):
-	var captured = logic.board[tr][tc]
-	logic.board[tr][tc] = logic.board[fr][fc]
+func _simulate_move(fr, fc, target_r, target_c):
+	var captured = logic.board[target_r][target_c]
+	logic.board[target_r][target_c] = logic.board[fr][fc]
 	logic.board[fr][fc] = null
 	return captured
 
-func _undo_move(fr, fc, tr, tc, captured):
-	logic.board[fr][fc] = logic.board[tr][tc]
-	logic.board[tr][tc] = captured
+func _undo_move(fr, fc, target_r, target_c, captured):
+	logic.board[fr][fc] = logic.board[target_r][target_c]
+	logic.board[target_r][target_c] = captured
 
 func _is_game_over_sim() -> bool:
 	var red = false
@@ -639,8 +639,8 @@ func _is_checking_general(target_color: String) -> bool:
 					return true
 	return false
 
-func _execute_move(fr, fc, tr, tc):
-	logic.move_piece(fr, fc, tr, tc)
+func _execute_move(fr, fc, target_r, target_c):
+	logic.move_piece(fr, fc, target_r, target_c)
 	# Có thể thêm hiệu ứng âm thanh gỗ va chạm ở đây
 
 func _check_win_condition() -> bool:
@@ -663,7 +663,8 @@ func _check_win_condition() -> bool:
 	return false
 
 func _on_win():
-	is_game_solved = true # Bật ngay lập tức khi thắng
+	is_game_solved = true
+	GameState.is_chess_puzzle_solved = true
 	print("DEBUG: [ChessPuzzle] Thắng cuộc! Khởi động sự kiện đèn bí ẩn...")
 	is_active = false
 	is_player_turn = false
@@ -716,11 +717,9 @@ func _on_win():
 				
 				# Xoay Body/Head sang ngang (Y)
 				var head_transform = head.global_transform.looking_at(light_pos, Vector3.UP)
-				var target_head_quat = head_transform.basis.get_rotation_quaternion()
 				
 				# Xoay Camera lên xuống (X)
 				var cam_transform = camera.global_transform.looking_at(light_pos, Vector3.UP)
-				var target_cam_quat = cam_transform.basis.get_rotation_quaternion()
 				
 				# Tạo Tween xoay mượt 1.5 giây
 				var tween = create_tween().set_parallel(true).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)

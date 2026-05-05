@@ -53,20 +53,62 @@ func _ready():
 	camera.near = 0.002
 	initial_head_y = head.position.y
 	
-	# Tao nut Ctrl ảo xịn xò
-	var ctrl_panel = Panel.new()
-	ctrl_panel.name = "CtrlPanel"
-	ctrl_panel.custom_minimum_size = Vector2(160, 40)
+	# --- Controls HUD Setup ---
+	var controls_container = VBoxContainer.new()
+	controls_container.name = "ControlsHUD"
+	controls_container.set_anchors_preset(Control.PRESET_BOTTOM_RIGHT)
+	# Căn lề góc phải, thụt vào 20px
+	controls_container.offset_left = -220
+	controls_container.offset_top = -220
+	controls_container.offset_right = -20
+	controls_container.offset_bottom = -20
+	controls_container.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	controls_container.alignment = BoxContainer.ALIGNMENT_END
+	$HUD.add_child(controls_container)
 	
-	crouch_label = Label.new()
-	crouch_label.text = "CTRL: KHOM LƯNG"
-	crouch_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	crouch_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	crouch_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	# Helper function để tạo dòng phím tắt
+	var create_hint = func(key_str: String, action_str: String):
+		var hbox = HBoxContainer.new()
+		hbox.alignment = BoxContainer.ALIGNMENT_END
+		hbox.add_theme_constant_override("separation", 15) # Tăng khoảng cách
+		
+		# Khung phím bấm
+		var key_panel = PanelContainer.new()
+		var key_style = StyleBoxFlat.new()
+		key_style.bg_color = Color(0, 0, 0, 0.7)
+		key_style.set_border_width_all(1)
+		key_style.border_color = Color(1, 1, 1, 0.9)
+		key_style.set_corner_radius_all(4)
+		key_panel.add_theme_stylebox_override("panel", key_style)
+		
+		var key_lbl = Label.new()
+		key_lbl.text = " " + key_str + " "
+		key_lbl.add_theme_font_size_override("font_size", 14) # To hơn tí
+		key_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		key_panel.add_child(key_lbl)
+		
+		# Nhãn hành động
+		var action_lbl = Label.new()
+		action_lbl.text = action_str
+		action_lbl.add_theme_font_size_override("font_size", 15) # To hơn tí
+		action_lbl.add_theme_color_override("font_outline_color", Color(0, 0, 0, 1))
+		action_lbl.add_theme_constant_override("outline_size", 5)
+		
+		hbox.add_child(action_lbl)
+		hbox.add_child(key_panel)
+		return hbox
 	
-	ctrl_panel.add_child(crouch_label)
-	ctrl_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT, Control.PRESET_MODE_MINSIZE, 30)
-	$HUD.add_child(ctrl_panel)
+	# Thêm các phím vào danh sách (Cập nhật phím theo ý bạn)
+	controls_container.add_child(create_hint.call("W A S D", "DI CHUYỂN"))
+	controls_container.add_child(create_hint.call("SHIFT", "CHẠY"))
+	
+	# Lưu lại nút Ctrl để hiệu ứng đổi màu còn hoạt động
+	var ctrl_hint = create_hint.call("CTRL", "KHOM LƯNG")
+	controls_container.add_child(ctrl_hint)
+	crouch_label = ctrl_hint.get_child(1).get_child(0)
+	
+	controls_container.add_child(create_hint.call("E", "TƯƠNG TÁC"))
+	controls_container.add_child(create_hint.call("F", "XEM CHI TIẾT")) # Đổi Chuột Phải thành F
 	
 	# Nap Hotbar kieu Minecraft
 	var hotbar_scene = preload("res://src/ui/hotbar.tscn")
@@ -109,9 +151,7 @@ func _input(event):
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
 	
 	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_RIGHT:
-			_use_item()
-		elif event.button_index == MOUSE_BUTTON_LEFT:
+		if event.button_index == MOUSE_BUTTON_LEFT:
 			_try_seed_mouse()
 			
 	if event is InputEventKey and event.pressed:
@@ -156,14 +196,12 @@ func _physics_process(delta: float) -> void:
 	target_crouch_offset = CROUCH_HEIGHT_OFFSET if is_crouching else STANDING_HEIGHT_OFFSET
 	
 	# Hien thi UI Khom lung (Hieu ung nhan nut)
-	var ctrl_ui = $HUD/CtrlPanel
-	if ctrl_ui:
+	if crouch_label:
+		var key_panel = crouch_label.get_parent()
 		if is_crouching:
-			ctrl_ui.modulate = Color(0.5, 1.0, 0.5)
-			ctrl_ui.position.y = get_viewport().size.y - 65
+			key_panel.modulate = Color(0.5, 1.0, 0.5)
 		else:
-			ctrl_ui.modulate = Color(1, 1, 1)
-			ctrl_ui.position.y = get_viewport().size.y - 70
+			key_panel.modulate = Color(1, 1, 1)
 	
 	# Smooth head movement (Camera)
 	var target_head_pos = initial_head_y + target_crouch_offset
@@ -319,6 +357,20 @@ func add_item(item_id: String, _count: int = 1, custom_name: String = ""):
 			
 		InventoryManager.add_item(vase_item)
 		print("DEBUG: Đã nhận được Bình Thuốc Độc!")
+	elif item_id == "coin":
+		var coin_item = ItemData.new()
+		coin_item.item_id = "coin"
+		coin_item.item_name = custom_name if custom_name != "" else "Đồng Tiền Linh Hồn"
+		
+		var icon_path = "res://assets/textures/ui/coin.png"
+		if ResourceLoader.exists(icon_path):
+			coin_item.icon = load(icon_path)
+		else:
+			coin_item.icon = PlaceholderTexture2D.new()
+			coin_item.icon.size = Vector2(32, 32)
+			
+		InventoryManager.add_item(coin_item)
+		print("DEBUG: Đã nhận được Đồng Tiền Linh Hồn!")
 	else:
 		print("Vật phẩm chưa xác định: ", item_id)
 

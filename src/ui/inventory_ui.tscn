@@ -18,7 +18,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.247059, 0, 0, 1)
+border_color = Color(0.8, 0, 0, 1)
 corner_radius_top_left = 2
 corner_radius_top_right = 2
 corner_radius_bottom_right = 2
@@ -35,7 +35,7 @@ border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0.392157, 0, 0, 1)
+border_color = Color(1, 0, 0, 1)
 shadow_color = Color(0.470588, 0, 0, 0.117647)
 shadow_size = 15
 

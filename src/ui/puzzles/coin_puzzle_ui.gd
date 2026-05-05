@@ -145,6 +145,12 @@ func _on_choice_made(is_heavier_guess: bool):
 func _on_win():
 	result_label.text = "CHÍNH XÁC! Bạn đã tìm ra đồng tiền linh hồn."
 	result_label.modulate = Color.GOLD
+	
+	# Thưởng đồng xu cho người chơi
+	var players = get_tree().get_nodes_in_group("player")
+	if players.size() > 0:
+		players[0].add_item("coin")
+	
 	await get_tree().create_timer(2.0).timeout
 	puzzle_finished.emit(true)
 	_close()
@@ -157,8 +163,8 @@ func _on_lose():
 	var original_pos = main_panel.position
 	var shake_tween = create_tween()
 	for i in range(10):
-		var offset = Vector2(randf_range(-15, 15), randf_range(-15, 15))
-		shake_tween.tween_property(main_panel, "position", original_pos + offset, 0.05)
+		var shake_offset = Vector2(randf_range(-15, 15), randf_range(-15, 15))
+		shake_tween.tween_property(main_panel, "position", original_pos + shake_offset, 0.05)
 	shake_tween.tween_property(main_panel, "position", original_pos, 0.05)
 	
 	var flash = ColorRect.new()

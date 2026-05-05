@@ -69,11 +69,11 @@ func _on_unlock_pressed():
 		var clues_ok = true
 		var missing_clues = []
 		
-		var chess_ok = ChessManager.is_game_solved if ChessManager else false
-		var candle_ok = CandleManager.is_game_solved if CandleManager else false
-		var elements_ok = ElementsManager.is_game_solved if ElementsManager else false
+		var chess_ok = GameState.is_chess_puzzle_solved
+		var candle_ok = GameState.is_candle_puzzle_solved
+		var elements_ok = GameState.is_elements_puzzle_solved
 		
-		print("[DEBUG] Trạng thái các trò chơi:")
+		print("[DEBUG] Trạng thái các trò chơi (từ GameState):")
 		print(" - Cờ tướng: ", chess_ok)
 		print(" - Xếp nến: ", candle_ok)
 		print(" - Ngũ hành: ", elements_ok)
@@ -99,6 +99,8 @@ func _on_win():
 	is_locked = true
 	result_label.text = "Ổ KHÓA ĐÃ MỞ!"
 	result_label.modulate = Color.GOLD
+	GameState.lock_opened = true
+	print("[DEBUG] Ổ KHÓA ĐÃ MỞ! Đã set GameState.lock_opened = true")
 	
 	# Gold glow effect
 	var tween = create_tween().set_parallel(true)
@@ -121,8 +123,8 @@ func _on_lose(custom_msg: String = ""):
 	var original_pos = main_panel.position
 	var shake_tween = create_tween()
 	for i in range(10):
-		var offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
-		shake_tween.tween_property(main_panel, "position", original_pos + offset, 0.04)
+		var shake_offset = Vector2(randf_range(-10, 10), randf_range(-10, 10))
+		shake_tween.tween_property(main_panel, "position", original_pos + shake_offset, 0.04)
 	shake_tween.tween_property(main_panel, "position", original_pos, 0.04)
 	
 	# Flash red

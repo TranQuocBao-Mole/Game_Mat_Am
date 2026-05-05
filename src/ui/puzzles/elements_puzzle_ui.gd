@@ -179,6 +179,7 @@ func _on_conflict_occurred(_p1: int, _p2: int):
 
 func _on_puzzle_solved():
 	is_game_solved = true
+	GameState.is_elements_puzzle_solved = true
 	status_label.text = "VẠN VẬT QUY NHẤT! PHONG ẤN ĐÃ MỞ."
 	status_label.modulate = Color(2.0, 1.8, 0.5)
 	

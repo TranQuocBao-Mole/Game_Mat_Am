@@ -13,6 +13,16 @@ var is_animating: bool = false
 var game_phase: String = "TESTING" # TESTING, ANSWERING
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	# Đảm bảo nền trong suốt để thấy được phía sau (giống cờ tướng/cân xu)
+	for node_path in ["Control", "Control/Background", "Control/BG", "Background", "BG"]:
+		if has_node(node_path):
+			var node = get_node(node_path)
+			if node is ColorRect:
+				node.color.a = 0.0
+			elif node is Panel:
+				node.modulate.a = 0.0 # Hoặc ẩn hẳn đi
+	
 	hide() # Ẩn đi khi vừa khởi tạo (do là Autoload)
 	logic.reset_puzzle()
 	_setup_ui()

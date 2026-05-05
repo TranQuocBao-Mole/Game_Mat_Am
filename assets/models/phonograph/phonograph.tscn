@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://47m7o8i4bmum"]
+
+[ext_resource type="PackedScene" uid="uid://b8yxbxk1m1vl2" path="res://assets/models/phonograph/scene.gltf" id="1_8wqph"]
+[ext_resource type="Script" uid="uid://b5d5ho1i7xe0o" path="res://src/scripts/entities/phonograph_interaction.gd" id="2_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_phonograph"]
+size = Vector3(3.2451172, 3.8583984, 1)
+
+[node name="Phonograph" instance=ExtResource("1_8wqph")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="1"]
+collision_layer = 2
+script = ExtResource("2_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.696264, 0)
+shape = SubResource("BoxShape3D_phonograph")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="StaticBody3D" index="1"]

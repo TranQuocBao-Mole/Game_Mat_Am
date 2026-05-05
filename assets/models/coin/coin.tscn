@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dgf6ty24xwo7p"]
+
+[ext_resource type="PackedScene" uid="uid://cymwcf1vwtdau" path="res://assets/models/coin/scene.gltf" id="1_efg6b"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_efg6b")]
+
+[node name="Sketchfab_model" parent="." index="0"]
+transform = Transform3D(1, 0, 0, 0, -1, -4.371139e-08, 0, 4.371139e-08, -1, 0, 0, 0)

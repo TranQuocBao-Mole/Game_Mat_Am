@@ -66,6 +66,9 @@ func interact():
 
 	# Nếu đã đủ chuột, mở Puzzle luôn
 	if seeded_mice >= mice_required:
+		var q_manager = get_node_or_null("/root/QuestSystem")
+		if q_manager:
+			q_manager.complete_quest()
 		open_puzzle()
 		return
 
@@ -92,6 +95,9 @@ func interact():
 			await DialogueManager.dialogue_finished
 			DialogueManager.show_text("Lúc nãy mình có thấy vài con chuột...")
 			GameState.is_rat_hunt_unlocked = true
+			var q_manager = get_node_or_null("/root/QuestSystem")
+			if q_manager:
+				q_manager.start_quest("find_rats", "TÌM 3 CON CHUỘT", 3)
 	else:
 		# 3. Mở trò chơi giải độc
 		if puzzle_ui_scene:
