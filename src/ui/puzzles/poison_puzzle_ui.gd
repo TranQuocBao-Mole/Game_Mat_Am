@@ -182,19 +182,19 @@ func _process(delta):
 		$Control/MainPanel.position = original_panel_pos
 
 func _on_win():
-	_update_status("CHÍNH XÁC! Bạn đã tìm ra bình độc và sống sót.")
+	_update_status("CHÍNH XÁC! Bạn đã tìm ra bình độc.")
 	await get_tree().create_timer(2.0).timeout
 	puzzle_finished.emit(true)
 	_close()
 
 func _on_lose():
-	_update_status("SAI RỒI! Bạn đã uống nhầm độc và tử vong...")
+	_update_status("SAI RỒI! Hãy thử lại từ đầu...")
 	
-	# Hiệu ứng kịch tính: Flash Đỏ + Rung màn hình
+	# Hiệu ứng kịch tính: Rung màn hình
 	shake_intensity = 30.0
 	var flash = ColorRect.new()
 	flash.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	flash.color = Color(1, 0, 0, 0.6) # Đỏ kịch độc
+	flash.color = Color(1, 0, 0, 0.4) # Đỏ cảnh báo
 	add_child(flash)
 	
 	var tween = create_tween()

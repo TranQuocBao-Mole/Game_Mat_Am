@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://c1h2i3j4k5l6m"]
+
+[ext_resource type="Script" uid="uid://b43uf1gemspdf" path="res://src/scripts/entities/rat_ai_v2.gd" id="1_ai"]
+[ext_resource type="PackedScene" uid="uid://u1guaa7kl22m" path="res://assets/models/rat/rat.tscn" id="2_model"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rat"]
+size = Vector3(1.1277832, 1.0428956, 2.1082032)
+
+[node name="RatAI" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 0
+motion_mode = 1
+script = ExtResource("1_ai")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0009033233, 0.42144778, 0.25351563)
+shape = SubResource("BoxShape3D_rat")
+
+[node name="rat_model" parent="." instance=ExtResource("2_model")]

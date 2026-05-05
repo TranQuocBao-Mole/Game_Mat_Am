@@ -1,6 +1,8 @@
 extends Node
 
 signal item_added(item: ItemData)
+signal item_removed(item_id: String)
+signal inventory_updated()
 signal inventory_toggled(is_open: bool)
 
 var items: Array[ItemData] = []
@@ -33,13 +35,21 @@ func toggle_inventory() -> void:
 func add_item(item: ItemData) -> void:
 	items.append(item)
 	item_added.emit(item)
+	inventory_updated.emit()
 	print("Đã nhặt vật phẩm: ", item.item_name)
 
 func remove_item(item_id: String) -> void:
 	for i in range(items.size()):
 		if items[i].item_id == item_id:
-			items.remove_at(i)
+			remove_item_at(i)
 			break
+
+func remove_item_at(index: int) -> void:
+	if index >= 0 and index < items.size():
+		var item = items[index]
+		items.remove_at(index)
+		item_removed.emit(item.item_id)
+		inventory_updated.emit()
 
 func has_item(item_id: String) -> bool:
 	for item in items:

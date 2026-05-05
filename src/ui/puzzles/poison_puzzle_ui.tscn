@@ -68,7 +68,7 @@ offset_bottom = 70.0
 grow_horizontal = 2
 theme_override_colors/font_color = Color(0.8, 0.2, 0.2, 1)
 theme_override_font_sizes/font_size = 32
-text = "TAM THỬ THỬ ĐỘC"
+text = ""
 horizontal_alignment = 1
 
 [node name="BottleContainer" type="HBoxContainer" parent="Control/MainPanel"]
@@ -118,7 +118,7 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_colors/font_color = Color(1, 0.8, 0, 1)
 theme_override_font_sizes/font_size = 24
-text = "THỬ ĐỘC"
+text = "KIỂM TRA"
 
 [node name="GuidePanel" type="Panel" parent="Control"]
 layout_mode = 0

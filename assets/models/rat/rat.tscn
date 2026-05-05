@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://u1guaa7kl22m"]
+
+[ext_resource type="PackedScene" uid="uid://blbawtc2nd0we" path="res://assets/models/rat/scene.gltf" id="1_r1cv7"]
+
+[node name="RatModel" type="Node3D"]
+
+[node name="rat_model" parent="." instance=ExtResource("1_r1cv7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

@@ -22,7 +22,7 @@ const ZOOM_SPEED = 15.0
 
 # Crouch Settings
 @export var CROUCH_SPEED = 80.0 # Speed when crouching
-const CROUCH_HEIGHT_OFFSET = -0.5 # How much to lower head (negative)
+const CROUCH_HEIGHT_OFFSET = -0.8 # Hạ thấp camera hơn nữa để cảm giác lén lút rõ rệt
 const STANDING_HEIGHT_OFFSET = 0.0
 const CROUCH_TRANSITION_SPEED = 3.0 # Smoothing speed
 
@@ -44,10 +44,34 @@ var original_collision_height: float
 var original_collision_position: Vector3
 var target_crouch_offset = 0.0
 var can_move := true
+var initial_head_y: float
+@onready var crouch_label: Label = null
+
 func _ready():
 	add_to_group("player")
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	camera.near = 0.002
+	initial_head_y = head.position.y
+	
+	# Tao nut Ctrl ảo xịn xò
+	var ctrl_panel = Panel.new()
+	ctrl_panel.name = "CtrlPanel"
+	ctrl_panel.custom_minimum_size = Vector2(160, 40)
+	
+	crouch_label = Label.new()
+	crouch_label.text = "CTRL: KHOM LƯNG"
+	crouch_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	crouch_label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	crouch_label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	
+	ctrl_panel.add_child(crouch_label)
+	ctrl_panel.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT, Control.PRESET_MODE_MINSIZE, 30)
+	$HUD.add_child(ctrl_panel)
+	
+	# Nap Hotbar kieu Minecraft
+	var hotbar_scene = preload("res://src/ui/hotbar.tscn")
+	var hotbar = hotbar_scene.instantiate()
+	$HUD.add_child(hotbar)
 
 	# Setup step climbing raycast
 	step_raycast = RayCast3D.new()
@@ -83,6 +107,16 @@ func _input(event):
 			head.rotate_y(-event.relative.x * SENSITIVITY)
 			camera.rotate_x(-event.relative.y * SENSITIVITY)
 			camera.rotation.x = clamp(camera.rotation.x, deg_to_rad(-40), deg_to_rad(60))
+	
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_RIGHT:
+			_use_item()
+		elif event.button_index == MOUSE_BUTTON_LEFT:
+			_try_seed_mouse()
+			
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_F:
+			_use_item()
 
 func _physics_process(delta: float) -> void:
 	# 1. Gravity
@@ -90,15 +124,14 @@ func _physics_process(delta: float) -> void:
 		velocity += get_gravity() * delta
 		
 	if not can_move:
-		# Still apply gravity? Usually yes, but you might also want to freeze the player completely.
-		# Option 1: Skip movement entirely (player stays in place)
-		move_and_slide() # Keep gravity active
-		_handle_footsteps() # CHAY TIENG BUOC CHAN KHI EVENT EP DI CHUYEN
-		InteractionManager.hide_prompt() # Ẩn prompt khi đang trong event
+		move_and_slide()
+		_handle_footsteps()
+		InteractionManager.hide_prompt()
 		return
+
 	# 3. Crouch input & speed
 	var is_crouching = Input.is_action_pressed("crouch")
-	var is_running = Input.is_action_pressed("run") and not is_crouching # can't sprint while crouching
+	var is_running = Input.is_action_pressed("run") and not is_crouching
 	var current_speed = CROUCH_SPEED if is_crouching else (SPRINT_SPEED if is_running else WALK_SPEED)
 
 	# 4. Movement Input
@@ -119,21 +152,35 @@ func _physics_process(delta: float) -> void:
 			velocity.x = lerp(velocity.x, direction.x * current_speed, delta * 3.0)
 			velocity.z = lerp(velocity.z, direction.z * current_speed, delta * 3.0)
 
-	# 6. Crouch transition (head and collision shape)
+	# 6. Crouch transition (head, collision, and mesh)
 	target_crouch_offset = CROUCH_HEIGHT_OFFSET if is_crouching else STANDING_HEIGHT_OFFSET
 	
-	# Smooth head movement
-	head.position.y = lerp(head.position.y, target_crouch_offset, delta * CROUCH_TRANSITION_SPEED)
+	# Hien thi UI Khom lung (Hieu ung nhan nut)
+	var ctrl_ui = $HUD/CtrlPanel
+	if ctrl_ui:
+		if is_crouching:
+			ctrl_ui.modulate = Color(0.5, 1.0, 0.5)
+			ctrl_ui.position.y = get_viewport().size.y - 65
+		else:
+			ctrl_ui.modulate = Color(1, 1, 1)
+			ctrl_ui.position.y = get_viewport().size.y - 70
 	
-	# Adjust collision shape (if it's a capsule)
+	# Smooth head movement (Camera)
+	var target_head_pos = initial_head_y + target_crouch_offset
+	head.position.y = lerp(head.position.y, target_head_pos, delta * CROUCH_TRANSITION_SPEED)
+	
+	# Co ngắn khối nhân vật trắng (Mesh) và vùng va chạm (Collision)
 	if collision_shape and collision_shape.shape is CapsuleShape3D:
-		# Height: standing_height + 2 * offset (since offset is negative, this reduces height)
-		var target_height = original_collision_height + 2.0 * target_crouch_offset
+		var target_height = original_collision_height + target_crouch_offset
 		collision_shape.shape.height = lerp(collision_shape.shape.height, target_height, delta * CROUCH_TRANSITION_SPEED)
 		
-		# Position: move down by the offset to keep feet on the ground
-		var target_pos_y = original_collision_position.y + target_crouch_offset
+		var target_pos_y = original_collision_position.y + (target_crouch_offset / 2.0)
 		collision_shape.position.y = lerp(collision_shape.position.y, target_pos_y, delta * CROUCH_TRANSITION_SPEED)
+		
+		# Dong bo ca khoi Mesh trang cho khoi bi "ngo"
+		if $MeshInstance3D:
+			$MeshInstance3D.scale.y = collision_shape.shape.height / original_collision_height
+			$MeshInstance3D.position.y = collision_shape.position.y
 
 	# 7. Realistic Head Bob
 	_handle_head_bob(delta, direction)
@@ -238,3 +285,100 @@ func _handle_footsteps():
 func _handle_zoom(delta: float):
 	var target_fov = ZOOM_FOV if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) else DEFAULT_FOV
 	camera.fov = lerp(camera.fov, target_fov, delta * ZOOM_SPEED)
+
+# Minecraft-style Inventory Methods
+func add_item(item_id: String, _count: int = 1, custom_name: String = ""):
+	if item_id == "mouse":
+		var mouse_item = ItemData.new()
+		mouse_item.item_id = "mouse"
+		mouse_item.item_name = custom_name if custom_name != "" else "Chuột"
+		
+		# Nạp icon thật vừa tạo
+		var icon_path = "res://assets/textures/ui/rat_icon.png"
+		if ResourceLoader.exists(icon_path):
+			mouse_item.icon = load(icon_path)
+		else:
+			# Fallback nếu chưa nhận diện được file
+			mouse_item.icon = PlaceholderTexture2D.new()
+			mouse_item.icon.size = Vector2(32, 32)
+		
+		InventoryManager.add_item(mouse_item)
+		print("DEBUG: Đã thêm ", mouse_item.item_name, " vào inventory với icon thật.")
+	elif item_id == "poison_vase":
+		var vase_item = ItemData.new()
+		vase_item.item_id = "poison_vase"
+		vase_item.item_name = custom_name if custom_name != "" else "Bình Thuốc Độc"
+		
+		# Nạp icon bình thuốc độc
+		var icon_path = "res://assets/textures/ui/poison_vase_icon.png"
+		if ResourceLoader.exists(icon_path):
+			vase_item.icon = load(icon_path)
+		else:
+			vase_item.icon = PlaceholderTexture2D.new()
+			vase_item.icon.size = Vector2(32, 32)
+			
+		InventoryManager.add_item(vase_item)
+		print("DEBUG: Đã nhận được Bình Thuốc Độc!")
+	else:
+		print("Vật phẩm chưa xác định: ", item_id)
+
+func get_item_count(item_id: String) -> int:
+	var count = 0
+	for item in InventoryManager.items:
+		if item.item_id == item_id:
+			count += 1
+	return count
+
+func _use_item():
+	var hotbar = $HUD.get_node_or_null("Hotbar")
+	if not hotbar: 
+		print("Lỗi: Không tìm thấy Hotbar trên HUD!")
+		return
+	
+	var selected_idx = hotbar.selected_slot
+	var items = InventoryManager.items
+	
+	if selected_idx < items.size():
+		var item = items[selected_idx]
+		
+		# Xử lý riêng cho Chuột theo yêu cầu
+		if item.item_id == "mouse":
+			if DialogueManager:
+				DialogueManager.show_text("Đây là " + item.item_name + ", chắc hẳn có thể dùng làm gì đó.")
+			return
+
+		# Xử lý riêng cho tờ giấy cạnh nhà kho theo yêu cầu
+		if "nhà kho" in item.item_name.to_lower():
+			if DialogueManager:
+				DialogueManager.show_text("Đây là tờ giấy cạnh nhà kho.")
+				await DialogueManager.dialogue_finished
+				DialogueManager.show_text("Trên đó viết số 5.")
+			return
+
+		if item.is_readable:
+			if InspectManager:
+				InspectManager.open(item.title, item.content)
+			else:
+				if DialogueManager:
+					DialogueManager.show_text(item.content)
+		else:
+			if DialogueManager:
+				DialogueManager.show_text("Vật phẩm này không thể đọc: " + item.item_name)
+	else:
+		if DialogueManager:
+			DialogueManager.show_text("Ô đồ này đang trống!")
+
+func _try_seed_mouse():
+	var hotbar = $HUD.get_node_or_null("Hotbar")
+	if not hotbar: return
+	
+	var selected_idx = hotbar.selected_slot
+	var items = InventoryManager.items
+	
+	if selected_idx < items.size() and items[selected_idx].item_id == "mouse":
+		if raycast.is_colliding():
+			var collider = raycast.get_collider()
+			if collider and collider.has_method("add_mouse"):
+				collider.add_mouse()
+				InventoryManager.remove_item_at(selected_idx)
+				print("DEBUG: Da nạp chuột vào bình từ ô số ", selected_idx + 1)

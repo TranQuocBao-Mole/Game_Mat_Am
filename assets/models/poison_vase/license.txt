@@ -1,0 +1,11 @@
+Model Information:
+* title:	Porcelain Vase
+* source:	https://sketchfab.com/3d-models/porcelain-vase-d6554d72a1604329bec9756daded361d
+* author:	The Hunt Museum (https://sketchfab.com/TheHuntMuseum)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Porcelain Vase" (https://sketchfab.com/3d-models/porcelain-vase-d6554d72a1604329bec9756daded361d) by The Hunt Museum (https://sketchfab.com/TheHuntMuseum) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

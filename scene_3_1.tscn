@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=53 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -35,7 +35,10 @@
 [ext_resource type="Script" uid="uid://fmhc8dh7gbev" path="res://src/scripts/entities/elements_table_interaction.gd" id="34_elements_interact"]
 [ext_resource type="PackedScene" uid="uid://bpau2wj5niha1" path="res://assets/models/lock/lock.tscn" id="34_jhiqw"]
 [ext_resource type="Script" uid="uid://l2vjyf8isfs7" path="res://src/scripts/entities/door_teleport.gd" id="36_door_teleport"]
-[ext_resource type="PackedScene" uid="uid://10yk2a2b2agm" path="res://assets/models/ghost_event4/stalking.tscn" id="36_iocmh"]
+[ext_resource type="PackedScene" uid="uid://dxbgy6dmobvh" path="res://assets/models/poison_vase/poison_vase.tscn" id="36_iocmh"]
+[ext_resource type="Script" uid="uid://bybqsnyo8q322" path="res://src/scripts/entities/poison_interaction.gd" id="37_poison_interact"]
+[ext_resource type="PackedScene" uid="uid://10yk2a2b2agm" path="res://assets/models/ghost_event4/stalking.tscn" id="40_stalking"]
+[ext_resource type="PackedScene" uid="uid://c1h2i3j4k5l6m" path="res://src/entities/rat_ai_entity.tscn" id="41_rat_entity"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -88,6 +91,9 @@ size = Vector3(1.9785156, 1.2763672, 1.6660156)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lock"]
 size = Vector3(0.083740234, 0.17358398, 0.1649414)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_poison_vase"]
+size = Vector3(400, 422.99365, 268.31836)
 
 [node name="scene3_1" type="Node3D"]
 
@@ -590,11 +596,22 @@ script = ExtResource("36_door_teleport")
 outside_marker = NodePath("../House3_OutsideMarker")
 inside_marker = NodePath("../House3_InsideMarker")
 lock_model = NodePath("../lock")
-stalking_entity = NodePath("../../stalking")
+stalking_entity = NodePath("../stalking")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="event4/House3_DoorInteract"]
 transform = Transform3D(0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0)
 shape = SubResource("BoxShape3D_lock")
+
+[node name="stalking" parent="event4" instance=ExtResource("40_stalking")]
+transform = Transform3D(-13.071085, 0, -27.00272, 0, 30.000002, 0, 27.00272, 0, -13.071085, -620.04645, 41.489986, 1071.6761)
+visible = false
+
+[node name="GhostLight" type="SpotLight3D" parent="event4/stalking"]
+transform = Transform3D(1, 0, 0, 0, 0.970296, 0.241922, 0, -0.241922, 0.970296, 0.237, 2.76, 2.37)
+light_color = Color(1, 0.9, 0.8, 1)
+light_energy = 15.0
+spot_range = 10.0
+spot_angle = 35.0
 
 [node name="House3_InsideMarker" type="Marker3D" parent="event4"]
 transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -861.2579, 66.74041, 987.0657)
@@ -602,17 +619,70 @@ transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -861.
 [node name="House3_OutsideMarker" type="Marker3D" parent="event4"]
 transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -814.2095, 92.114, 1018.842)
 
+[node name="event5" type="Node3D" parent="."]
+
+[node name="PoisonVaseInteraction" type="StaticBody3D" parent="event5"]
+transform = Transform3D(0.05, 0, 0, 0, 0.05, 0, 0, 0, 0.05, -242.122, 57.88903, 1262.3782)
+collision_layer = 2
+script = ExtResource("37_poison_interact")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event5/PoisonVaseInteraction"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 131.09717, -11.496826, 48.277344)
+shape = SubResource("BoxShape3D_poison_vase")
+
+[node name="poison_vase" parent="event5/PoisonVaseInteraction" instance=ExtResource("36_iocmh")]
+
+[node name="poison_vase2" parent="event5/PoisonVaseInteraction/poison_vase" instance=ExtResource("36_iocmh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 196.71387, 0, 0)
+
+[node name="poison_vase_child" parent="event5/PoisonVaseInteraction/poison_vase" instance=ExtResource("36_iocmh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98.35693, 0, 0)
+
+[node name="poison_vase3" parent="event5/PoisonVaseInteraction/poison_vase" instance=ExtResource("36_iocmh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 262.1958, 0, 64.11719)
+
+[node name="poison_vase4" parent="event5/PoisonVaseInteraction/poison_vase" instance=ExtResource("36_iocmh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 139.7915, 0, 128.23633)
+
+[node name="poison_vase3_sub" parent="event5/PoisonVaseInteraction/poison_vase/poison_vase4" instance=ExtResource("36_iocmh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 118.413574, 0, 64.11719)
+
+[node name="poison_vase3_sub2" parent="event5/PoisonVaseInteraction/poison_vase/poison_vase4/poison_vase3_sub" instance=ExtResource("36_iocmh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -217.18604, 0, -63.8125)
+
+[node name="poison_vase3_sub3" parent="event5/PoisonVaseInteraction/poison_vase/poison_vase4/poison_vase3_sub/poison_vase3_sub2" instance=ExtResource("36_iocmh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.771484, 24.085693, -38.646484)
+
+[node name="Rat1" parent="event5" instance=ExtResource("41_rat_entity")]
+transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, -119.49441, 50.402546, 686.7704)
+show_debug = false
+rat_name = "Lão gà khô "
+speed_walk = 20.0
+speed_run = 100.0
+detection_range_normal = 150.0
+detection_range_crouch = 90.0
+catch_range = 100.0
+
+[node name="Rat3" parent="event5" instance=ExtResource("41_rat_entity")]
+transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, -178.77452, 50.402546, 686.7704)
+show_debug = false
+rat_name = "Tí Xì Mi"
+speed_walk = 20.0
+speed_run = 100.0
+detection_range_normal = 150.0
+detection_range_crouch = 90.0
+catch_range = 100.0
+
+[node name="Rat2" parent="event5" instance=ExtResource("41_rat_entity")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -178.77452, 50.402546, 753.45886)
+show_debug = false
+rat_name = "Đừng bắt tui, tui hiền khô hà"
+speed_walk = 20.0
+speed_run = 100.0
+detection_range_normal = 150.0
+detection_range_crouch = 90.0
+catch_range = 100.0
+
 [node name="Scene3Event" type="Node3D" parent="."]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
 script = ExtResource("15_s3evt")
-
-[node name="stalking" parent="." instance=ExtResource("36_iocmh")]
-transform = Transform3D(-10.884313, 0, -22.50626, 0, 25, 0, 22.50626, 0, -10.884313, -714.46295, 41.28719, 1064.5001)
-visible = false
-
-[node name="GhostLight" type="SpotLight3D" parent="stalking"]
-transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 3, 2)
-light_color = Color(0.8, 0.9, 1, 1)
-light_energy = 15.0
-spot_range = 10.0
-spot_attenuation = 0.5

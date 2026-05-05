@@ -6,3 +6,5 @@ class_name ItemData
 @export_multiline var description: String = "Mô tả vật phẩm..."
 @export var icon: Texture2D
 @export var is_readable: bool = false
+@export var title: String = ""
+@export_multiline var content: String = ""
