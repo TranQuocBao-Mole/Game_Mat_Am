@@ -1,0 +1,11 @@
+Model Information:
+* title:	Paintbrush
+* source:	https://sketchfab.com/3d-models/paintbrush-a0f7ebae0ce84605ab0f5343fda4b179
+* author:	dimitritrauttmansdorff (https://sketchfab.com/dimitritrauttmansdorff)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Paintbrush" (https://sketchfab.com/3d-models/paintbrush-a0f7ebae0ce84605ab0f5343fda4b179) by dimitritrauttmansdorff (https://sketchfab.com/dimitritrauttmansdorff) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)

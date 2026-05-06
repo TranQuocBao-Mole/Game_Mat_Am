@@ -30,7 +30,7 @@ func _process(_delta):
 func _on_body_entered(body: Node3D):
 	print("[DEBUG] Area3D entered by: ", body.name)
 	if event_triggered: return
-	if not body.is_in_group("player"): 
+	if not body.is_in_group("player"):
 		print("[DEBUG] Body not in group 'player'")
 		return
 	
@@ -87,7 +87,7 @@ func trigger_event():
 		else:
 			back_dir = player.global_transform.basis.z
 			
-		back_dir.y = 0 
+		back_dir.y = 0
 		back_dir = back_dir.normalized()
 		
 		var push_distance = 70.0 # Chỉnh lại thành 70m
@@ -155,10 +155,10 @@ func _start_faint_sequence(player):
 	if scary_girl_10: scary_girl_10.visible = false
 	
 	# Bật nến lại bình thường
-	if candle_light_1: 
+	if candle_light_1:
 		candle_light_1.visible = true
 		candle_light_1.light_energy = 1.0
-	if candle_light_2: 
+	if candle_light_2:
 		candle_light_2.visible = true
 		candle_light_2.light_energy = 1.0
 	
@@ -173,6 +173,8 @@ func _start_faint_sequence(player):
 		DialogueManager.show_text("Đau đầu quá...")
 		await DialogueManager.dialogue_finished
 		DialogueManager.show_text("Chuyện gì xảy ra vậy?")
+		await DialogueManager.dialogue_finished
+		DialogueManager.show_text("Mình phải rời khỏi ngôi làng quái quỷ này thôi")
 		await DialogueManager.dialogue_finished
 	
 	# 7. Khôi phục điều khiển
@@ -221,4 +223,3 @@ func _shake_camera(intensity: float, duration: float):
 				shake_tween.parallel().tween_property(camera, "v_offset", randf_range(-intensity, intensity), 0.05)
 			shake_tween.tween_property(camera, "h_offset", 0.0, 0.05)
 			shake_tween.parallel().tween_property(camera, "v_offset", 0.0, 0.05)
-

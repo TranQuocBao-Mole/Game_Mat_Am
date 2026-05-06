@@ -1,0 +1,11 @@
+Model Information:
+* title:	SCP:CB Future Horror Mod - SCP-096
+* source:	https://sketchfab.com/3d-models/scpcb-future-horror-mod-scp-096-d8e36400d0b94edaaa4eb082a13f5ae5
+* author:	Sealife Fan 3 (https://sketchfab.com/SealifeFan3)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "SCP:CB Future Horror Mod - SCP-096" (https://sketchfab.com/3d-models/scpcb-future-horror-mod-scp-096-d8e36400d0b94edaaa4eb082a13f5ae5) by Sealife Fan 3 (https://sketchfab.com/SealifeFan3) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

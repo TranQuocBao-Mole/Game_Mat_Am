@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://w1ya4b1f2v0u"]
+
+[ext_resource type="PackedScene" uid="uid://bpwyclmyvi8pa" path="res://assets/models/sticky_man/scene.gltf" id="1_ypnin"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_ypnin")]

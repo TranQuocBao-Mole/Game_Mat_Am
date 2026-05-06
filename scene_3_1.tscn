@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=66 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -45,8 +45,12 @@
 [ext_resource type="PackedScene" uid="uid://go8pu81ekbvs" path="res://assets/models/balance_scale/balance_scales.tscn" id="44_balance_scale"]
 [ext_resource type="PackedScene" uid="uid://bl8novdqbftm2" path="res://assets/models/lady_of_the_asylum/example/scene.gltf" id="45_mnxjt"]
 [ext_resource type="PackedScene" uid="uid://47m7o8i4bmum" path="res://assets/models/phonograph/phonograph.tscn" id="45_phonograph"]
-[ext_resource type="PackedScene" uid="uid://dkumwx4fyo0cf" path="res://assets/models/horror_ghost/horror_girl.tscn" id="47_7d1r8"]
+[ext_resource type="PackedScene" uid="uid://w1ya4b1f2v0u" path="res://assets/models/sticky_man/running_monster.tscn" id="47_7d1r8"]
+[ext_resource type="PackedScene" uid="uid://bmkjl7im1xk1f" path="res://assets/models/brush/brush.tscn" id="48_t35gx"]
 [ext_resource type="Script" uid="uid://c2caamu4562ap" path="res://src/scripts/entities/phonograph_event_trigger.gd" id="48_trigger_script"]
+[ext_resource type="Script" uid="uid://dwagr7d0cxxqj" path="res://src/scripts/events/scene3/running_ghost_event.gd" id="49_ghost_event"]
+[ext_resource type="Script" uid="uid://yjaufodhfdgo" path="res://src/scripts/common/item_pickup.gd" id="50_pickup_script"]
+[ext_resource type="Resource" path="res://assets/items/brush_item.tres" id="51_brush_data"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -107,7 +111,7 @@ size = Vector3(0.083740234, 0.17358398, 0.1649414)
 size = Vector3(400, 422.99365, 268.31836)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_phonograph_trigger"]
-size = Vector3(7.776367, 93.453125, 39.087402)
+size = Vector3(7.776367, 179.86414, 198.29602)
 
 [node name="scene3_1" type="Node3D"]
 
@@ -698,10 +702,6 @@ detection_range_normal = 150.0
 detection_range_crouch = 90.0
 catch_range = 100.0
 
-[node name="Scene3Event" type="Node3D" parent="."]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
-script = ExtResource("15_s3evt")
-
 [node name="table_event6" parent="." instance=ExtResource("40_table_event_6")]
 transform = Transform3D(-6.821373, 0, -18.800768, 0, 20, 0, 18.800768, 0, -6.821373, -333.76047, 40.717987, 40.081394)
 
@@ -797,5 +797,39 @@ visible = false
 transform = Transform3D(36.154984, 0, -34.537178, 0, 49.999992, 0, 34.537178, 0, 36.154984, -255.58177, 5.052387, 15.684101)
 visible = false
 
-[node name="Sketchfab_Scene" parent="table_event6/coin" instance=ExtResource("47_7d1r8")]
-transform = Transform3D(21.84838, 0, -97.58406, 0, 100, 0, 97.58406, 0, 21.84838, -768.98193, 93.93894, 2.9999962)
+[node name="Scene3Event" type="Node3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
+script = ExtResource("15_s3evt")
+
+[node name="event7" type="Node3D" parent="."]
+
+[node name="running_event2" type="Area3D" parent="event7" node_paths=PackedStringArray("ghost_node", "escape_point", "brush_node")]
+transform = Transform3D(0.7314847, 0, -0.6818578, 0, 1, 0, 0.6818578, 0, 0.7314847, -987.466, 55.82965, -665.5094)
+collision_mask = 3
+script = ExtResource("49_ghost_event")
+ghost_node = NodePath("../runningman")
+escape_point = NodePath("../running_event")
+brush_node = NodePath("../brush")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event7/running_event2"]
+transform = Transform3D(0.9297122, 0, -0.36828685, 0, 1, 0, 0.36828685, 0, 0.9297122, -36.835815, 65.47992, -37.193542)
+shape = SubResource("BoxShape3D_phonograph_trigger")
+
+[node name="running_event" type="Area3D" parent="event7"]
+transform = Transform3D(0.61787343, 0, -0.78627765, 0, 1, 0, 0.78627765, 0, 0.61787343, -758.1075, 55.82965, 57.440033)
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event7/running_event"]
+transform = Transform3D(0.9297122, 0, -0.36828685, 0, 1, 0, 0.36828685, 0, 0.9297122, -36.835815, 65.47992, -37.193542)
+shape = SubResource("BoxShape3D_phonograph_trigger")
+
+[node name="runningman" parent="event7" instance=ExtResource("47_7d1r8")]
+transform = Transform3D(13.518554, 0, 10.307701, 0, 17, 0, -10.307701, 0, 13.518554, -1444.8435, 70.7242, -1438.697)
+
+[node name="brush" parent="event7" instance=ExtResource("48_t35gx")]
+transform = Transform3D(1000, 0, 0, 0, -41.544323, -999.13666, 0, 999.13666, -41.544323, -740.8992, 44.590782, 194.30368)
+visible = false
+script = ExtResource("50_pickup_script")
+item_data = ExtResource("51_brush_data")
+prompt_text = "Nhặt cây bút"
+is_active = false
