@@ -8,9 +8,7 @@ extends "res://src/scripts/common/interactable_node.gd"
 @export var channels: Array[String] = [
 	"res://assets/videos/tv_video1.ogv",
 	"res://assets/videos/tv_video2.ogv",
-	"res://assets/videos/7609746668175.ogv",
-	"res://assets/videos/tv_video1.ogv",
-	"res://assets/videos/tv_video2.ogv"
+	"res://assets/videos/7609746668175.ogv"
 ]
 
 var current_channel: int = 0
@@ -57,6 +55,8 @@ func _create_tv_ui():
 	# Neo ở góc dưới bên trái (Bottom Left)
 	var margin_box = MarginContainer.new()
 	margin_box.set_anchors_and_offsets_preset(Control.PRESET_BOTTOM_LEFT)
+	margin_box.grow_vertical = Control.GROW_DIRECTION_BEGIN
+	margin_box.grow_horizontal = Control.GROW_DIRECTION_END
 	margin_box.add_theme_constant_override("margin_bottom", 50)
 	margin_box.add_theme_constant_override("margin_left", 50)
 	_tv_ui.add_child(margin_box)
@@ -180,11 +180,16 @@ func _update_ui_state():
 		
 	for i in range(_channel_boxes.size()):
 		var box = _channel_boxes[i]
+		box.text = str(i + 1) # Reset text
 		var style = box.get_theme_stylebox("normal") as StyleBoxFlat
 		if style:
 			if i == current_channel:
 				style.bg_color = Color(0.4, 0.8, 1.0) # Màu xanh lơ cho kênh hiện tại
 				box.add_theme_color_override("font_color", Color.BLACK)
+			elif i == 2 and GameState.get("is_final_puzzle_solved") != true:
+				style.bg_color = Color(0.1, 0.1, 0.1, 0.8) # Màu đen đậm cho kênh bị khóa
+				box.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4)) # Chữ xám
+				box.text = "🔒"
 			else:
 				style.bg_color = Color(0.25, 0.25, 0.25) # Xám mờ cho kênh chưa chọn
 				box.add_theme_color_override("font_color", Color.WHITE)
@@ -201,8 +206,12 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func _switch_channel(direction: int):
-	current_channel = (current_channel + direction) % channels.size()
-	if current_channel < 0: current_channel = channels.size() - 1
+	var max_channels = channels.size()
+	if GameState.get("is_final_puzzle_solved") != true:
+		max_channels = 2 # Chỉ cho phép kênh 1 và 2 (index 0 và 1)
+		
+	current_channel = (current_channel + direction) % max_channels
+	if current_channel < 0: current_channel = max_channels - 1
 	
 	_update_ui_state()
 	
@@ -230,6 +239,10 @@ func _play_video_only():
 			video_player.play()
 	if screen_mesh:
 		screen_mesh.visible = true
+	
+	if not _tv_ui:
+		_create_tv_ui()
+		
 	if _tv_ui:
 		_tv_ui.visible = true
 
