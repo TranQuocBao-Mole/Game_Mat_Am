@@ -139,4 +139,3 @@ func move_piece(from_r, from_c, to_r, to_c) -> bool:
 	board[to_r][to_c] = piece
 	board[from_r][from_c] = null
 	return true
-
