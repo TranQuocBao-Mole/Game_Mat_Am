@@ -157,17 +157,33 @@ func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_F:
 			_use_item()
+		elif event.keycode == KEY_ALT:
+			print("--- PLAYER DEBUG INFO ---")
+			print("Position: Vector3", global_position)
+			print("Rotation: Vector3", rotation_degrees)
+			print("Head Rotation: Vector3", head.rotation_degrees)
+			print("-------------------------")
+
+var _interaction_timer: float = 0.0
 
 func _physics_process(delta: float) -> void:
-	# 1. Gravity
+	if _interaction_timer > 0:
+		_interaction_timer -= delta
+
+	# 1. Gravity & Movement logic...
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		
+	# 2. Interaction (Luôn cho phép tương tác kể cả khi bị khóa di chuyển)
+	_handle_interaction()
+	
 	if not can_move:
 		move_and_slide()
 		_handle_footsteps()
-		InteractionManager.hide_prompt()
 		return
+		
+	# 3. Zoom (Chỉ khi có quyền di chuyển mới cho zoom thủ công)
+	_handle_zoom(delta)
 
 	# 3. Crouch input & speed
 	var is_crouching = Input.is_action_pressed("crouch")
@@ -228,9 +244,7 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	# 8. Interaction
-	_handle_interaction()
-	_handle_zoom(delta)
+	# Các hàm này đã được chuyển lên trên để ưu tiên
 	_handle_footsteps() # CAP NHAT TIENG BUOC CHAN
 	
 	raycast.global_transform = camera.global_transform
@@ -297,8 +311,9 @@ func _handle_interaction():
 			
 			InteractionManager.set_prompt(text)
 			
-			if Input.is_action_just_pressed("interact"):
+			if Input.is_action_just_pressed("interact") and _interaction_timer <= 0:
 				collider.interact()
+				_interaction_timer = 0.2
 		else:
 			InteractionManager.hide_prompt()
 	else:

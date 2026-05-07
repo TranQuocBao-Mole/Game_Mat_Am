@@ -21,6 +21,7 @@ var _initial_ghost_rot: Vector3
 var _first_completion: bool = true
 var _original_fov: float = 75.0
 var _is_zoomed: bool = false
+var _player_start_pos: Vector3
 
 func _ready():
 	body_entered.connect(_on_body_entered)
@@ -35,6 +36,9 @@ func _ready():
 		_initial_ghost_rot = ghost_node.global_rotation
 		ghost_node.hide()
 		_anim_player = _find_animation_player(ghost_node)
+		
+		# Vô hiệu hóa vật lý để không làm kẹt người chơi
+		_disable_ghost_collision(ghost_node)
 	
 	# Lấy FOV gốc từ camera của người chơi
 	call_deferred("_cache_original_fov")
@@ -57,12 +61,18 @@ func _on_body_entered(body: Node3D):
 	if body.is_in_group("player"):
 		_is_triggered = true
 		_player = body as CharacterBody3D
+		_player_start_pos = _player.global_position # Chốt vị trí ban đầu
 		_start_event()
 
 func _start_event():
-	# Khóa người chơi
+	# Khóa người chơi và chuột
 	if _player.has_method("set_movement_enabled"):
 		_player.set_movement_enabled(false)
+		
+	var mouse_look = _player.get_node_or_null("Head/MouseLook")
+	if mouse_look:
+		mouse_look.set_process(false)
+		mouse_look.set_process_input(false)
 	
 	# 1. Chớp đen
 	var flash = _create_flash_rect()
@@ -153,7 +163,9 @@ func _physics_process(delta: float):
 	# Logic di chuyển của Ma (Chạy trong cả trạng thái chasing và escaping)
 	if (_state == "chasing" or _state == "escaping") and ghost_node and _player:
 		var ghost_pos = ghost_node.global_position
-		var player_pos = _player.global_position
+		
+		# Ma lao về vị trí CHỐT của người chơi thay vì đuổi theo tọa độ sống
+		var target_aim_pos = _player_start_pos
 		
 		# Tính toán tốc độ ma (x3 sau 30% quãng đường)
 		var current_speed = ghost_speed
@@ -162,8 +174,8 @@ func _physics_process(delta: float):
 			current_speed *= speed_multiplier
 			anim_speed = speed_multiplier
 			
-			# Zoom camera lại bình thường khi ma đạt 30% quãng đường
-			if _is_zoomed:
+			# Zoom camera lại bình thường muộn hơn (khi ma đạt 70% quãng đường)
+			if _is_zoomed and _current_chase_dist >= _initial_chase_dist * 0.7:
 				_is_zoomed = false
 				var cam = _player.get_node_or_null("Head/Camera3D")
 				if cam:
@@ -174,21 +186,29 @@ func _physics_process(delta: float):
 		if _anim_player:
 			_anim_player.speed_scale = anim_speed
 			
-		# Ma nhìn về phía người chơi
-		ghost_node.look_at(Vector3(player_pos.x, ghost_node.global_position.y, player_pos.z), Vector3.UP)
+		# Ma nhìn về phía vị trí mục tiêu
+		ghost_node.look_at(Vector3(target_aim_pos.x, ghost_node.global_position.y, target_aim_pos.z), Vector3.UP)
 		ghost_node.rotate_y(PI)
 		
-		# Ma di chuyển
-		var direction = (player_pos - ghost_pos).normalized()
+		# Ma di chuyển tới vị trí chốt
+		var direction = (target_aim_pos - ghost_pos).normalized()
 		direction.y = 0
 		var move_step = direction * current_speed * delta
 		ghost_node.global_position += move_step
 		_current_chase_dist += move_step.length()
 		
-		# Kích hoạt trạng thái người chơi bỏ chạy khi ma đi được 70% quãng đường
-		if _state == "chasing" and _current_chase_dist >= _initial_chase_dist * 0.7:
+		# Tính khoảng cách 2D (bỏ qua trục Y) để tránh lỗi chênh lệch độ cao
+		var dist_2d = Vector2(ghost_pos.x, ghost_pos.z).distance_to(Vector2(target_aim_pos.x, target_aim_pos.z))
+		
+		# Nếu ma đã tới sát vị trí chốt của người chơi (trên mặt phẳng ngang)
+		if _state == "chasing" and dist_2d < 2.0:
 			_state = "escaping"
-			print("[GhostEvent] Người chơi bắt đầu tháo chạy!")
+			print("[GhostEvent] Ma đã tới điểm chốt, người chơi tháo chạy!")
+			
+			# Dừng ma lại tại điểm chốt
+			if _anim_player:
+				_anim_player.speed_scale = 1.0
+				_anim_player.stop()
 
 	# Logic người chơi bỏ chạy
 	if _state == "escaping" and _player and escape_point:
@@ -271,6 +291,15 @@ func _finish_event():
 			print("[GhostEvent] Đã hiện cây bút Brush.")
 		_first_completion = false
 	
+	# Đồng bộ và mở khóa chuột
+	var mouse_look = _player.get_node_or_null("Head/MouseLook")
+	if mouse_look:
+		if "yaw" in mouse_look: mouse_look.yaw = _player.rotation.y
+		var cam = _player.find_child("Camera3D", true, false)
+		if cam and "pitch" in mouse_look: mouse_look.pitch = cam.rotation.x
+		mouse_look.set_process(true)
+		mouse_look.set_process_input(true)
+	
 	# Mở khóa điều khiển và cho phép kích hoạt lại sự kiện
 	if _player.has_method("set_movement_enabled"):
 		_player.set_movement_enabled(true)
@@ -278,3 +307,14 @@ func _finish_event():
 	_is_triggered = false
 	_state = "idle"
 	_current_chase_dist = 0.0
+
+func _disable_ghost_collision(node: Node):
+	if node is CollisionObject3D:
+		node.collision_layer = 0
+		node.collision_mask = 0
+	
+	if node is CollisionShape3D:
+		node.disabled = true
+		
+	for child in node.get_children():
+		_disable_ghost_collision(child)

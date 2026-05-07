@@ -1,0 +1,50 @@
+[gd_scene load_steps=6 format=3 uid="uid://buv5i5fa5d7o5"]
+
+[ext_resource type="PackedScene" uid="uid://b1p245d3e7y48" path="res://assets/models/tv/scene.gltf" id="1_rncxf"]
+[ext_resource type="Script" uid="uid://by4o5f4mweqs0" path="res://src/scripts/entities/tv_interaction.gd" id="2_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tv"]
+size = Vector3(0.455542, 0.42822266, 0.1451416)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_screen"]
+size = Vector2(0.9, 0.7)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_screen"]
+resource_local_to_scene = true
+cull_mode = 2
+shading_mode = 0
+
+[node name="TV" type="StaticBody3D" node_paths=PackedStringArray("video_player", "screen_mesh", "sub_viewport")]
+collision_layer = 2
+script = ExtResource("2_script")
+video_player = NodePath("SubViewport/VideoStreamPlayer")
+screen_mesh = NodePath("ScreenMesh")
+sub_viewport = NodePath("SubViewport")
+prompt_text = "Bật/Tắt TV"
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_rncxf")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0016967803, 0.21411133, 0.06915283)
+shape = SubResource("BoxShape3D_tv")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+disable_3d = true
+audio_listener_enable_3d = true
+size = Vector2i(640, 480)
+render_target_update_mode = 4
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="SubViewport"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand = true
+loop = true
+
+[node name="ScreenMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.47, 0, 0, 0, -2.0544352e-08, -0.47, 0, 0.47, -2.0544352e-08, -0.00020688772, 0.27062643, -0.007862598)
+visible = false
+mesh = SubResource("PlaneMesh_screen")
+surface_material_override/0 = SubResource("StandardMaterial3D_screen")

@@ -11,12 +11,17 @@ extends StaticBody3D
 @export var stalking_entity: Node3D # Kéo con ma stalking vào đây
 
 var is_player_inside: bool = false
-var stalking_triggered: bool = false # Đánh dấu sự kiện đã xảy ra
+var stalking_triggered: bool = false # Sự kiện lúc đi ra
+var entry_scare_triggered: bool = false # Sự kiện lúc đi vào
 
 func _ready():
 	if combination_lock_scene == null:
 		combination_lock_scene = load("res://src/ui/puzzles/combination_lock_ui.tscn")
 	_update_prompt()
+	
+	# Ẩn ma ngay khi bắt đầu để chờ sự kiện
+	if stalking_entity:
+		stalking_entity.hide()
 
 func _update_prompt():
 	if is_locked:
@@ -99,15 +104,29 @@ func toggle_teleport():
 	await get_tree().create_timer(0.4).timeout # Khoảng lặng ngắn
 	
 	# --- 3. DỊCH CHUYỂN & XOAY SẴN TRONG BÓNG TỐI ---
-	player.global_position = target_marker.global_position
-	player.global_rotation.y = target_marker.global_rotation.y
+	var is_entry_event = not is_player_inside and not entry_scare_triggered
 	
-	var is_event = is_player_inside and not stalking_triggered and stalking_entity
-	if is_event:
-		# CHUẨN BỊ MA NGAY TRONG BÓNG TỐI
+	if is_entry_event:
+		player.global_position = Vector3(-821.7226, 90.52896, 988.3943)
+		player.global_rotation.y = 0
+		var head = player.get_node_or_null("Head")
+		if head:
+			head.rotation.y = deg_to_rad(-32.65)
+			if mouse_look: mouse_look.yaw = -32.65
+	else:
+		player.global_position = target_marker.global_position
+		player.global_rotation.y = target_marker.global_rotation.y
+	
+	# DEBUG LOG
+	print("[Door] Teleporting... Inside: ", is_player_inside, " | Entry Event: ", is_entry_event)
+	
+	var is_stalking_event = is_player_inside and not stalking_triggered and stalking_entity
+	if is_stalking_event:
+		print("[Door] KÍCH HOẠT SỰ KIỆN STALKING (OUT)!")
+		# ... logic con ma cũ giữ nguyên ...
 		stalking_entity.visible = true
 		var ghost_light = stalking_entity.find_child("GhostLight", true, false)
-		if ghost_light: ghost_light.visible = true # Bật đèn luôn
+		if ghost_light: ghost_light.visible = true
 		
 		var anim = stalking_entity.find_child("AnimationPlayer", true, false)
 		if anim:
@@ -115,44 +134,48 @@ func toggle_teleport():
 			if anim_list.size() >= 2: anim.play(anim_list[1])
 			elif anim_list.size() > 0: anim.play(anim_list[0])
 		
-		# --- XOAY CAMERA THEO LOGIC CHUẨN (GIỐNG CHESS EVENT) ---
 		var head = player.get_node_or_null("Head")
 		var cam = player.find_child("Camera3D", true, false)
-		
 		if head and cam:
-			# Tính hướng từ camera đến con ma
 			var dir_c = (stalking_entity.global_position + Vector3.UP * 1.5 - cam.global_position).normalized()
-			
-			# Xoay ngang (Dùng Head - Trục Y)
-			var camera_y_rot = atan2(-dir_c.x, -dir_c.z)
-			head.global_rotation.y = camera_y_rot
-			
-			# Xoay dọc (Dùng Camera - Trục X)
-			var x_rot = atan2(dir_c.y, Vector2(dir_c.x, dir_c.z).length())
-			cam.rotation.x = x_rot
-			cam.rotation.z = 0
-			
-			# ĐỒNG BỘ CHUỘT
+			head.global_rotation.y = atan2(-dir_c.x, -dir_c.z)
+			cam.rotation.x = atan2(dir_c.y, Vector2(dir_c.x, dir_c.z).length())
 			if mouse_look:
-				if "yaw" in mouse_look: mouse_look.yaw = rad_to_deg(head.rotation.y)
-				if "pitch" in mouse_look: mouse_look.pitch = rad_to_deg(cam.rotation.x)
+				mouse_look.yaw = rad_to_deg(head.rotation.y)
+				mouse_look.pitch = rad_to_deg(cam.rotation.x)
 
-	await get_tree().create_timer(0.3).timeout # Tổng cộng 0.7s chờ đen
+	await get_tree().create_timer(0.2).timeout # Đợi rất ngắn cho chớp nhoáng
 	
-	# --- 4. GIAI ĐOẠN "SÁNG LẠI" (Nhanh hơn - 1.0s) ---
-	var tween_in = create_tween().set_parallel(true)
-	tween_in.tween_property(fade_overlay, "color:a", 0.0, 1.0)
-	if env:
-		tween_in.tween_property(env.environment, "ambient_light_energy", 4.0, 1.0)
-		tween_in.tween_property(env.environment, "tonemap_exposure", 1.0, 1.0)
-	
-	await tween_in.finished
-	canvas.queue_free()
+	# --- 4. GIAI ĐOẠN "SÁNG LẠI" ---
+	if is_entry_event:
+		fade_overlay.color.a = 0.0
+		if env:
+			env.environment.ambient_light_energy = 4.0
+			env.environment.tonemap_exposure = 1.0
+		canvas.queue_free()
+	else:
+		var tween_in = create_tween().set_parallel(true)
+		tween_in.tween_property(fade_overlay, "color:a", 0.0, 1.0)
+		if env:
+			tween_in.tween_property(env.environment, "ambient_light_energy", 4.0, 1.0)
+			tween_in.tween_property(env.environment, "tonemap_exposure", 1.0, 1.0)
+		await tween_in.finished
+		canvas.queue_free()
 	
 	# --- 5. KẾT THÚC SỰ KIỆN ---
-	if is_event:
+	if is_entry_event:
+		entry_scare_triggered = true
+		_play_scare_effect() # Kích hoạt rung và chớp đỏ y hệt Phonograph
+		await get_tree().create_timer(1.0).timeout # Đợi 1 giây theo yêu cầu
+		if DialogueManager:
+			DialogueManager.show_text("Giật cả mình!")
+			await DialogueManager.dialogue_finished
+			DialogueManager.show_text("Ai lại để cái mô hình bộ xương đây vậy?")
+			await DialogueManager.dialogue_finished
+			
+	elif is_stalking_event:
 		stalking_triggered = true
-		await get_tree().create_timer(1.5).timeout # Cho nhìn ma 1.5 giây
+		await get_tree().create_timer(1.5).timeout
 		
 		# HIỆU ỨNG NHIỄU SÓNG TV (GLITCH/STATIC)
 		var glitch_canvas = CanvasLayer.new()
@@ -166,7 +189,6 @@ func toggle_teleport():
 		for i in range(12):
 			glitch_rect.color = Color(1, 1, 1, randf_range(0.05, 0.2)) if i % 2 == 0 else Color(0, 0, 0, 0)
 			
-			# Tạo thêm vài đường nhiễu ngang ngẫu nhiên
 			var lines = []
 			if i % 2 == 0:
 				for j in range(3):
@@ -183,11 +205,10 @@ func toggle_teleport():
 				if ghost_light: ghost_light.visible = false
 				
 			await get_tree().create_timer(0.05).timeout
-			for l in lines: l.queue_free() # Xóa các đường nhiễu ngay sau mỗi nhịp chớp
+			for l in lines: l.queue_free()
 			
-		glitch_canvas.queue_free() # Xóa toàn bộ hiệu ứng
+		glitch_canvas.queue_free()
 		
-		# --- THOẠI SUY NGHĨ CỦA NHÂN VẬT ---
 		if DialogueManager:
 			DialogueManager.show_text("Cái gì vậy nhỉ?")
 			await DialogueManager.dialogue_finished
@@ -196,9 +217,10 @@ func toggle_teleport():
 	
 	# --- 6. KHÔI PHỤC ĐIỀU KHIỂN ---
 	if mouse_look:
-		if "yaw" in mouse_look: mouse_look.yaw = player.rotation.y
+		# Đồng bộ lại hướng quay hiện tại của nhân vật vào MouseLook
+		if "yaw" in mouse_look: mouse_look.yaw = rad_to_deg(player.rotation.y)
 		var cam = player.find_child("Camera3D", true, false)
-		if cam and "pitch" in mouse_look: mouse_look.pitch = cam.rotation.x
+		if cam and "pitch" in mouse_look: mouse_look.pitch = rad_to_deg(cam.rotation.x)
 		mouse_look.set_process(true)
 		mouse_look.set_process_input(true)
 	
@@ -207,3 +229,34 @@ func toggle_teleport():
 	
 	is_player_inside = !is_player_inside
 	_update_prompt()
+
+func _play_scare_effect():
+	_shake_camera(0.3, 0.2)
+	
+	var flash_canvas = CanvasLayer.new()
+	flash_canvas.layer = 102
+	get_tree().root.add_child(flash_canvas)
+	
+	var flash_rect = ColorRect.new()
+	flash_rect.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	flash_rect.color = Color(0.8, 0.0, 0.0, 0.2) # Chớp đỏ mờ kinh dị
+	flash_canvas.add_child(flash_rect)
+	
+	var tween = create_tween()
+	tween.tween_property(flash_rect, "color:a", 0.0, 0.2)
+	await tween.finished
+	if is_instance_valid(flash_canvas):
+		flash_canvas.queue_free()
+
+func _shake_camera(intensity: float, duration: float):
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		var camera = player.get_node_or_null("Head/Camera3D")
+		if camera:
+			var shake_tween = create_tween()
+			var steps = int(duration / 0.05)
+			for i in range(steps):
+				shake_tween.tween_property(camera, "h_offset", randf_range(-intensity, intensity), 0.05)
+				shake_tween.parallel().tween_property(camera, "v_offset", randf_range(-intensity, intensity), 0.05)
+			shake_tween.tween_property(camera, "h_offset", 0.0, 0.05)
+			shake_tween.parallel().tween_property(camera, "v_offset", 0.0, 0.05)

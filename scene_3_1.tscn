@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=69 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -34,11 +34,12 @@
 [ext_resource type="PackedScene" uid="uid://dwck8v3k3sps5" path="res://assets/models/barely_used_red_candle/scene.gltf" id="33_candle_model"]
 [ext_resource type="Script" uid="uid://fmhc8dh7gbev" path="res://src/scripts/entities/elements_table_interaction.gd" id="34_elements_interact"]
 [ext_resource type="PackedScene" uid="uid://bpau2wj5niha1" path="res://assets/models/lock/lock.tscn" id="34_jhiqw"]
+[ext_resource type="PackedScene" uid="uid://dkumwx4fyo0cf" path="res://assets/models/horror_ghost/horror_girl.tscn" id="35_vr0jh"]
+[ext_resource type="PackedScene" uid="uid://ycimq2fvkc3g" path="res://assets/models/skeleton/scene.gltf" id="36_5lrs3"]
 [ext_resource type="Script" uid="uid://l2vjyf8isfs7" path="res://src/scripts/entities/door_teleport.gd" id="36_door_teleport"]
 [ext_resource type="PackedScene" uid="uid://dxbgy6dmobvh" path="res://assets/models/poison_vase/poison_vase.tscn" id="36_iocmh"]
 [ext_resource type="Script" uid="uid://bybqsnyo8q322" path="res://src/scripts/entities/poison_interaction.gd" id="37_poison_interact"]
 [ext_resource type="PackedScene" uid="uid://b5jpvmxrqcy10" path="res://assets/models/table_event6/table_event_6.tscn" id="40_table_event_6"]
-[ext_resource type="PackedScene" uid="uid://10yk2a2b2agm" path="res://assets/models/ghost_event4/stalking.tscn" id="41_ghost_stalking"]
 [ext_resource type="PackedScene" uid="uid://c1h2i3j4k5l6m" path="res://src/entities/rat_ai_entity.tscn" id="42_rat_entity"]
 [ext_resource type="PackedScene" uid="uid://dgf6ty24xwo7p" path="res://assets/models/coin/coin.tscn" id="43_coin_model"]
 [ext_resource type="PackedScene" uid="uid://dll8cu31j8c2x" path="res://assets/models/creepy_head/creepy_head.tscn" id="44_4pjcv"]
@@ -51,6 +52,8 @@
 [ext_resource type="Script" uid="uid://dwagr7d0cxxqj" path="res://src/scripts/events/scene3/running_ghost_event.gd" id="49_ghost_event"]
 [ext_resource type="Script" uid="uid://yjaufodhfdgo" path="res://src/scripts/common/item_pickup.gd" id="50_pickup_script"]
 [ext_resource type="Resource" path="res://assets/items/brush_item.tres" id="51_brush_data"]
+[ext_resource type="PackedScene" uid="uid://buv5i5fa5d7o5" path="res://assets/models/tv/tv.tscn" id="52_th7u1"]
+[ext_resource type="PackedScene" uid="uid://dt5g5e1o4e7ur" path="res://assets/models/krasue/krasue.tscn" id="53_vr0jh"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -621,22 +624,18 @@ stalking_entity = NodePath("../stalking")
 transform = Transform3D(0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0)
 shape = SubResource("BoxShape3D_lock")
 
-[node name="stalking" parent="event4" instance=ExtResource("41_ghost_stalking")]
-transform = Transform3D(-13.071085, 0, -27.00272, 0, 30.000002, 0, 27.00272, 0, -13.071085, -620.04645, 41.489986, 1071.6761)
-visible = false
-
-[node name="GhostLight" type="SpotLight3D" parent="event4/stalking"]
-transform = Transform3D(1, 0, 0, 0, 0.970296, 0.241922, 0, -0.241922, 0.970296, 0.237, 2.76, 2.37)
-light_color = Color(1, 0.9, 0.8, 1)
-light_energy = 15.0
-spot_range = 10.0
-spot_angle = 35.0
-
 [node name="House3_InsideMarker" type="Marker3D" parent="event4"]
 transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -861.2579, 66.74041, 987.0657)
 
 [node name="House3_OutsideMarker" type="Marker3D" parent="event4"]
 transform = Transform3D(1.0000001, 0, 0, 0, 1.0000001, 0, 0, 0, 1.0000001, -814.2095, 92.114, 1018.842)
+
+[node name="stalking" parent="event4" instance=ExtResource("35_vr0jh")]
+transform = Transform3D(-106.72837, 0, 26.62818, 0, 110.00002, 0, -26.62818, 0, -106.72837, -620.04645, 101.37587, 1091.3921)
+visible = false
+
+[node name="skeleton" parent="event4" instance=ExtResource("36_5lrs3")]
+transform = Transform3D(19.629953, 0, -22.686228, 0, 30.000002, 0, 22.686228, 0, 19.629953, -810.7671, 39.554653, 973.167)
 
 [node name="event5" type="Node3D" parent="."]
 
@@ -675,7 +674,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -89.771484, 24.085693, -38.64
 [node name="Rat1" parent="event5" instance=ExtResource("42_rat_entity")]
 transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, -119.49441, 50.402546, 686.7704)
 show_debug = false
-rat_name = "Lão gà khô "
+rat_name = "Tí cô nương"
 speed_walk = 20.0
 speed_run = 100.0
 detection_range_normal = 150.0
@@ -797,10 +796,6 @@ visible = false
 transform = Transform3D(36.154984, 0, -34.537178, 0, 49.999992, 0, 34.537178, 0, 36.154984, -255.58177, 5.052387, 15.684101)
 visible = false
 
-[node name="Scene3Event" type="Node3D" parent="."]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
-script = ExtResource("15_s3evt")
-
 [node name="event7" type="Node3D" parent="."]
 
 [node name="running_event2" type="Area3D" parent="event7" node_paths=PackedStringArray("ghost_node", "escape_point", "brush_node")]
@@ -833,3 +828,19 @@ script = ExtResource("50_pickup_script")
 item_data = ExtResource("51_brush_data")
 prompt_text = "Nhặt cây bút"
 is_active = false
+
+[node name="Scene3Event" type="Node3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
+script = ExtResource("15_s3evt")
+
+[node name="event8" type="Node3D" parent="."]
+
+[node name="table_event8" parent="event8" instance=ExtResource("40_table_event_6")]
+transform = Transform3D(11.461232, 0, -16.390245, 0, 20.000002, 0, 16.390245, 0, 11.461232, -678.3821, 40.900436, 732.4558)
+
+[node name="tv" parent="event8" node_paths=PackedStringArray("krasue") instance=ExtResource("52_th7u1")]
+transform = Transform3D(-25.113277, 0, 43.235672, 0, 50, 0, -43.235672, 0, -25.113277, -689.78485, 80.26016, 730.7423)
+krasue = NodePath("../krasue")
+
+[node name="krasue" parent="event8" instance=ExtResource("53_vr0jh")]
+transform = Transform3D(12.169136, 0, -15.871738, 0, 19.999996, 0, 15.871738, 0, 12.169136, -704.9549, 34.16719, 740.3813)
