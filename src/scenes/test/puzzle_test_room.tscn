@@ -72,7 +72,13 @@ text = "KIỂM TRA CÂU ĐỐ THỬ ĐỘC"
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "KIỂM TRA Ổ KHÓA (MÃ: 97529)"
+text = "KIỂM TRA Ổ KHÓA (Mã: 97529)"
+
+[node name="TestInk" type="Button" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "KIỂM TRA CÂU ĐỐ PHA MỰC"
 
 [node name="LogLabel" type="Label" parent="."]
 layout_mode = 1
@@ -106,3 +112,4 @@ visible = false
 [connection signal="pressed" from="VBoxContainer/TestTalisman" to="." method="_on_test_talisman_pressed"]
 [connection signal="pressed" from="VBoxContainer/TestPoison" to="." method="_on_test_poison_pressed"]
 [connection signal="pressed" from="VBoxContainer/TestLock" to="." method="_on_test_lock_pressed"]
+[connection signal="pressed" from="VBoxContainer/TestInk" to="." method="_on_test_ink_pressed"]

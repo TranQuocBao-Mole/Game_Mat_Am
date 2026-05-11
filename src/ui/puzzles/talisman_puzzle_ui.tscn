@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://src/ui/puzzles/talisman_puzzle_ui.gd" id="1_script"]
-[ext_resource type="Texture2D" path="res://assets/textures/puzzles/talisman/talisman_paper.png" id="2_paper"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/talisman/giaybua.png" id="2_paper"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_overlay"]
 bg_color = Color(0, 0, 0, 0.7)
@@ -36,9 +36,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -400.0
-offset_top = -500.0
+offset_top = -400.0
 offset_right = 400.0
-offset_bottom = 500.0
+offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_paper")

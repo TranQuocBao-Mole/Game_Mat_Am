@@ -1,0 +1,33 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="PackedScene" uid="uid://paintcanmodel" path="res://assets/models/paint_can/scene.gltf" id="1_model"]
+[ext_resource type="Script" path="res://src/scripts/entities/paint_can_interaction.gd" id="2_script"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_interaction"]
+size = Vector3(1.0, 0.5, 0.8)
+
+[node name="PaintCanGroup" type="StaticBody3D"]
+collision_layer = 2
+script = ExtResource("2_script")
+
+[node name="Can1" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.3, 0, -0.2)
+
+[node name="Can2" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, -0.2)
+
+[node name="Can3" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.3, 0, -0.2)
+
+[node name="Can4" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.3, 0, 0.2)
+
+[node name="Can5" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0, 0, 0.2)
+
+[node name="Can6" parent="." instance=ExtResource("1_model")]
+transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.3, 0, 0.2)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("BoxShape3D_interaction")

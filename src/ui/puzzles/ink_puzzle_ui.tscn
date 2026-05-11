@@ -1,0 +1,305 @@
+[gd_scene load_steps=14 format=3]
+
+[ext_resource type="Script" path="res://src/ui/puzzles/ink_puzzle_ui.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/ink_bg.png" id="2_bg"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/exit_button.png" id="3_exit"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/test_button.png" id="4_test"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/save_button.png" id="5_save"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/hp.png" id="6_hp"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/mix_color.png" id="7_puddle"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/lo1.png" id="8_lo1"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/lo2.png" id="9_lo2"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/lo3.png" id="10_lo3"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/lo4.png" id="11_lo4"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/lo5.png" id="12_lo5"]
+[ext_resource type="Texture2D" path="res://assets/textures/puzzles/ink/lo6.png" id="13_lo6"]
+
+[node name="InkPuzzleUI" type="CanvasLayer"]
+layer = 101
+visible = false
+script = ExtResource("1_script")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.6
+
+[node name="MainUI" type="Control" parent="Control/AspectRatioContainer"]
+custom_minimum_size = Vector2(1000, 667)
+layout_mode = 2
+
+[node name="Background" type="TextureRect" parent="Control/AspectRatioContainer/MainUI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_bg")
+expand_mode = 1
+
+[node name="BowlArea" type="Control" parent="Control/AspectRatioContainer/MainUI"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -240.0
+offset_right = 115.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Bowl" type="TextureRect" parent="Control/AspectRatioContainer/MainUI/BowlArea"]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -60.0
+offset_top = -60.0
+offset_right = 60.0
+offset_bottom = 60.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_puddle")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="InteractionLayer" type="VBoxContainer" parent="Control/AspectRatioContainer/MainUI"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -290.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="Bottles" type="HBoxContainer" parent="Control/AspectRatioContainer/MainUI/InteractionLayer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="W1" type="Control" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="B1" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W1"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 80)
+texture_normal = ExtResource("8_lo1")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="W2" type="Control" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="B2" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W2"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 80)
+texture_normal = ExtResource("9_lo2")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="W3" type="Control" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="B3" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W3"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 80)
+texture_normal = ExtResource("10_lo3")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="W4" type="Control" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="B4" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W4"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 80)
+texture_normal = ExtResource("11_lo4")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="W5" type="Control" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="B5" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W5"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 80)
+texture_normal = ExtResource("12_lo5")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="W6" type="Control" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 2
+
+[node name="B6" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W6"]
+custom_minimum_size = Vector2(120, 160)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(60, 80)
+texture_normal = ExtResource("13_lo6")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Buttons" type="HBoxContainer" parent="Control/AspectRatioContainer/MainUI/InteractionLayer"]
+layout_mode = 2
+theme_override_constants/separation = 40
+alignment = 1
+
+[node name="MixButton" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Buttons"]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+pivot_offset = Vector2(125, 35)
+texture_normal = ExtResource("4_test")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="GuessButton" type="TextureButton" parent="Control/AspectRatioContainer/MainUI/InteractionLayer/Buttons"]
+custom_minimum_size = Vector2(250, 70)
+layout_mode = 2
+pivot_offset = Vector2(125, 35)
+texture_normal = ExtResource("5_save")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="CloseButton" type="TextureButton" parent="Control/AspectRatioContainer/MainUI"]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 40.0
+offset_right = 88.0
+offset_bottom = 100.0
+texture_normal = ExtResource("3_exit")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BloodDrops" type="HBoxContainer" parent="Control/AspectRatioContainer/MainUI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -180.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = 120.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+alignment = 2
+
+[node name="Drop1" type="TextureRect" parent="Control/AspectRatioContainer/MainUI/BloodDrops"]
+custom_minimum_size = Vector2(40, 80)
+layout_mode = 2
+texture = ExtResource("6_hp")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Drop2" type="TextureRect" parent="Control/AspectRatioContainer/MainUI/BloodDrops"]
+custom_minimum_size = Vector2(40, 80)
+layout_mode = 2
+texture = ExtResource("6_hp")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Drop3" type="TextureRect" parent="Control/AspectRatioContainer/MainUI/BloodDrops"]
+custom_minimum_size = Vector2(40, 80)
+layout_mode = 2
+texture = ExtResource("6_hp")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="StatusLabel" type="Label" parent="Control/AspectRatioContainer/MainUI"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -336.0
+offset_top = 227.0
+offset_right = 164.0
+offset_bottom = 267.0
+grow_horizontal = 2
+pivot_offset = Vector2(250, 20)
+theme_override_colors/font_color = Color(0.2, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
+
+[node name="Overlay" type="ColorRect" parent="Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 0.5)
+
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W1/B1" to="." method="_on_bottle_pressed" binds= [0]]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W2/B2" to="." method="_on_bottle_pressed" binds= [1]]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W3/B3" to="." method="_on_bottle_pressed" binds= [2]]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W4/B4" to="." method="_on_bottle_pressed" binds= [3]]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W5/B5" to="." method="_on_bottle_pressed" binds= [4]]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Bottles/W6/B6" to="." method="_on_bottle_pressed" binds= [5]]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Buttons/MixButton" to="." method="_on_mix_pressed"]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/InteractionLayer/Buttons/GuessButton" to="." method="_on_guess_pressed"]
+[connection signal="pressed" from="Control/AspectRatioContainer/MainUI/CloseButton" to="." method="_on_close_pressed"]

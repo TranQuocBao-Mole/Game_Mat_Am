@@ -1,0 +1,8 @@
+Model Information:
+* title:	Paint Can
+* source:	https://sketchfab.com/3d-models/paint-can-b3c81377e3004a3e979366037d2ce2b2
+* author:	BrysonJones (https://sketchfab.com/BrysonJones)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

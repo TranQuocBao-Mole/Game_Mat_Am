@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=73 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -54,6 +54,9 @@
 [ext_resource type="Resource" path="res://assets/items/brush_item.tres" id="51_brush_data"]
 [ext_resource type="PackedScene" uid="uid://buv5i5fa5d7o5" path="res://assets/models/tv/tv.tscn" id="52_th7u1"]
 [ext_resource type="PackedScene" uid="uid://dt5g5e1o4e7ur" path="res://assets/models/krasue/krasue.tscn" id="53_vr0jh"]
+[ext_resource type="PackedScene" path="res://assets/models/talisman/talisman_paper.tscn" id="54_talisman"]
+[ext_resource type="PackedScene" uid="uid://dmkf60nnvd4si" path="res://assets/models/paint_can/scene.gltf" id="55_paint_can_model"]
+[ext_resource type="Script" uid="uid://cfsk4yrw0y6f" path="res://src/scripts/entities/paint_can_interaction.gd" id="56_paint_script"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -112,6 +115,9 @@ size = Vector3(0.083740234, 0.17358398, 0.1649414)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_poison_vase"]
 size = Vector3(400, 422.99365, 268.31836)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_interaction_cans"]
+size = Vector3(2.0673828, 0.5, 2.0890992)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_phonograph_trigger"]
 size = Vector3(7.776367, 179.86414, 198.29602)
@@ -713,6 +719,33 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -333.11752, 79.88426, 56.8911
 [node name="Phonograph" parent="table_event6/coin" instance=ExtResource("45_phonograph")]
 transform = Transform3D(-1.4035101, 0, -3.7456853, 0, 4, 0, 3.7456853, 0, -1.4035101, -332.82916, 79.88426, 38.77627)
 
+[node name="PaintCans" type="StaticBody3D" parent="table_event6/coin"]
+transform = Transform3D(9.997253, 0.2331026, 0.024401348, -0.23437624, 9.942924, 1.0408324, 0, -1.0411184, 9.945656, -47.09214, 61.45186, -10.997322)
+collision_layer = 2
+script = ExtResource("56_paint_script")
+
+[node name="Can1" parent="table_event6/coin/PaintCans" instance=ExtResource("55_paint_can_model")]
+transform = Transform3D(0.009999999, -1.4551915e-11, 0, 0, 0.009999999, 1.1641532e-10, 3.637979e-12, 0, 0.009999999, -0.837739, -0.0063271523, -0.26064944)
+
+[node name="Can2" parent="table_event6/coin/PaintCans" instance=ExtResource("55_paint_can_model")]
+transform = Transform3D(0.009999998, -4.3655746e-11, 0, -1.4928614e-11, 0.009999998, 1.1641532e-10, 5.4175345e-12, 1.1641532e-10, 0.009999998, 0.1272664, -0.44211864, 0.8985424)
+
+[node name="Can3" parent="table_event6/coin/PaintCans" instance=ExtResource("55_paint_can_model")]
+transform = Transform3D(0.009999994, 1.4551915e-11, 9.094947e-12, -4.4978837e-11, 0.009999995, 2.3283064e-10, 9.001322e-12, 1.1641532e-10, 0.009999994, -0.5078993, -0.573936, 0.75351477)
+
+[node name="Can4" parent="table_event6/coin/PaintCans" instance=ExtResource("55_paint_can_model")]
+transform = Transform3D(0.009999999, -1.4551915e-11, 0, 0, 0.009999999, 1.1641532e-10, 3.637979e-12, 0, 0.009999999, -0.29290104, -0.30116034, 0.16847432)
+
+[node name="Can5" parent="table_event6/coin/PaintCans" instance=ExtResource("55_paint_can_model")]
+transform = Transform3D(0.009999998, -4.3655746e-11, 0, -1.4928614e-11, 0.009999998, 1.1641532e-10, 5.4175345e-12, 1.1641532e-10, 0.009999998, 0.39804173, -0.3931036, -0.21317458)
+
+[node name="Can6" parent="table_event6/coin/PaintCans" instance=ExtResource("55_paint_can_model")]
+transform = Transform3D(0.009999998, -4.3655746e-11, 0, -1.4928614e-11, 0.009999998, 1.1641532e-10, 5.4175345e-12, 1.1641532e-10, 0.009999998, 0.58801603, -0.579134, 0.51845956)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="table_event6/coin/PaintCans"]
+transform = Transform3D(0.99997884, 9.313226e-09, 8.8475645e-09, -4.5410815e-08, 0.9999993, 2.2351742e-08, 2.012684e-08, 1.4901161e-08, 0.9999744, -0.19287252, 0.25000048, 0.24732298)
+shape = SubResource("BoxShape3D_interaction_cans")
+
 [node name="PhonographEventTrigger" type="Area3D" parent="table_event6/coin" node_paths=PackedStringArray("phonograph_node", "scary_head", "scary_girl", "scary_girl_7", "scary_girl_8", "scary_girl_9", "scary_girl_10", "candle_light_1", "candle_light_2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -212.414, 79.88426, 93.85632)
 collision_mask = 3
@@ -844,3 +877,6 @@ krasue = NodePath("../krasue")
 
 [node name="krasue" parent="event8" instance=ExtResource("53_vr0jh")]
 transform = Transform3D(12.169136, 0, -15.871738, 0, 19.999996, 0, 15.871738, 0, 12.169136, -704.9549, 34.16719, 740.3813)
+
+[node name="TalismanPaper" parent="event8" instance=ExtResource("54_talisman")]
+transform = Transform3D(60, 0, 0, 0, 60, 0, 0, 0, 60, -849.254, 53.341812, 559.57904)

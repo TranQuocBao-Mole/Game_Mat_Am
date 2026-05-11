@@ -386,6 +386,21 @@ func add_item(item_id: String, _count: int = 1, custom_name: String = ""):
 			
 		InventoryManager.add_item(coin_item)
 		print("DEBUG: Đã nhận được Đồng Tiền Linh Hồn!")
+	elif item_id == "red_paint_bottle":
+		var paint_item = ItemData.new()
+		paint_item.item_id = "red_paint_bottle"
+		paint_item.item_name = custom_name if custom_name != "" else "Bình Sơn Đỏ"
+		
+		# Nạp icon bình sơn đỏ
+		var icon_path = "res://assets/textures/ui/red_paint_bottle.png"
+		if ResourceLoader.exists(icon_path):
+			paint_item.icon = load(icon_path)
+		else:
+			paint_item.icon = PlaceholderTexture2D.new()
+			paint_item.icon.size = Vector2(32, 32)
+			
+		InventoryManager.add_item(paint_item)
+		print("DEBUG: Đã nhận được Bình Sơn Đỏ!")
 	else:
 		print("Vật phẩm chưa xác định: ", item_id)
 
