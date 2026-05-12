@@ -12,6 +12,7 @@ extends "res://src/scripts/common/item_pickup.gd"
 @export var crawl_speed: float = 50.0 ## Tốc độ bò (units/giây)
 @export var end_dialogues: Array[String] = [
 	"Quái lạ... vừa nãy là cái gì vậy?",
+	"Hình như mình có cảm giác đã quên đi một chuyện gì đó...",
 	"Cái đèn lúc nãy cũng biến mất rồi?",
 	"Chắc là mình tưởng tượng thôi...",
 	"Nhưng sao tờ giấy này lại ở đây nhỉ?",
@@ -29,6 +30,10 @@ extends "res://src/scripts/common/item_pickup.gd"
 @export var jumpscare_scale: float = 30.0 ## Độ lớn của con ma
 @export var jumpscare_rotation_offset: Vector3 = Vector3(0, 0, 0) ## Xoay thêm (degrees)
 @export var jumpscare_shake_intensity: float = 0.7 ## Lực rung màn hình
+@export var fall_height: float = 10.0 ## Độ cao ma rơi xuống
+@export var surprise_sound: AudioStream = preload("res://assets/audio/ghost_event/suprise_hit.mp3")
+
+var _audio_player: AudioStreamPlayer
 
 func interact() -> void:
 	print("[DEBUG] Đã nhấn tương tác vào tờ giấy!")
@@ -73,6 +78,11 @@ func _start_horror_event():
 		mouse_look.set_process_input(false)
 		mouse_look.set_physics_process(false)
 		print("[DEBUG] Đã tắt MouseLook")
+	
+	_audio_player = AudioStreamPlayer.new()
+	_audio_player.stream = surprise_sound
+	_audio_player.bus = "SFX"
+	add_child(_audio_player)
 
 	# --- BƯỚC 1: HIỆN MA VÀ CHO NÓ BÒ ---
 	var pos_a = start_node.global_position if start_node else ghost_node.global_position
@@ -91,6 +101,7 @@ func _start_horror_event():
 	ghost_node.rotation_degrees += rotation_offset
 	
 	ghost_node.visible = true # HIỆN CON MA LÊN
+	if _audio_player: _audio_player.play()
 	print("[DEBUG] Đã hiện con ma tại: ", ghost_node.global_position)
 
 	# --- CHẠY ANIMATION ---
@@ -171,6 +182,7 @@ func _on_dialogue_done():
 	get_tree().root.add_child(new_ghost)
 	new_ghost.name = "CON_MA_NHAN_BAN"
 	new_ghost.visible = true # Hiện bản sao lên
+	if _audio_player: _audio_player.play()
 	
 	var player = get_tree().get_first_node_in_group("player")
 	if player:
@@ -188,6 +200,17 @@ func _on_dialogue_done():
 			
 			if jumpscare_rotation_offset != Vector3.ZERO:
 				new_ghost.rotation_degrees += jumpscare_rotation_offset
+			
+			# Hiệu ứng rơi từ trên trời xuống
+			var final_pos = new_ghost.global_position
+			new_ghost.global_position.y += fall_height
+			var fall_tween = create_tween().set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+			fall_tween.tween_property(new_ghost, "global_position:y", final_pos.y, 0.3)
+			
+			# Chớp sáng đặc biệt khi ma rơi xuống
+			var rain_sys = get_tree().root.find_child("RainSystem", true, false)
+			if rain_sys and rain_sys.has_method("trigger_special_lightning"):
+				rain_sys.trigger_special_lightning(25.0) # Sáng cực mạnh (25.0)
 			
 			_shake_camera(camera, 0.6, jumpscare_shake_intensity)
 	
@@ -268,8 +291,12 @@ func _on_faint_dialogue_done(fade_overlay, canvas):
 	if end_dialogues.size() > 0:
 		for line in end_dialogues:
 			DialogueManager.show_text(line)
-		DialogueManager.dialogue_finished.connect(_finalize_event, CONNECT_ONE_SHOT)
+		DialogueManager.dialogue_finished.connect(func():
+			GameState.is_raining = true
+			_finalize_event()
+		, CONNECT_ONE_SHOT)
 	else:
+		GameState.is_raining = true
 		_finalize_event()
 
 func _finalize_event():

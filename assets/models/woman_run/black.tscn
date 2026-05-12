@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://hnn72gfmwxlo"]
+
+[ext_resource type="PackedScene" uid="uid://0r28yqdc3hu2" path="res://assets/models/woman_run/scene.gltf" id="1_q7df7"]
+
+[node name="Sketchfab_Scene" instance=ExtResource("1_q7df7")]
+
+[node name="GLTF_created_0" parent="Sketchfab_model/root/GLTF_SceneRootNode/Armature_25" index="0"]
+visible = true

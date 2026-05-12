@@ -1,8 +1,6 @@
 extends "res://src/scripts/common/interactable_node.gd"
 
-@export var radio: Radio                     # Must have class_name Radio in radio script
-@export var picture_texture: Texture2D       # The image to display
-@export var close_with_interact: bool = true # Also close with Escape
+@export var radio: Node3D
 @export var red_light: OmniLight3D           # The red light that turns on during event
 
 # Two separate sounds:
@@ -17,42 +15,10 @@ var timer_25s: Timer   # Restored for the delayed sound
 
 var is_open: bool = false
 var player: CharacterBody3D = null
-var ui_layer: CanvasLayer
-var picture_panel: Panel
-var texture_rect: TextureRect
 
 func _ready():
 	super._ready()
-	# Create the UI overlay
-	ui_layer = CanvasLayer.new()
-	add_child(ui_layer)
-	
-	# Panel that covers most of the screen
-	picture_panel = Panel.new()
-	picture_panel.anchor_left = 0.1
-	picture_panel.anchor_right = 0.9
-	picture_panel.anchor_top = 0.1
-	picture_panel.anchor_bottom = 0.9
-	picture_panel.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
-	picture_panel.size_flags_vertical = Control.SIZE_SHRINK_CENTER
-	
-	# TextureRect to display the image
-	texture_rect = TextureRect.new()
-	texture_rect.anchor_left = 0.05
-	texture_rect.anchor_right = 0.95
-	texture_rect.anchor_top = 0.05
-	texture_rect.anchor_bottom = 0.95
-	texture_rect.texture = picture_texture
-	texture_rect.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
-	
-	picture_panel.add_child(texture_rect)
-	ui_layer.add_child(picture_panel)
-	picture_panel.hide()
-	
-	# Find the player (assumed to be in group "player")
 	player = get_tree().get_first_node_in_group("player")
-	
-	# Create timers
 	timer_30s = Timer.new()
 	timer_30s.one_shot = true
 	timer_30s.timeout.connect(_on_30s_timeout)
@@ -74,39 +40,17 @@ func _ready():
 
 func interact():
 	"""Called by the player's raycast when pressing interact."""
-	if !is_active or is_open:
+	if !is_active or event_triggered:
 		return
-	open_picture()
-
-func open_picture():
-	is_open = true
-	picture_panel.show()
-	if player and player.has_method("set_movement_enabled"):
-		player.set_movement_enabled(false)
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-
-func close_picture():
-	if not is_open:
-		return
-	is_open = false
-	picture_panel.hide()
+		
+	if DialogueManager:
+		DialogueManager.show_text("Tờ báo gì đây? Chẳng đọc được gì...")
+		await DialogueManager.dialogue_finished
 	
-	# Đợi một phần nhỏ giây trước khi mở lại di chuyển để tránh bị mở lại ngay lập tức trong cùng 1 frame
-	await get_tree().process_frame
-	
-	if player and player.has_method("set_movement_enabled"):
-		player.set_movement_enabled(true)
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	
-	# Start the horror event only once, when the picture is first closed
-	if not event_triggered:
-		_start_event()
+	_start_event()
 
-func _input(event):
-	if is_open:
-		if (close_with_interact and event.is_action_pressed("interact")) or event.is_action_pressed("ui_cancel"):
-			close_picture()
-			get_viewport().set_input_as_handled()
+func _input(_event):
+	pass
 
 # ---------- Event helper functions ----------
 func _start_event():
@@ -148,6 +92,11 @@ func _on_25s_timeout():
 	if delayed_scary_sound and audio_player:
 		audio_player.stream = delayed_scary_sound
 		audio_player.play()
+		
+		# Đợi một lát cho tiếng gõ cửa kêu xong rồi mới hiện dialogue
+		await get_tree().create_timer(1.5).timeout
+		if DialogueManager:
+			DialogueManager.show_text("Ai gõ cửa vậy nhỉ?")
 
 func _on_30s_timeout():
 	"""Called after 30 seconds – revert everything back to normal."""

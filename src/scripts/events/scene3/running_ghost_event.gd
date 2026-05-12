@@ -3,8 +3,12 @@ extends Area3D
 @export var ghost_node: Node3D
 @export var escape_point: Node3D
 @export var ghost_speed: float = 240.0 # Tốc độ ma ban đầu (siêu nhanh)
-@export var speed_multiplier: float = 3.0 # Hệ số tăng tốc (240 * 3 = 720)
+@export var speed_multiplier: float = 3.0 # Hệ số tăng tốc giai đoạn 1
+@export var super_speed_multiplier: float = 6.0 # Hệ số tăng tốc giai đoạn 2
 @export var brush_node: Node3D # Node cây bút sẽ hiện ra
+@export var run_sound: AudioStream = preload("res://assets/audio/ghost_event/monsterwalking.wav")
+
+var _run_player: AudioStreamPlayer
 @export var camera_shake_intensity: float = 0.2
 @export var camera_sway_intensity: float = 0.12
 @export var camera_sway_speed: float = 12.0
@@ -31,7 +35,7 @@ func _ready():
 		else:
 			brush_node.hide()
 	
-	if ghost_node: 
+	if ghost_node:
 		_initial_ghost_pos = ghost_node.global_position
 		_initial_ghost_rot = ghost_node.global_rotation
 		ghost_node.hide()
@@ -39,6 +43,11 @@ func _ready():
 		
 		# Vô hiệu hóa vật lý để không làm kẹt người chơi
 		_disable_ghost_collision(ghost_node)
+	
+	_run_player = AudioStreamPlayer.new()
+	_run_player.stream = run_sound
+	_run_player.bus = "SFX"
+	add_child(_run_player)
 	
 	# Lấy FOV gốc từ camera của người chơi
 	call_deferred("_cache_original_fov")
@@ -98,7 +107,7 @@ func _start_event():
 		
 		_is_zoomed = true
 
-	if not _anim_player: 
+	if not _anim_player:
 		print("[ERROR] Không tìm thấy AnimationPlayer trong ghost_node.")
 		return
 		
@@ -128,7 +137,11 @@ func _start_event():
 	
 	print("[GhostEvent] Bắt đầu rượt đuổi!")
 	# Bắt đầu trạng thái rượt đuổi
-	_initial_chase_dist = ghost_node.global_position.distance_to(_player.global_position)
+	if _run_player:
+		_run_player.pitch_scale = 1.0
+		_run_player.play()
+	
+	_initial_chase_dist = ghost_node.global_position.distance_to(_player_start_pos)
 	_current_chase_dist = 0.0
 	_state = "chasing"
 
@@ -167,20 +180,32 @@ func _physics_process(delta: float):
 		# Ma lao về vị trí CHỐT của người chơi thay vì đuổi theo tọa độ sống
 		var target_aim_pos = _player_start_pos
 		
-		# Tính toán tốc độ ma (x3 sau 30% quãng đường)
+		# Tính toán tốc độ ma (3 giai đoạn)
 		var current_speed = ghost_speed
 		var anim_speed = 1.0
-		if _current_chase_dist >= _initial_chase_dist * 0.3:
+		var current_pitch = 1.0
+		
+		if _current_chase_dist >= _initial_chase_dist * 0.7:
+			# Giai đoạn x6
+			current_speed *= super_speed_multiplier
+			anim_speed = super_speed_multiplier
+			current_pitch = super_speed_multiplier
+			_is_zoomed = false # Reset zoom sớm khi đạt tốc độ tối đa
+		elif _current_chase_dist >= _initial_chase_dist * 0.3:
+			# Giai đoạn x3
 			current_speed *= speed_multiplier
 			anim_speed = speed_multiplier
-			
-			# Zoom camera lại bình thường muộn hơn (khi ma đạt 70% quãng đường)
-			if _is_zoomed and _current_chase_dist >= _initial_chase_dist * 0.7:
-				_is_zoomed = false
-				var cam = _player.get_node_or_null("Head/Camera3D")
-				if cam:
-					var tween = create_tween()
-					tween.tween_property(cam, "fov", _original_fov, 0.6).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+			current_pitch = speed_multiplier
+		
+		# Cập nhật âm thanh
+		if _run_player:
+			_run_player.pitch_scale = current_pitch
+		
+		# Zoom camera lại bình thường muộn hơn (khi ma đạt 70% quãng đường)
+		if not _is_zoomed:
+			var cam = _player.get_node_or_null("Head/Camera3D")
+			if cam and cam.fov < _original_fov:
+				cam.fov = lerp(cam.fov, _original_fov, delta * 5.0)
 			
 		# Đồng bộ tốc độ animation
 		if _anim_player:
@@ -209,6 +234,9 @@ func _physics_process(delta: float):
 			if _anim_player:
 				_anim_player.speed_scale = 1.0
 				_anim_player.stop()
+			
+			if _run_player:
+				_run_player.stop()
 
 	# Logic người chơi bỏ chạy
 	if _state == "escaping" and _player and escape_point:
@@ -258,7 +286,7 @@ func _physics_process(delta: float):
 			_finish_event()
 
 func _finish_event():
-	if ghost_node: 
+	if ghost_node:
 		ghost_node.hide()
 		ghost_node.global_position = _initial_ghost_pos
 		ghost_node.global_rotation = _initial_ghost_rot

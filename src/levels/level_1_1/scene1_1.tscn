@@ -57,7 +57,7 @@ size = Vector3(0.56456757, 0.3255005, 0.4382019)
 size = Vector3(1, 2.95813, 0.19836426)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_3x3xb"]
-size = Vector3(52.599762, 23.618664, 76.478516)
+size = Vector3(93.89154, 10, 60.308838)
 
 [sub_resource type="LabelSettings" id="LabelSettings_ml043"]
 font_color = Color(0.7164308, 0.0069463504, 0.19987458, 1)
@@ -268,18 +268,20 @@ stream = ExtResource("15_gyofh")
 volume_db = 12.549
 unit_size = 42.98
 
-[node name="paper_interact" type="StaticBody3D" parent="Sketchfab_Scene" node_paths=PackedStringArray("red_light", "audio_player")]
+[node name="paper_interact" type="StaticBody3D" parent="Sketchfab_Scene" node_paths=PackedStringArray("radio", "red_light", "audio_player")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -90.556366, 91.96167, 248.04636)
 collision_layer = 2
 script = ExtResource("16_ibhs0")
+radio = NodePath("../radio_interact")
 red_light = NodePath("red_light")
 immediate_scary_sound = ExtResource("12_ika5i")
 delayed_scary_sound = ExtResource("18_enko0")
 audio_player = NodePath("../radio_interact/radio_shape/AudioStreamPlayer3D")
 
 [node name="paper_shape" type="CollisionShape3D" parent="Sketchfab_Scene/paper_interact"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 51.39589, 39.506653, 21.466278)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88.34166, 15.742477, 15.560394)
 shape = SubResource("BoxShape3D_3x3xb")
+debug_color = Color(0.59874505, 0.0004773608, 0.64828634, 0.41960785)
 
 [node name="red_light" type="OmniLight3D" parent="Sketchfab_Scene/paper_interact"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170.25946, 65.256226, -7.1691284)
@@ -293,7 +295,7 @@ omni_range = 722.666
 omni_attenuation = 0.0
 
 [node name="Player" parent="." instance=ExtResource("12_c68ag")]
-transform = Transform3D(-160, 0, -1.3987645e-05, 0, 160, 0, 1.3987645e-05, 0, -160, -48.65251, 173.5476, -119.8537)
+transform = Transform3D(-60, 0, -9.059748e-06, 0, 60, 0, 9.059748e-06, 0, -60, -48.65251, 173.5476, -119.8537)
 up_direction = Vector3(0.09950249, 0.9900498, 0.09950249)
 
 [node name="CutsceneCamera" type="Camera3D" parent="."]

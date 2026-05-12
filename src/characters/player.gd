@@ -325,15 +325,27 @@ func set_movement_enabled(enabled: bool) -> void:
 		velocity = Vector3.ZERO # Dừng ngay lập tức nếu bị khóa
 		InteractionManager.hide_prompt()
 
+var _can_play_step: bool = true
+
 func _handle_footsteps():
 	if is_on_floor() and velocity.length() > 0.1:
-		if footstep_player and not footstep_player.playing:
-			footstep_player.play()
-			# Thay đổi pitch nhẹ để nghe cho thật hơn (Dung thong so tu Editor)
-			footstep_player.pitch_scale = randf_range(1.0 - footstep_pitch_range, 1.0 + footstep_pitch_range)
+		var bob_step = sin(t_bob * BOB_FREQ)
+		
+		# Phát âm thanh khi đạt đến đỉnh (>0.85) hoặc đáy (<-0.85)
+		if abs(bob_step) > 0.85:
+			if _can_play_step:
+				footstep_player.pitch_scale = randf_range(1.0 - footstep_pitch_range, 1.0 + footstep_pitch_range)
+				if Input.is_action_pressed("run"):
+					footstep_player.pitch_scale += 0.1
+				
+				footstep_player.play()
+				_can_play_step = false 
+		else:
+			_can_play_step = true 
 	else:
-		if footstep_player and footstep_player.playing:
-			footstep_player.stop()
+		_can_play_step = true
+		if footstep_player.playing:
+			footstep_player.stop() # Dừng ngay lập tức khi đứng yên
 
 func _handle_zoom(delta: float):
 	var target_fov = ZOOM_FOV if Input.is_mouse_button_pressed(MOUSE_BUTTON_RIGHT) else DEFAULT_FOV

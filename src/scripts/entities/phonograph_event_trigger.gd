@@ -12,6 +12,8 @@ extends Area3D
 
 var event_triggered: bool = false
 var _flickering: bool = false
+@export var surprise_sound: AudioStream = preload("res://assets/audio/ghost_event/suprise_hit.mp3")
+var _audio_player: AudioStreamPlayer
 
 func _ready():
 	body_entered.connect(_on_body_entered)
@@ -21,6 +23,11 @@ func _ready():
 	if scary_girl_8: scary_girl_8.visible = false
 	if scary_girl_9: scary_girl_9.visible = false
 	if scary_girl_10: scary_girl_10.visible = false
+	
+	_audio_player = AudioStreamPlayer.new()
+	_audio_player.stream = surprise_sound
+	_audio_player.bus = "SFX"
+	add_child(_audio_player)
 
 func _process(_delta):
 	if _flickering:
@@ -53,8 +60,9 @@ func trigger_event():
 	event_triggered = true
 	_flickering = true
 	
-	# 1. Chớp đen lần 1 (0.1s)
+	# 1. Chớp đen lần 1 (0.1s) - Xuất hiện cái đầu
 	var flash1 = _create_flash_rect()
+	if _audio_player: _audio_player.play()
 	await get_tree().create_timer(0.05).timeout # Chờ giữa lúc đang đen
 	if scary_head: scary_head.visible = true
 	await get_tree().create_timer(0.05).timeout
@@ -64,8 +72,9 @@ func trigger_event():
 	# 2. Chờ 1.5 giây
 	await get_tree().create_timer(1.5).timeout
 	
-	# 3. Chớp đen lần 2 (0.1s)
+	# 3. Chớp đen lần 2 (0.1s) - Xuất hiện con ma 6
 	var flash2 = _create_flash_rect()
+	if _audio_player: _audio_player.play()
 	await get_tree().create_timer(0.05).timeout # Chờ giữa lúc đang đen
 	if scary_girl: scary_girl.visible = true
 	await get_tree().create_timer(0.05).timeout
@@ -108,6 +117,7 @@ func trigger_event():
 		
 		# 6. BÙM! Tất cả 7, 8, 9, 10 xuất hiện cùng lúc
 		var final_flash = _create_flash_rect()
+		if _audio_player: _audio_player.play()
 		await get_tree().create_timer(0.05).timeout
 		
 		if scary_girl_7: scary_girl_7.visible = true

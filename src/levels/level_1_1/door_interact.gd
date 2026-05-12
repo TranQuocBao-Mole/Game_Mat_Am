@@ -13,6 +13,10 @@ func interact():
 		# Mở cửa xoay 90 độ
 		tween.tween_property(self, "rotation:y", initial_rotation_y + deg_to_rad(90), 0.5).set_trans(Tween.TRANS_SINE)
 		prompt_text = "Đóng cửa"
+		
+		# Đợi cửa mở xong rồi chuyển scene
+		await tween.finished
+		get_tree().change_scene_to_file("res://scene2_1.tscn")
 	else:
 		# Đóng cửa về vị trí cũ
 		tween.tween_property(self, "rotation:y", initial_rotation_y, 0.5).set_trans(Tween.TRANS_SINE)

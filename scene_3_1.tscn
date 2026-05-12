@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=82 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -32,6 +32,7 @@
 [ext_resource type="PackedScene" uid="uid://d3wpwrokid5rt" path="res://assets/models/paper/scene.gltf" id="32_paper_model"]
 [ext_resource type="PackedScene" uid="uid://dklqtggxawoxw" path="res://assets/models/round_neoclassical_side_table__lowpoly_asset/sketchfab_scene.tscn" id="32_ygo2c"]
 [ext_resource type="PackedScene" uid="uid://dwck8v3k3sps5" path="res://assets/models/barely_used_red_candle/scene.gltf" id="33_candle_model"]
+[ext_resource type="PackedScene" uid="uid://hnn72gfmwxlo" path="res://assets/models/woman_run/black.tscn" id="33_pt5bs"]
 [ext_resource type="Script" uid="uid://fmhc8dh7gbev" path="res://src/scripts/entities/elements_table_interaction.gd" id="34_elements_interact"]
 [ext_resource type="PackedScene" uid="uid://bpau2wj5niha1" path="res://assets/models/lock/lock.tscn" id="34_jhiqw"]
 [ext_resource type="PackedScene" uid="uid://dkumwx4fyo0cf" path="res://assets/models/horror_ghost/horror_girl.tscn" id="35_vr0jh"]
@@ -57,6 +58,11 @@
 [ext_resource type="PackedScene" path="res://assets/models/talisman/talisman_paper.tscn" id="54_talisman"]
 [ext_resource type="PackedScene" uid="uid://dmkf60nnvd4si" path="res://assets/models/paint_can/scene.gltf" id="55_paint_can_model"]
 [ext_resource type="Script" uid="uid://cfsk4yrw0y6f" path="res://src/scripts/entities/paint_can_interaction.gd" id="56_paint_script"]
+[ext_resource type="Script" uid="uid://dbx2tg323oc21" path="res://src/scripts/effects/rain_system.gd" id="57_rain_script"]
+[ext_resource type="Script" uid="uid://bbw2tyj6x1qs" path="res://src/scripts/events/scene3/black_event.gd" id="58_black_event"]
+[ext_resource type="Script" uid="uid://d1qh2qwiueirs" path="res://src/scripts/events/scene3/krasue_flicker.gd" id="59_krasue_flicker"]
+[ext_resource type="Script" uid="uid://dr0fan0krqjiv" path="res://src/scripts/events/scene3/krasue_trigger.gd" id="64_krasue_trigger"]
+[ext_resource type="Script" uid="uid://wmu2b6qwp3ys" path="res://src/scripts/events/scene3/laugh_trigger.gd" id="65_laugh_trigger"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -109,6 +115,15 @@ size = Vector3(9.951156, 1.1455765, 12.718197)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_elements_board"]
 size = Vector3(1.9785156, 1.2763672, 1.6660156)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_black_trigger"]
+size = Vector3(52.861572, 130.88086, 10)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_laugh_trigger"]
+radius = 374.64932
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_krasue_trigger"]
+size = Vector3(195.41684, 78.48825, 155.8822)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lock"]
 size = Vector3(0.083740234, 0.17358398, 0.1649414)
@@ -611,6 +626,53 @@ script = ExtResource("34_elements_interact")
 transform = Transform3D(0.48666888, 0, -0.114684954, 0, 0.09999996, 0, 0.114684954, 0, 0.48666888, -0.34977722, 0.58692837, -0.57966614)
 shape = SubResource("BoxShape3D_elements_board")
 
+[node name="Candle_ElementTable" parent="event3" instance=ExtResource("33_candle_model")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -412.5, 64.5, 1115.2)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="event3/Candle_ElementTable"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.468666, 0)
+light_color = Color(1, 0.611765, 0.282353, 1)
+light_energy = 3.0
+omni_range = 30.0
+omni_attenuation = 0.5
+
+[node name="black2" parent="event3" instance=ExtResource("33_pt5bs")]
+transform = Transform3D(-38.74662, 0, 10.114407, 0, 40.045, 0, -10.114407, 0, -38.74662, -469.31577, 64.425, 1130.629)
+visible = false
+
+[node name="BlackTrigger" type="Area3D" parent="event3" node_paths=PackedStringArray("black2_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -461.18967, 67.59384, 1018.29175)
+collision_mask = 3
+script = ExtResource("58_black_event")
+black2_node = NodePath("../black2")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event3/BlackTrigger"]
+transform = Transform3D(0.9683745, 0, -0.24950124, 0, 1, 0, 0.24950124, 0, 0.9683745, 0, 0, -13.462463)
+shape = SubResource("BoxShape3D_black_trigger")
+
+[node name="LaughTrigger" type="Area3D" parent="event3" node_paths=PackedStringArray("krasue_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -234, 37, 1073)
+script = ExtResource("65_laugh_trigger")
+krasue_node = NodePath("../krasue_flicker")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event3/LaughTrigger"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -110.76477, 0, -64.45874)
+shape = SubResource("SphereShape3D_laugh_trigger")
+
+[node name="KrasueTrigger" type="Area3D" parent="event3" node_paths=PackedStringArray("krasue_node")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -234, 37, 1073)
+collision_mask = 3
+script = ExtResource("64_krasue_trigger")
+krasue_node = NodePath("../krasue_flicker")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event3/KrasueTrigger"]
+transform = Transform3D(0.96748, 0, -0.25294754, 0, 1, 0, 0.25294754, 0, 0.96748, -47.593414, 46.76744, 40.02881)
+shape = SubResource("BoxShape3D_krasue_trigger")
+
+[node name="krasue_flicker" parent="event3" instance=ExtResource("53_vr0jh")]
+transform = Transform3D(12.805586, 0, -27.129633, 0, 29.999998, 0, 27.129633, 0, 12.805586, -234.29881, 37.10489, 1073.0626)
+script = ExtResource("59_krasue_flicker")
+
 [node name="event4" type="Node3D" parent="."]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
 
@@ -862,10 +924,6 @@ item_data = ExtResource("51_brush_data")
 prompt_text = "Nhặt cây bút"
 is_active = false
 
-[node name="Scene3Event" type="Node3D" parent="."]
-transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
-script = ExtResource("15_s3evt")
-
 [node name="event8" type="Node3D" parent="."]
 
 [node name="table_event8" parent="event8" instance=ExtResource("40_table_event_6")]
@@ -880,3 +938,34 @@ transform = Transform3D(12.169136, 0, -15.871738, 0, 19.999996, 0, 15.871738, 0,
 
 [node name="TalismanPaper" parent="event8" instance=ExtResource("54_talisman")]
 transform = Transform3D(60, 0, 0, 0, 60, 0, 0, 0, 60, -849.254, 53.341812, 559.57904)
+
+[node name="rain" type="Node3D" parent="."]
+
+[node name="RainSystem" type="Node3D" parent="rain"]
+script = ExtResource("57_rain_script")
+
+[node name="RainBlocker_House1" type="GPUParticlesCollisionBox3D" parent="rain"]
+transform = Transform3D(-0.9845613, -0.022757975, -0.17355452, 0.039176103, -0.9950095, -0.0917683, -0.17059986, -0.09715069, 0.98053926, -347.34607, 206.59366, 1037.7144)
+size = Vector3(452.58047, 10, 399.85535)
+
+[node name="RainBlocker_House2" type="GPUParticlesCollisionBox3D" parent="rain"]
+transform = Transform3D(0.8896237, 0, -0.45669428, 0, 1, 0, 0.45669428, 0, 0.8896237, 95.027176, 200, 829.45306)
+size = Vector3(206.63618, 10, 364.30713)
+
+[node name="RainBlocker_House3" type="GPUParticlesCollisionBox3D" parent="rain"]
+transform = Transform3D(0.81168616, 0, 0.5840939, 0, 1, 0, -0.5840939, 0, 0.81168616, -899.0064, 212.75238, 731.426)
+size = Vector3(379.55603, 35.50476, 572.20605)
+
+[node name="RainBlocker_House4" type="GPUParticlesCollisionBox3D" parent="rain"]
+transform = Transform3D(0.93879396, 0, -0.34447905, 0, 1, 0, 0.34447905, 0, 0.93879396, -199.21707, 200, 67.01599)
+size = Vector3(378.969, 10, 342.07568)
+
+[node name="LightningLight" type="DirectionalLight3D" parent="rain"]
+transform = Transform3D(1, 0, 0, 0, -0.7071068, 0.7071068, 0, -0.7071068, -0.7071068, 0, 200, 0)
+light_color = Color(0.8, 0.9, 1, 1)
+light_energy = 0.0
+shadow_enabled = true
+
+[node name="Scene3Event" type="Node3D" parent="."]
+transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
+script = ExtResource("15_s3evt")

@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dxcy34hwkjvvv" path="res://assets/models/lady_of_the_asylum/lady_walking.tscn" id="10_q3fba"]
 [ext_resource type="PackedScene" uid="uid://bugs6u1dum7yl" path="res://assets/models/lady_of_the_asylum/lady_crawling.tscn" id="11_q3fba"]
 [ext_resource type="PackedScene" uid="uid://daqi8o6u437ma" path="res://assets/models/old_man/breathing_idle.tscn" id="12_xq6yg"]
+[ext_resource type="Script" path="res://src/scripts/events/scene2/scene2_init.gd" id="13_init"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_eerie"]
 sky_top_color = Color(0.015, 0.02, 0.04, 1)
@@ -54,6 +55,7 @@ size = Vector3(4.5, 0.5, 0.8)
 size = Vector3(43.667244, 227.28369, 502.4629)
 
 [node name="Node3D" type="Node3D"]
+script = ExtResource("13_init")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 252.99924, 0)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -313,6 +315,7 @@ sequence_duration = 5.0
 ghost_speed = 40.0
 ghost_rotation_offset = 180.0
 jumpscare_speed = 50.0
+next_scene = "res://scene_3_1.tscn"
 jumpscare_ratio = 0.4
 jumpscare_multiplier = 10.0
 

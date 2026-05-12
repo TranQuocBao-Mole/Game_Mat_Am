@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://cy8p2u7l1v8q"]
 
-[ext_resource type="Script" uid="uid://d2p1q4w7x1m0" path="res://src/ui/puzzles/combination_lock_ui.gd" id="1_lock"]
+[ext_resource type="Script" path="res://src/ui/puzzles/combination_lock_ui.gd" id="1_lock"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
 bg_color = Color(0.05, 0.05, 0.07, 0.85)

@@ -13,6 +13,8 @@ extends StaticBody3D
 var is_player_inside: bool = false
 var stalking_triggered: bool = false # Sự kiện lúc đi ra
 var entry_scare_triggered: bool = false # Sự kiện lúc đi vào
+@export var surprise_sound: AudioStream = preload("res://assets/audio/ghost_event/suprise_hit.mp3")
+var _audio_player: AudioStreamPlayer
 
 func _ready():
 	if combination_lock_scene == null:
@@ -22,6 +24,11 @@ func _ready():
 	# Ẩn ma ngay khi bắt đầu để chờ sự kiện
 	if stalking_entity:
 		stalking_entity.hide()
+	
+	_audio_player = AudioStreamPlayer.new()
+	_audio_player.stream = surprise_sound
+	_audio_player.bus = "SFX"
+	add_child(_audio_player)
 
 func _update_prompt():
 	if is_locked:
@@ -113,6 +120,9 @@ func toggle_teleport():
 		if head:
 			head.rotation.y = deg_to_rad(-32.65)
 			if mouse_look: mouse_look.yaw = -32.65
+		
+		# Phát âm thanh giật mình khi gặp bộ xương
+		if _audio_player: _audio_player.play()
 	else:
 		player.global_position = target_marker.global_position
 		player.global_rotation.y = target_marker.global_rotation.y
@@ -123,6 +133,9 @@ func toggle_teleport():
 	var is_stalking_event = is_player_inside and not stalking_triggered and stalking_entity
 	if is_stalking_event:
 		print("[Door] KÍCH HOẠT SỰ KIỆN STALKING (OUT)!")
+		
+		# Phát âm thanh giật mình khi gặp con ma ở cửa
+		if _audio_player: _audio_player.play()
 		# ... logic con ma cũ giữ nguyên ...
 		stalking_entity.visible = true
 		var ghost_light = stalking_entity.find_child("GhostLight", true, false)
@@ -228,6 +241,7 @@ func toggle_teleport():
 		player.set_movement_enabled(true)
 	
 	is_player_inside = !is_player_inside
+	GameState.is_player_inside = is_player_inside
 	_update_prompt()
 
 func _play_scare_effect():

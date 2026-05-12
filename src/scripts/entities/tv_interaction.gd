@@ -16,6 +16,9 @@ var _first_time: bool = true
 var _is_transitioning: bool = false
 var _is_on: bool = false
 var _scare_triggered: bool = false
+@export var surprise_sound: AudioStream = preload("res://assets/audio/ghost_event/suprise_hit.mp3")
+
+var _audio_player: AudioStreamPlayer
 var _tv_ui: CanvasLayer = null
 var _channel_number_label: Label = null
 var _channel_fraction_label: Label = null
@@ -44,6 +47,11 @@ func _ready() -> void:
 	
 	if krasue:
 		krasue.visible = false
+	
+	_audio_player = AudioStreamPlayer.new()
+	_audio_player.stream = surprise_sound
+	_audio_player.bus = "SFX"
+	add_child(_audio_player)
 	
 	_create_tv_ui()
 
@@ -296,6 +304,7 @@ func _trigger_krasue_scare(player):
 	
 	# 2. Krasue xuất hiện tĩnh
 	if krasue:
+		if _audio_player: _audio_player.play()
 		krasue.visible = true
 	
 	await get_tree().create_timer(0.6).timeout
@@ -328,6 +337,9 @@ func _trigger_krasue_scare(player):
 		
 		var rush_tween = create_tween().set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN)
 		rush_tween.tween_property(krasue, "global_position", target_rush_pos, 0.5)
+		
+		if _audio_player: _audio_player.play()
+		
 		await rush_tween.finished
 		
 		# TẮT HOÀN TOÀN ANIMATION NGAY KHI TỚI ĐÍCH
