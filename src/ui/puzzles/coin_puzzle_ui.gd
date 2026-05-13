@@ -150,6 +150,7 @@ func _on_win():
 	var players = get_tree().get_nodes_in_group("player")
 	if players.size() > 0:
 		players[0].add_item("coin")
+		GameState.is_coin_puzzle_solved = true
 	
 	await get_tree().create_timer(2.0).timeout
 	puzzle_finished.emit(true)

@@ -8,7 +8,7 @@ extends "res://src/scripts/common/interactable_node.gd"
 @export var channels: Array[String] = [
 	"res://assets/videos/tv_video1.ogv",
 	"res://assets/videos/tv_video2.ogv",
-	"res://assets/videos/7609746668175.ogv"
+	"res://assets/videos/news.ogv"
 ]
 
 var current_channel: int = 0
@@ -44,6 +44,10 @@ func _ready() -> void:
 			stream = load("res://assets/videos/7609746668175.ogv")
 		if stream:
 			video_player.stream = stream
+			
+		if not video_player.finished.is_connected(_on_video_finished):
+			video_player.finished.connect(_on_video_finished)
+
 	
 	if krasue:
 		krasue.visible = false
@@ -53,7 +57,34 @@ func _ready() -> void:
 	_audio_player.bus = "SFX"
 	add_child(_audio_player)
 	
+	# Chuẩn bị cho EndEvent: Cho tàng hình ngay từ đầu
+	call_deferred("_setup_end_event_ghosts")
+	
 	_create_tv_ui()
+
+func _setup_end_event_ghosts():
+	var end_event = get_tree().root.find_child("EndEvent", true, false)
+	if end_event:
+		_set_node_alpha_instantly(end_event, 0.0)
+
+func _set_node_alpha_instantly(node: Node, target_alpha: float):
+	if node is MeshInstance3D:
+		var mat_count = node.get_surface_override_material_count()
+		var total_surfaces = mat_count if mat_count > 0 else (node.mesh.get_surface_count() if node.mesh else 0)
+		for i in range(total_surfaces):
+			var mat = node.get_active_material(i)
+			if mat and "albedo_color" in mat:
+				# Tạo bản sao vật liệu để không làm tàng hình các con ma khác ở ngoài EndEvent
+				mat = mat.duplicate()
+				node.set_surface_override_material(i, mat)
+				
+				mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+				var c = mat.albedo_color
+				c.a = target_alpha
+				mat.albedo_color = c
+	
+	for child in node.get_children():
+		_set_node_alpha_instantly(child, target_alpha)
 
 func _create_tv_ui():
 	_tv_ui = CanvasLayer.new()
@@ -194,7 +225,7 @@ func _update_ui_state():
 			if i == current_channel:
 				style.bg_color = Color(0.4, 0.8, 1.0) # Màu xanh lơ cho kênh hiện tại
 				box.add_theme_color_override("font_color", Color.BLACK)
-			elif i == 2 and GameState.get("is_final_puzzle_solved") != true:
+			elif i == 2 and GameState.get("is_talisman_puzzle_solved") != true:
 				style.bg_color = Color(0.1, 0.1, 0.1, 0.8) # Màu đen đậm cho kênh bị khóa
 				box.add_theme_color_override("font_color", Color(0.4, 0.4, 0.4)) # Chữ xám
 				box.text = "🔒"
@@ -214,12 +245,13 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func _switch_channel(direction: int):
-	var max_channels = channels.size()
-	if GameState.get("is_final_puzzle_solved") != true:
-		max_channels = 2 # Chỉ cho phép kênh 1 và 2 (index 0 và 1)
-		
-	current_channel = (current_channel + direction) % max_channels
-	if current_channel < 0: current_channel = max_channels - 1
+	current_channel = (current_channel + direction) % channels.size()
+	if current_channel < 0: current_channel = channels.size() - 1
+	
+	# Nếu nhảy vào kênh chưa mở khóa, tự động nhảy tiếp theo hướng đó
+	if current_channel == 2 and GameState.get("is_talisman_puzzle_solved") != true:
+		_switch_channel(direction)
+		return
 	
 	_update_ui_state()
 	
@@ -254,6 +286,102 @@ func _play_video_only():
 	if _tv_ui:
 		_tv_ui.visible = true
 
+func _on_video_finished():
+	# Phát hiện xem hết kênh tin tức (Kênh 3)
+	if current_channel == 2:
+		if DialogueManager:
+			DialogueManager.show_text("Trần Quốc Minh... không phải là tên mình sao?")
+			await DialogueManager.dialogue_finished
+			
+			# Kích hoạt EndEvent và xoay góc nhìn
+			_trigger_end_game()
+				
+		# Có thể lặp lại video hoặc tự động tắt TV ở đây nếu muốn
+		# Hiện tại video sẽ dừng và chờ người chơi hành động
+
+
+func _trigger_end_game():
+	var player = get_tree().get_first_node_in_group("player")
+	var end_event = get_tree().root.find_child("EndEvent", true, false)
+	
+	if player and end_event:
+		# Bật EndEvent lỡ như nó đang tắt (dù user nói đã để visible=true)
+		end_event.visible = true 
+		
+		# Quay camera từ từ về hướng ma (quay Head ngang, Camera dọc giống cờ tướng)
+		var head = player.get_node_or_null("Head")
+		var camera = head.get_node_or_null("Camera3D") if head else null
+		
+		# Tắt hẳn MouseLook để nó không tự đè góc quay của Tween
+		var mouse_look = player.get_node_or_null("Head/MouseLook")
+		if mouse_look:
+			mouse_look.set_process(false)
+			mouse_look.set_process_input(false)
+			mouse_look.set_physics_process(false)
+		
+		if head and camera:
+			var target_pos = end_event.global_position
+			var origin_pos = camera.global_position
+			var dir = (target_pos - origin_pos).normalized()
+			
+			# Góc Y: xoay ngang (dùng Head)
+			var target_y = atan2(-dir.x, -dir.z)
+			var current_y = head.global_rotation.y
+			var diff_y = wrapf(target_y - current_y, -PI, PI)
+			
+			# Góc X: xoay dọc (dùng Camera)
+			var target_x = atan2(dir.y, Vector2(dir.x, dir.z).length())
+			var current_x = camera.rotation.x
+			var diff_x = wrapf(target_x - current_x, -PI, PI)
+			
+			var tween = get_tree().create_tween()
+			tween.parallel().tween_property(head, "global_rotation:y", current_y + diff_y, 0.6).set_trans(Tween.TRANS_SINE)
+			tween.parallel().tween_property(camera, "rotation:x", current_x + diff_x, 0.6).set_trans(Tween.TRANS_SINE)
+			tween.parallel().tween_property(camera, "rotation:z", 0.0, 0.6).set_trans(Tween.TRANS_SINE)
+			
+			await tween.finished
+			# Đợi thêm một nhịp nhỏ cho ngầu
+			await get_tree().create_timer(0.2).timeout
+		
+		# Xoay xong mới bắt đầu Jumpscare (phát âm thanh và hiện ma)
+		if _audio_player:
+			_audio_player.play()
+			
+		# Tween độ trong suốt của ma từ 0 -> 1 trong 3 giây
+		_fade_in_node_materials(end_event, 1.0, 3.0)
+		
+		await get_tree().create_timer(5.0).timeout
+		
+		# Hiệu ứng đen màn hình và thoát game
+		var canvas = CanvasLayer.new()
+		canvas.layer = 120
+		get_tree().root.add_child(canvas)
+		var black = ColorRect.new()
+		black.color = Color(0, 0, 0, 0)
+		black.set_anchors_preset(Control.PRESET_FULL_RECT)
+		canvas.add_child(black)
+		
+		var fade_out = get_tree().create_tween()
+		fade_out.tween_property(black, "color:a", 1.0, 2.0)
+		await fade_out.finished
+		
+		get_tree().quit() # Kết thúc game hoàn toàn
+
+func _fade_in_node_materials(node: Node, target_alpha: float, duration: float):
+	if node is MeshInstance3D:
+		var mat_count = node.get_surface_override_material_count()
+		var total_surfaces = mat_count if mat_count > 0 else (node.mesh.get_surface_count() if node.mesh else 0)
+		for i in range(total_surfaces):
+			var mat = node.get_active_material(i)
+			if mat and "albedo_color" in mat:
+				# Tự động đảm bảo tính năng trong suốt được bật
+				mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+				var tween = get_tree().create_tween()
+				tween.tween_property(mat, "albedo_color:a", target_alpha, duration)
+	for child in node.get_children():
+		_fade_in_node_materials(child, target_alpha, duration)
+
+
 func _process(_delta: float) -> void:
 	if _is_on and video_player:
 		var player = get_tree().get_first_node_in_group("player")
@@ -277,9 +405,16 @@ func interact():
 			_is_on = false
 			video_player.stop()
 			if _tv_ui: _tv_ui.visible = false
+			if screen_mesh: screen_mesh.visible = false
+			
+			# Nếu người chơi tắt TV khi đang ở kênh 3 (do lỗi video không tự ngắt), thì cưỡng chế End Game
+			if current_channel == 2:
+				DialogueManager.show_text("Trần Quốc Minh... không phải là tên mình sao?")
+				await DialogueManager.dialogue_finished
+				_trigger_end_game()
+				return
+			
 			DialogueManager.show_text("Bạn đã tắt TV.")
-			if screen_mesh:
-				screen_mesh.visible = false
 			
 			if !_scare_triggered:
 				_trigger_krasue_scare(player)

@@ -302,24 +302,30 @@ up_direction = Vector3(0.09950249, 0.9900498, 0.09950249)
 transform = Transform3D(-0.018385153, -0.6033332, -0.79727715, -0.013909091, 0.797489, -0.6031729, 0.9997343, -2.4214383e-08, -0.023053775, -151.80896, 145.78253, -259.71738)
 
 [node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="CutsceneCamera"]
-offset_left = 206.0
-offset_top = -317.0
-offset_right = 926.0
-offset_bottom = 963.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 stream = ExtResource("13_05gkm")
 volume_db = -8.77
 speed_scale = 0.768
+expand = true
 buffering_msec = 100
 
 [node name="Intro" type="CanvasLayer" parent="CutsceneCamera"]
 script = ExtResource("16_ika5i")
 
 [node name="ColorRect" type="ColorRect" parent="CutsceneCamera/Intro"]
-offset_right = 1152.0
-offset_bottom = 655.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="Label" type="Label" parent="CutsceneCamera/Intro/ColorRect"]
+visible = false
 layout_mode = 0
 offset_left = 75.99999
 offset_top = 54.999996
@@ -340,8 +346,11 @@ libraries = {
 [node name="CanvasLayer" type="CanvasLayer" parent="AnimationPlayer"]
 
 [node name="ColorRect" type="ColorRect" parent="AnimationPlayer/CanvasLayer"]
-offset_right = 1152.0
-offset_bottom = 658.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 color = Color(0.22745098, 0.22745098, 0.22745098, 0.25882354)
 
 [node name="rain_sound" type="AudioStreamPlayer3D" parent="."]

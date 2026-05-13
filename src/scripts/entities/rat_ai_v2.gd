@@ -1,7 +1,7 @@
 @tool
 extends CharacterBody3D
 
-enum State { WANDER, ALERT, FLEE, RETURN, CAUGHT }
+enum State {WANDER, ALERT, FLEE, RETURN, CAUGHT}
 
 @export_group("Debug")
 @export var show_debug: bool = true:
@@ -37,6 +37,11 @@ enum State { WANDER, ALERT, FLEE, RETURN, CAUGHT }
 		if is_inside_tree(): update_debug_circles()
 
 @export var prompt_text: String = "Bắt (E)"
+@export var singing_audio: AudioStream = preload("res://assets/audio/scene3_sound_effect/billejean.mp3")
+
+
+var _singing_player: AudioStreamPlayer3D = null
+
 @export var is_active: bool = true
 
 var current_state = State.WANDER
@@ -58,6 +63,19 @@ func _ready():
 	initial_position = global_position
 	update_debug_circles()
 	
+	# Khởi tạo máy phát nhạc Billie Jean
+	_singing_player = AudioStreamPlayer3D.new()
+	_singing_player.stream = singing_audio
+	_singing_player.bus = "Master"
+	_singing_player.top_level = true
+	_singing_player.unit_size = 1000.0
+	_singing_player.max_distance = 0.0
+	_singing_player.autoplay = false
+	_singing_player.finished.connect(_on_singing_finished)
+	add_child(_singing_player)
+
+
+
 	if not Engine.is_editor_hint():
 		anim = find_child("AnimationPlayer", true, false)
 		if anim:
@@ -153,6 +171,19 @@ func _process(_delta):
 			name_label.visible = GameState.is_rat_hunt_unlocked
 		else:
 			name_label.visible = false
+			
+	# Cập nhật vị trí máy phát nhạc (vì dùng top_level)
+	if _singing_player:
+		if _singing_player.playing:
+			_singing_player.global_position = global_position
+			
+		# Dừng hát nếu đã mở khóa bắt chuột hoặc bị tắt toàn cục
+		if (GameState.is_rat_hunt_unlocked or not GameState.rat_singing_enabled) and _singing_player.playing:
+			_singing_player.stop()
+			_on_singing_finished()
+
+
+
 
 func _physics_process(delta):
 	if Engine.is_editor_hint() or current_state == State.CAUGHT or not player: return
@@ -213,7 +244,7 @@ func _physics_process(delta):
 				
 		State.FLEE:
 			var dynamic_anim_speed = (speed_run / speed_walk) * 0.3
-			play_anim("Mammals|run_A1", dynamic_anim_speed) 
+			play_anim("Mammals|run_A1", dynamic_anim_speed)
 			
 			# Tính toán hướng chạy trốn ổn định hơn
 			var flee_dir = (global_position - player.global_position).normalized()
@@ -241,7 +272,7 @@ func _physics_process(delta):
 				change_state(State.ALERT)
 
 func play_anim(anim_name, custom_speed = 1.0):
-	if current_anim == anim_name and not is_transitioning: 
+	if current_anim == anim_name and not is_transitioning:
 		if anim: anim.speed_scale = custom_speed
 		return
 		
@@ -295,9 +326,24 @@ func interact():
 	if current_state == State.CAUGHT or not player: return
 	if Engine.is_editor_hint(): return
 	if not GameState.is_rat_hunt_unlocked: 
-		if get_tree().root.has_node("DialogueManager"):
-			get_tree().root.get_node("DialogueManager").show_text("Bạn chưa biết cách bắt sinh vật này...")
+		if _singing_player:
+			# Tự động bật lại âm thanh toàn cục nếu người chơi chủ động tương tác
+			GameState.rat_singing_enabled = true
+			
+			_singing_player.global_position = global_position
+
+			_singing_player.unit_size = 1000.0
+			if not _singing_player.playing:
+				_singing_player.play()
+				GameState.singing_rats_count += 1
+				if not _singing_player.finished.is_connected(_on_singing_finished):
+					_singing_player.finished.connect(_on_singing_finished)
+
+			
+		if DialogueManager:
+			DialogueManager.show_text("Con chuột biết hát thật kì lạ...")
 		return
+
 	
 	if global_position.distance_to(player.global_position) <= catch_range:
 		catch_rat()
@@ -323,6 +369,10 @@ func catch_rat():
 		player.mice_count += 1
 	
 	var tween = create_tween()
-	tween.tween_property(self, "scale", Vector3.ZERO, 0.3)
+	tween.tween_property(self , "scale", Vector3.ZERO, 0.3)
 	await tween.finished
 	queue_free()
+
+func _on_singing_finished():
+	if GameState.singing_rats_count > 0:
+		GameState.singing_rats_count -= 1

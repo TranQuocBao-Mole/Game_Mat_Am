@@ -5,6 +5,11 @@ extends "res://src/scripts/common/interactable_node.gd"
 func interact():
 	if !is_active: return
 	
+	if GameState.is_coin_puzzle_solved:
+		if DialogueManager:
+			DialogueManager.show_text("Một cái cân và vài đồng xu.")
+		return
+		
 	print("[DEBUG] Tương tác cân.")
 	print(" - lock_opened: ", GameState.lock_opened)
 	print(" - chess: ", GameState.is_chess_puzzle_solved)
@@ -20,7 +25,7 @@ func interact():
 			CoinManager.open_puzzle()
 		else:
 			var cm = get_node_or_null("/root/CoinManager")
-			if cm: 
+			if cm:
 				cm.open_puzzle()
 			else:
 				DialogueManager.show_text("Lỗi: Không tìm thấy CoinManager!")

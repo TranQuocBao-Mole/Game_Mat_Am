@@ -179,7 +179,9 @@ func _on_win():
 	is_drawing = false
 	status_label.text = "PHONG ẤN ĐÃ KÍCH HOẠT!"
 	status_label.modulate = Color.GOLD
+	GameState.is_talisman_puzzle_solved = true
 	await get_tree().create_timer(2.0).timeout
+
 	puzzle_finished.emit(true)
 	_close()
 

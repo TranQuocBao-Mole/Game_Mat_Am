@@ -40,8 +40,7 @@ func _update_prompt():
 
 func interact():
 	if is_locked:
-		# TẠM THỜI: Nhấn E là mở luôn để test nhanh
-		_on_lock_finished(true)
+		open_lock_puzzle()
 	else:
 		toggle_teleport()
 
@@ -57,13 +56,25 @@ func open_lock_puzzle():
 			puzzle_instance.open_puzzle()
 		
 		puzzle_instance.puzzle_finished.connect(_on_lock_finished)
+		# Tự động dọn dẹp CanvasLayer khi UI khoá đóng lại
+		puzzle_instance.puzzle_finished.connect(func(_won): cl.queue_free())
 	else:
 		print("[ERROR] Không tìm thấy scene ổ khóa!")
 
 func _on_lock_finished(won: bool):
 	if won:
+		# Nhập đúng mật khẩu nhưng chưa giải đủ 3 trò chơi
+		if not GameState.is_chess_puzzle_solved or not GameState.is_candle_puzzle_solved or not GameState.is_elements_puzzle_solved:
+			if DialogueManager:
+				DialogueManager.show_text("Chưa đủ manh mối.")
+			return
+			
 		is_locked = false
 		_update_prompt()
+		
+		# Xóa tờ giấy số 5 khỏi kho đồ vì đã mở xong
+		if InventoryManager:
+			InventoryManager.remove_item("paper_warehouse")
 		
 		# Ẩn mô hình ổ khóa
 		if lock_model:

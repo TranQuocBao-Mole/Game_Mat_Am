@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://buumfxiyinwm7"]
+[gd_scene load_steps=85 format=3 uid="uid://buumfxiyinwm7"]
 
 [ext_resource type="PackedScene" uid="uid://d17w7a0wjnoei" path="res://assets/models/rocky_terrain_low_poly/scene.gltf" id="1_pyw2e"]
 [ext_resource type="PackedScene" uid="uid://cq6hkofuia2ni" path="res://src/characters/player.tscn" id="2_i4dfr"]
@@ -63,6 +63,8 @@
 [ext_resource type="Script" uid="uid://d1qh2qwiueirs" path="res://src/scripts/events/scene3/krasue_flicker.gd" id="59_krasue_flicker"]
 [ext_resource type="Script" uid="uid://dr0fan0krqjiv" path="res://src/scripts/events/scene3/krasue_trigger.gd" id="64_krasue_trigger"]
 [ext_resource type="Script" uid="uid://wmu2b6qwp3ys" path="res://src/scripts/events/scene3/laugh_trigger.gd" id="65_laugh_trigger"]
+[ext_resource type="PackedScene" uid="uid://v37knw0p25h4" path="res://assets/models/diary/diary.tscn" id="66_diary_model"]
+[ext_resource type="Script" uid="uid://cd1ga3ta4t52a" path="res://src/scripts/entities/diary_interaction.gd" id="67_diary_script"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hpes8"]
 size = Vector3(81.93909, 1, 52.552155)
@@ -136,6 +138,9 @@ size = Vector3(2.0673828, 0.5, 2.0890992)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_phonograph_trigger"]
 size = Vector3(7.776367, 179.86414, 198.29602)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_diary_manual"]
+size = Vector3(2.2426147, 0.33605957, 1.5145264)
 
 [node name="scene3_1" type="Node3D"]
 
@@ -933,6 +938,17 @@ transform = Transform3D(11.461232, 0, -16.390245, 0, 20.000002, 0, 16.390245, 0,
 transform = Transform3D(-25.113277, 0, 43.235672, 0, 50, 0, -43.235672, 0, -25.113277, -689.78485, 80.26016, 730.7423)
 krasue = NodePath("../krasue")
 
+[node name="Diary" parent="event8" instance=ExtResource("66_diary_model")]
+transform = Transform3D(7, 0, 0, 0, 7, 0, 0, 0, 7, -675.2985, 81, 757.34607)
+
+[node name="DiaryInteract" type="StaticBody3D" parent="event8/Diary"]
+collision_layer = 2
+script = ExtResource("67_diary_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="event8/Diary/DiaryInteract"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2203598, 0.018029213, -0.8130493)
+shape = SubResource("BoxShape3D_diary_manual")
+
 [node name="krasue" parent="event8" instance=ExtResource("53_vr0jh")]
 transform = Transform3D(12.169136, 0, -15.871738, 0, 19.999996, 0, 15.871738, 0, 12.169136, -704.9549, 34.16719, 740.3813)
 
@@ -969,3 +985,21 @@ shadow_enabled = true
 [node name="Scene3Event" type="Node3D" parent="."]
 transform = Transform3D(0.99999994, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0, 7.6293945e-06, 0.00012207031)
 script = ExtResource("15_s3evt")
+
+[node name="EndEvent" type="Node3D" parent="."]
+transform = Transform3D(0.04903847, 0, 1.9993987, 0, 2, 0, -1.9993987, 0, 0.04903847, -912.7322, 84.80821, 719.9964)
+
+[node name="Stalker" parent="EndEvent" instance=ExtResource("35_vr0jh")]
+transform = Transform3D(2.7059836, 0, -39.908367, 0, 40, 0, 39.908367, 0, 2.7059836, -23.85376, 0, 0)
+
+[node name="Krasue" parent="EndEvent" instance=ExtResource("53_vr0jh")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, -18.473267, -8.880543, 0)
+
+[node name="Stickman" parent="EndEvent" instance=ExtResource("47_7d1r8")]
+transform = Transform3D(10, 0, 0, 0, 10, 0, 0, 0, 10, 0, -5.118225, 0)
+
+[node name="LadyGhost" parent="EndEvent" instance=ExtResource("45_mnxjt")]
+transform = Transform3D(20, 0, 5.9604645e-08, 0, 20, 0, -5.9604645e-08, 0, 20, -14.569275, -13.354095, -13.876678)
+
+[node name="BlackEntity" parent="EndEvent" instance=ExtResource("33_pt5bs")]
+transform = Transform3D(29.164606, 0, -7.030343, 0, 30, 0, 7.030343, 0, 29.164606, 17.065308, -20.2967, 0)

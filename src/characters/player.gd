@@ -46,6 +46,8 @@ var target_crouch_offset = 0.0
 var can_move := true
 var initial_head_y: float
 @onready var crouch_label: Label = null
+var rat_mute_hint: Label = null
+
 
 func _ready():
 	add_to_group("player")
@@ -114,6 +116,20 @@ func _ready():
 	var hotbar_scene = preload("res://src/ui/hotbar.tscn")
 	var hotbar = hotbar_scene.instantiate()
 	$HUD.add_child(hotbar)
+	
+	# Thêm gợi ý tắt nhạc chuột (K)
+	rat_mute_hint = Label.new()
+	rat_mute_hint.text = "Nhấn K để tắt nhạc"
+	rat_mute_hint.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	rat_mute_hint.set_anchors_preset(Control.PRESET_TOP_RIGHT)
+	rat_mute_hint.offset_left = -250
+	rat_mute_hint.offset_top = 20
+	rat_mute_hint.add_theme_font_size_override("font_size", 16)
+	rat_mute_hint.add_theme_color_override("font_shadow_color", Color.BLACK)
+	rat_mute_hint.add_theme_constant_override("shadow_outline_size", 5)
+	rat_mute_hint.visible = false
+	$HUD.add_child(rat_mute_hint)
+
 
 	# Setup step climbing raycast
 	step_raycast = RayCast3D.new()
@@ -163,6 +179,10 @@ func _input(event):
 			print("Rotation: Vector3", rotation_degrees)
 			print("Head Rotation: Vector3", head.rotation_degrees)
 			print("-------------------------")
+		elif event.keycode == KEY_K:
+			GameState.rat_singing_enabled = !GameState.rat_singing_enabled
+
+
 
 var _interaction_timer: float = 0.0
 
@@ -249,6 +269,11 @@ func _physics_process(delta: float) -> void:
 	
 	raycast.global_transform = camera.global_transform
 	raycast.target_position = Vector3(0, 0, -INTERACT_RANGE) # still local
+	
+	# Cập nhật hiển thị gợi ý tắt nhạc chuột
+	if rat_mute_hint:
+		rat_mute_hint.visible = GameState.singing_rats_count > 0 and GameState.rat_singing_enabled
+
 
 func _handle_head_bob(delta: float, direction: Vector3) -> void:
 	# Only bob if on floor and moving
@@ -300,6 +325,11 @@ func _handle_step_climbing(delta: float, direction: Vector3) -> void:
 				break
 
 func _handle_interaction():
+	# Không hiển thị nút tương tác và không cho tương tác khi đang mở UI (chuột hiện)
+	if Input.get_mouse_mode() == Input.MOUSE_MODE_VISIBLE:
+		InteractionManager.hide_prompt()
+		return
+		
 	if raycast.is_colliding():
 		var collider = raycast.get_collider()
 		

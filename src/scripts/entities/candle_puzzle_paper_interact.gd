@@ -4,6 +4,11 @@ extends StaticBody3D
 @export var puzzle_ui_path: String = "res://src/ui/puzzles/candle_puzzle_ui.tscn"
 
 func interact():
+	if GameState.is_candle_puzzle_solved:
+		if DialogueManager:
+			DialogueManager.show_text("Năm cây nến.")
+		return
+		
 	if CandleManager:
 		CandleManager.open_puzzle()
 	else:
